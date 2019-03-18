@@ -1,0 +1,60 @@
+:root{
+    --sans: 'Open Sans', helvetica, sans-serif;
+    --serif: 'Playfair Display', Times, serif;
+
+    --main: RGBA(0, 69, 99, 1.00);
+    --main-trans: RGBA(0, 69, 99, 0.7);
+
+    --highlight: #69f;
+    --link-color: var(--highlight);
+    --link-color-hover: var(--highlight);
+
+    --lh-100: 1.1;
+    --lh-200: 1.4;
+    --lh-300: 1.6;
+
+    --font-size-500: 1.125em;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+* {
+    box-sizing: border-box;
+}
+main {
+    margin: 0 5em;
+}
+body {
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: var(--lh-100);
+    font-size: var(--font-size-500);
+}
+
+main-block {
+    margin-left: -5em;
+    width: calc(100% + 10em);
+}
+button {
+    display: inline-block;
+    border: none;
+    background: var(--highlight);
+    color: white;
+    padding: 0.6em 1.6em;
+    outline: none;
+    font-size: 0.8em;
+    font-weight: 300;
+    font-family: var(--sans);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+}
+
+h2 {
+    margin-bottom: 0;
+}
+h2 + p {
+    margin-top: 0;
+}
