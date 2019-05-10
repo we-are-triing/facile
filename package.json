@@ -1,14 +1,14 @@
 {
-  "name": "custom-elements-starter",
-  "version": "2.0.0",
-  "description": "starter for native web components",
+  "name": "facile",
+  "version": "1.0.0",
+  "description": "Facile, simple and easy CMS.",
   "main": "server/index.js",
-  "repository": "https://github.com/LuceStudio/custom-elements-starter.git",
+  "repository": "https://github.com/LuceStudio/facile.git",
   "author": "Colt Pini <coltpini@luce.studio>",
   "license": "MIT",
   "type": "module",
   "engines": {
-    "node": "~12.0.0"
+    "node": "~12.2.0"
   },
   "scripts": {
     "start": "node --experimental-modules server/index.js",
