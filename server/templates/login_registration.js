@@ -14,6 +14,7 @@ export default class LoginRegistration extends BaseTemplate {
   }
   populatePage() {
     return `
+      <language-choice language="eng"></language-choice>
       <h1>${this.getLang(d.welcome_to)} ${this.getLang(d.facile_studio)}!</h1>
       <labeled-input>${this.getLang(d.organization_name)}</labeled-input>
       <revealed-choice>

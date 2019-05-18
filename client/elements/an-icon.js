@@ -8,6 +8,7 @@ class AnIcon extends HTMLElement {
       <style>
         :host {
          font-size: 1.2em;
+         display: inline-block;
         }
         svg {
           height: 1em;
@@ -18,7 +19,7 @@ class AnIcon extends HTMLElement {
       <svg viewBox="" xmlns="http://www.w3.org/2000/svg">
         <title></title>
         <desc></desc>
-        <path fill-rule="nonzero" d=""/>
+        <g></g>
       </svg>
     `;
     buildShadowRoot(html, this);
@@ -26,7 +27,7 @@ class AnIcon extends HTMLElement {
       svg: this.shadowRoot.querySelector('svg'),
       title: this.shadowRoot.querySelector('title'),
       desc: this.shadowRoot.querySelector('desc'),
-      path: this.shadowRoot.querySelector('path')
+      g: this.shadowRoot.querySelector('g')
     };
   }
 
@@ -42,7 +43,7 @@ class AnIcon extends HTMLElement {
           this.elems.svg.setAttribute('viewBox', `0 0 ${icon.width} ${icon.height}`);
           this.elems.title.textContent = this.getAttribute('title') || icon.title;
           this.elems.desc.textContent = icon.desc;
-          this.elems.path.setAttribute('d', icon.path);
+          this.elems.g.innerHTML = icon.content.join('');
         }
         break;
       default:
