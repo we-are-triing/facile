@@ -2,8 +2,8 @@ import BaseTemplate from './base.js';
 import d from '../data/facile-dictionary.js';
 
 export default class LoginRegistration extends BaseTemplate {
-  constructor() {
-    super();
+  constructor({lang}) {
+    super(lang);
     this.createParts();
   }
   createParts() {
@@ -14,7 +14,7 @@ export default class LoginRegistration extends BaseTemplate {
   }
   populatePage() {
     return `
-      <language-choice language="eng"></language-choice>
+      <site-language language="${this.lang}"></site-language>
       <h1>${this.getLang(d.welcome_to)} ${this.getLang(d.facile_studio)}!</h1>
       <labeled-input>${this.getLang(d.organization_name)}</labeled-input>
       <revealed-choice>

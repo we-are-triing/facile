@@ -1,11 +1,11 @@
 export default class BaseTemplate {
-  constructor() {
+  constructor(lang = `eng`) {
     this.head = {};
     this.elementList = [];
     this.header = ``;
     this.footer = ``;
     this.page = ``;
-    this.lang = `eng`;
+    this.lang = lang;
   }
   render() {
     const body = `
@@ -34,7 +34,7 @@ export default class BaseTemplate {
               return `<script type="module" src="/static/elements/${name}.js"></script>`;
             })
             .join('')}
-          <script src="/stiva.js"></script>
+          <script src="/static/stiva.js"></script>
           <script>
             stiva = new Stiva(${JSON.stringify(this.stiva)});
             window.addEventListener('WebComponentsReady', e => {

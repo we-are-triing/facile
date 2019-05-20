@@ -1,4 +1,5 @@
 import buildShadowRoot from './buildShadowRoot.js';
+import {langList, defaultLang} from '../isomorphic/lang.js';
 import './an-icon.js';
 
 class LanguageChoice extends HTMLElement {
@@ -9,6 +10,7 @@ class LanguageChoice extends HTMLElement {
         :host {
           display: block;
           text-align: right;
+          position: relative;
         }
         ul {
           margin: 0;
@@ -39,11 +41,7 @@ class LanguageChoice extends HTMLElement {
       </style>
       <an-icon class="selected" type="eng"></an-icon>
       <ul>
-        <li><an-icon type="deu"></an-icon>Deutsch</li>
-        <li><an-icon type="eng"></an-icon>English</li>
-        <li><an-icon type="fra"></an-icon>Français</li>
-        <li><an-icon type="ita"></an-icon>Italiano</li>
-        <li><an-icon type="spa"></an-icon>Español</li>
+        ${langList.map(({iso, name}) => `<li><an-icon type="${iso}"></an-icon>${name}</li>`).join('')}
       </ul>
     `;
     buildShadowRoot(html, this);
@@ -97,7 +95,7 @@ class LanguageChoice extends HTMLElement {
       this.dispatchEvent(
         new CustomEvent('change', {
           detail: {
-            lang
+            language: lang
           }
         })
       );
