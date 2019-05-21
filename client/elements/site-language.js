@@ -48,8 +48,11 @@ class SiteLanguage extends HTMLElement {
   handleLang(e) {
     const {origin, pathname} = window.location;
     // set cookie
+    console.log(e.detail.language);
+    document.cookie = `lang=${e.detail.language}; max-age=${60 * 60 * 24 * 365}; path=/`;
     // redirect page
     const inURL = langList.reduce((a, n) => a || pathname.startsWith(`/${n.iso}/`), false);
+
     if (inURL) {
       const p = pathname.substring(4);
       window.location = `${origin}/${e.detail.language}${p}`;

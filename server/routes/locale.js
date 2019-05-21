@@ -1,21 +1,28 @@
 import {langList, defaultLang} from '../../isomorphic/lang.js';
+import {cookie} from '../utils/cookie.js';
 
 export default {
   register: async server => {
-    server.ext('onRequest', (request, reply) => {
+    server.ext('onRequest', (req, h) => {
+      let lang = defaultLang;
       const staticPath = `static`;
-      const {pathname, origin} = request.url;
+      const {pathname, origin} = req.url;
       //if it is a static resource, we don't need locale.
       if (pathname.startsWith(`/${staticPath}/`)) {
-        return reply.continue;
+        return h.continue;
       }
       const inURL = langList.reduce((a, n) => a || pathname.startsWith(`/${n.iso}/`), false);
-      // TODO: see if there is a cookie value
-      // TODO: read the http location header
-      if (!inURL) {
-        return reply.redirect(`/${defaultLang}${pathname}`).takeover();
+
+      if (inURL) {
+        return h.continue;
       }
-      return reply.continue;
+
+      if (req.headers.cookie && req.headers.cookie.indexOf('lang=') > -1) {
+        lang = cookie(req.headers.cookie).lang || lang;
+      }
+
+      // TODO: read the http location header (req.headers['accept-language'])
+      return h.redirect(`/${lang}${pathname}`).takeover();
     });
   },
   name: 'locale'
