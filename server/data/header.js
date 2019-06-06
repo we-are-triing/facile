@@ -1,7 +1,5 @@
+import d from '../data/facile-dictionary.js';
+
 export default {
-    navigation: [
-        { href: "/", text: "Home"},
-        { href: "/article/0", text: "Sample 1"},
-        { href: "/article/1", text: "Sample 2"}
-    ]
+  navigation: [{href: '/content', text: d.content}, {href: '/templates', text: d.templates}, {href: '/regions', text: d.regions}, {href: '/components', text: d.components}, {href: '/media', text: d.media}, {href: '/dictionary', text: d.dictionary}]
 };

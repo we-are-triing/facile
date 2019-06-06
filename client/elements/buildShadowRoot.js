@@ -8,4 +8,4 @@ export default (html, elem) => {
 
   typeof ShadyCSS !== 'undefined' && ShadyCSS.styleElement(elem);
   return shadowRoot;
-}
+};

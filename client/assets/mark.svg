@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200px" height="200px" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>mark</title>
+    <desc>Created with Sketch.</desc>
+    <g id="mark" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-3">
+            <rect id="Rectangle-2-Copy-8" fill="#FFFFFF" transform="translate(100.000000, 100.000000) scale(1, -1) translate(-100.000000, -100.000000) " x="0" y="0" width="200" height="200"></rect>
+            <g id="Group-Copy" transform="translate(44.000000, 43.000000)" stroke="#FF6138">
+                <path d="M56.4900763,-1.82280039 L56.4900763,23.9050859 M56.4900763,87.5931635 L56.4900763,114.672045" id="Line" stroke-width="4" stroke-linecap="round" transform="translate(56.781313, 56.424622) rotate(-15.000000) translate(-56.781313, -56.424622) "></path>
+                <path d="M56.2841406,-2.02873613 L56.2841406,23.2133186 M56.2841406,86.6289562 L56.2841406,114.466109" id="Line" stroke-width="4" stroke-linecap="round" transform="translate(56.575378, 56.218687) rotate(-75.000000) translate(-56.575378, -56.218687) "></path>
+                <path d="M56.4146986,-1.54148694 L56.4146986,26.3387398 M56.4146986,89.4398114 L56.4146986,114.953358" id="Line" stroke-width="4" stroke-linecap="round" transform="translate(56.705936, 56.705936) rotate(-315.000000) translate(-56.705936, -56.705936) "></path>
+                <path d="M55.3350515,6.98969072 L55.3350515,25.3309587 M55.3350515,88.3310248 L55.3350515,106.010309" id="Line" stroke-width="2" stroke-linecap="round" transform="translate(55.626289, 56.500000) rotate(-345.000000) translate(-55.626289, -56.500000) "></path>
+                <path d="M54.7525773,6.98969072 L54.7525773,23.678349 M54.7525773,88.3010756 L54.7525773,106.010309" id="Line" stroke-width="2" stroke-linecap="round" transform="translate(55.043814, 56.500000) rotate(-285.000000) translate(-55.043814, -56.500000) "></path>
+                <path d="M20.3259761,21.4909246 L32.7049191,33.8698676 M77.5677235,78.7326719 L90.344127,91.5090754" id="Line" stroke-width="2" stroke-linecap="round"></path>
+                <circle id="Oval" stroke-width="5" cx="55.3350515" cy="56.5" r="23.2989691"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

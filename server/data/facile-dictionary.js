@@ -110,5 +110,47 @@ export default {
     fra: `Email`,
     ita: `e-mail`,
     spa: `correo electrónico`
+  },
+  content: {
+    deu: `Inhalt`,
+    eng: `Content`,
+    fra: `Ténor`,
+    ita: `Contenuto`,
+    spa: `contenido`
+  },
+  templates: {
+    deu: ``,
+    eng: `Templates`,
+    fra: ``,
+    ita: ``,
+    spa: ``
+  },
+  regions: {
+    deu: ``,
+    eng: `Regions`,
+    fra: ``,
+    ita: ``,
+    spa: ``
+  },
+  components: {
+    deu: ``,
+    eng: `Components`,
+    fra: ``,
+    ita: ``,
+    spa: ``
+  },
+  media: {
+    deu: ``,
+    eng: `Media`,
+    fra: ``,
+    ita: ``,
+    spa: ``
+  },
+  dictionary: {
+    deu: ``,
+    eng: `Dictionary`,
+    fra: ``,
+    ita: ``,
+    spa: ``
   }
 };

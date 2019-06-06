@@ -1,5 +1,4 @@
 import Home from '../templates/home.js';
-import Article from '../templates/article.js';
 import fetch from 'node-fetch';
 import {join} from 'path';
 import require from './require.cjs';
@@ -78,23 +77,6 @@ export default server => {
         return login.render();
       } catch (err) {
         console.error(`login / registration page failure`, err);
-        return `fourOfour.render()`;
-      }
-    }
-  });
-
-  server.route({
-    method: `GET`,
-    path: `/{lang}/article/{id}`,
-    handler: async (req, h) => {
-      const {lang, id} = req.params;
-      try {
-        const raw = await fetch(`http://localhost:${port}/api/article/${id}`);
-        const json = await raw.json();
-        const article = new Article({...json, lang});
-        return article.render();
-      } catch (err) {
-        console.error(`article ${id} page failure`, err);
         return `fourOfour.render()`;
       }
     }

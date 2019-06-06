@@ -1,6 +1,6 @@
 import BaseTemplate from './base.js';
 
-export default class Home extends BaseTemplate {
+export default class Components extends BaseTemplate {
   constructor({navigation, content, title, lang = `eng`}) {
     super(lang);
     this.createParts({navigation, content, title});
