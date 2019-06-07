@@ -1,4 +1,5 @@
 import Home from '../templates/home.js';
+import Components from '../templates/components.js';
 import fetch from 'node-fetch';
 import {join} from 'path';
 import require from './require.cjs';
@@ -49,36 +50,54 @@ export default server => {
   });
 
   // Dynamic Routes
-  server.route({
-    method: `GET`,
-    path: `/{lang}/`,
-    handler: async (req, h) => {
-      try {
-        // Simulating a fetch to some service to get content.
-        const {lang} = req.params;
-        const raw = await fetch(`http://localhost:${port}/api/home`);
-        const json = await raw.json();
-        const home = new Home({...json, lang});
-        return home.render();
-      } catch (err) {
-        console.error(`home page failure`, err);
-        return `fourOfour.render()`;
+  server.route([
+    {
+      method: `GET`,
+      path: `/{lang}/`,
+      handler: async (req, h) => {
+        try {
+          // Simulating a fetch to some service to get content.
+          const {lang} = req.params;
+          const raw = await fetch(`http://localhost:${port}/api/home`);
+          const json = await raw.json();
+          const home = new Home({...json, lang});
+          return home.render();
+        } catch (err) {
+          console.error(`home page failure`, err);
+          return `fourOfour.render()`;
+        }
+      }
+    },
+    {
+      method: `GET`,
+      path: `/{lang}/components`,
+      handler: async (req, h) => {
+        try {
+          // Simulating a fetch to some service to get content.
+          const {lang} = req.params;
+          const raw = await fetch(`http://localhost:${port}/api/home`);
+          const json = await raw.json();
+          const home = new Components({...json, lang});
+          return home.render();
+        } catch (err) {
+          console.error(`home page failure`, err);
+          return `fourOfour.render()`;
+        }
+      }
+    },
+    {
+      method: `GET`,
+      path: `/{lang}/login`,
+      handler: async (req, h) => {
+        try {
+          const {lang} = req.params;
+          const login = new LoginRegistration({lang});
+          return login.render();
+        } catch (err) {
+          console.error(`login / registration page failure`, err);
+          return `fourOfour.render()`;
+        }
       }
     }
-  });
-
-  server.route({
-    method: `GET`,
-    path: `/{lang}/login`,
-    handler: async (req, h) => {
-      try {
-        const {lang} = req.params;
-        const login = new LoginRegistration({lang});
-        return login.render();
-      } catch (err) {
-        console.error(`login / registration page failure`, err);
-        return `fourOfour.render()`;
-      }
-    }
-  });
+  ]);
 };

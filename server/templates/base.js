@@ -36,7 +36,7 @@ export default class BaseTemplate {
           })
           .join('')}
 
-        <script src="/stiva.js"></script>
+        <script src="/static/stiva.js"></script>
         <script>
           stiva = new Stiva(${JSON.stringify(this.stiva)});
           window.addEventListener('WebComponentsReady', e => {

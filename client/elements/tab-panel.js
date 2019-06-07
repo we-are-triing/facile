@@ -2,19 +2,18 @@ import buildShadowRoot from './buildShadowRoot.js';
 class TabPanel extends HTMLElement {
   constructor() {
     super();
-    const html = `
-      <style>
-        :host {
-
-        }
-        section {
-            padding: 1em;
-        }
-      </style>
-      <section>
-        <slot></slot>
-      </section>
-    `;
+    const html = /* html */ `
+          <style>
+              :host {
+            }
+            section {
+                padding: 1em;
+            }
+          </style>
+          <section>
+            <slot></slot>
+          </section>
+        `;
     buildShadowRoot(html, this);
   }
   get tabtitle() {
