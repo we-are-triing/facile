@@ -1,48 +1,65 @@
 import BaseTemplate from './base.js';
 
 export default class Home extends BaseTemplate {
-  constructor({navigation, content, footerNavigation, title, description, socialImage, lang = `eng`}) {
+  constructor({navigation, content, title, lang = `eng`}) {
     super(lang);
-    this.createParts({navigation, content, footerNavigation, title, description, socialImage});
+    this.createParts({navigation, content, title});
   }
-  createParts() {
-    this.lang = lang;
+  createParts({navigation, content, title}) {
     this.head.title = title;
-    this.head.content = `
-            <meta property="og:title" content="${title}">
-            <meta property="og:description" content="${description}">
-            <meta property="og:image" content="${socialImage}">
-        `;
     this.header = this.populateHeader({navigation});
     this.page = this.populatePage(content);
     this.footer = this.populateFooter({navigation});
   }
   populatePage(content) {
     return content
-      .map(block => {
-        switch (block.type) {
-          case 'title':
-            return `<main-block heading="${block.title}" lede="${block.lede}" img="${block.img}" ></main-block>`;
-          case 'content':
-            return `<content-block>${block.content}</content-block>`;
-          case 'tabs':
-            return `<tabbed-content>
-                                ${block.content.reduce((a, n, i) => {
-                                  if (i === 0) {
-                                    this.stiva = {active: {active: n.tab}};
-                                  }
-                                  return `${a}<tab-panel tabtitle="${n.tab}">${n.content}</tab-panel>`;
-                                }, '')}
-                            </tabbed-content>
-                            `;
-          case 'media':
+      .map(({meta, properties, content}) => {
+        switch (meta.type) {
+          case `title`:
             return `
-                        <media-block title="${block.title}" caption="${block.caption}" img="${block.img}"></media-block>
+              <main-block 
+                class="full"
+                heading="${properties.title}" 
+                lede="${properties.lede}" 
+                src="${properties.img}">
+              </main-block>
+            `;
+          case `content`:
+            return `<content-block class="narrow">${properties.content}</content-block>`;
+          case `tile-list`:
+            return `
+              <tile-list 
+                title="${properties.title}" 
+                description="${properties.description}" 
+                cta="${properties.cta}" 
+                href="${properties.link}">
+                  ${content
+                    .map(
+                      ({meta: m, properties: p}) => `
+                        <item-tile 
+                        title="${p.title}" 
+                          link="${p.link}" 
+                          src="${p.src}" >
+                            ${p.description}
+                        </item-tile>
+                      `
+                    )
+                    .join(``)}
+              </tile-list>
+            `;
+          case `media`:
+            return `
+              <media-block 
+                class="mid-width"
+                title="${properties.title}" 
+                caption="${properties.caption}" 
+                img="${properties.img}">
+              </media-block>
                     `;
           default:
             return ``;
         }
       })
-      .join('');
+      .join(``);
   }
 }

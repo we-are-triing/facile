@@ -1,33 +1,31 @@
 import buildShadowRoot from './buildShadowRoot.js';
 class TabPanel extends HTMLElement {
-    constructor() {
-        super();
-        const html = `
+  constructor() {
+    super();
+    const html = /* html */ `
           <style>
               :host {
-
-              }
-              section {
-                  padding: 1em;
-              }
+            }
+            section {
+                padding: 1em;
+            }
           </style>
           <section>
-              <slot></slot>
+            <slot></slot>
           </section>
         `;
-				buildShadowRoot(html,this);
+    buildShadowRoot(html, this);
+  }
+  get tabtitle() {
+    return this.getAttribute('tabtitle');
+  }
+  set tabtitle(val) {
+    if (val) {
+      this.setAttribute('tabtitle', val);
+    } else {
+      this.removeAttribute('tabtitle');
     }
-    get tabtitle(){
-        return this.getAttribute('tabtitle');
-    }
-    set tabtitle(val){
-        if(val){
-            this.setAttribute('tabtitle', val);
-        }
-        else {
-            this.removeAttribute('tabtitle');
-        }
-    }
+  }
 }
 customElements.define('tab-panel', TabPanel);
 export default TabPanel;

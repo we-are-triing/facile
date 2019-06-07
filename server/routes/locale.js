@@ -1,19 +1,16 @@
 import {langList, defaultLang} from '../../isomorphic/lang.js';
 import {cookie} from '../utils/cookie.js';
 
+const isStaticPath = (paths, pathname) => paths.reduce((a, n) => a || pathname.startsWith(`/${n}/`), false);
+const inURL = pathname => langList.reduce((a, n) => a || pathname.startsWith(`/${n.iso}/`), false);
+
 export default {
   register: async server => {
     server.ext('onRequest', (req, h) => {
       let lang = defaultLang;
-      const staticPath = `static`;
-      const {pathname, origin} = req.url;
+      const {pathname} = req.url;
       //if it is a static resource, we don't need locale.
-      if (pathname.startsWith(`/${staticPath}/`)) {
-        return h.continue;
-      }
-      const inURL = langList.reduce((a, n) => a || pathname.startsWith(`/${n.iso}/`), false);
-
-      if (inURL) {
+      if (isStaticPath([`static`, `api`], pathname) || inURL(pathname)) {
         return h.continue;
       }
 
