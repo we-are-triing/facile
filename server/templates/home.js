@@ -9,7 +9,6 @@ export default class Home extends BaseTemplate {
     this.head.title = title;
     this.header = this.populateHeader({navigation});
     this.page = this.populatePage(content);
-    this.footer = this.populateFooter({navigation});
   }
   populatePage(content) {
     return content

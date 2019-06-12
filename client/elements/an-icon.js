@@ -9,6 +9,8 @@ class AnIcon extends HTMLElement {
         :host {
          font-size: 1.2em;
          display: inline-block;
+         height: 1em;
+         width: 1em;
         }
         svg {
           height: 1em;

@@ -1,4 +1,5 @@
 import buildShadowRoot from './buildShadowRoot.js';
+import './tag-list.js';
 
 class LabeledInput extends HTMLElement {
   constructor() {
@@ -7,6 +8,31 @@ class LabeledInput extends HTMLElement {
       <style>
         :host {
           display: block;
+        }
+        :host([no-label]) label{
+          display: none;
+        }
+        * {
+          box-sizing: border-box;
+        }
+        :host([large]) input{
+          border: none;
+          border-bottom: var(--border);
+          font-size: 2em;
+          border-radius: 0;
+        }
+        input {
+          font-size: inherit;
+          padding: var(--spacing-100) var(--spacing-200);
+          font-family: inherit;
+          border: var(--border);
+          border-radius: var(--br-400);
+          font-weight: 100;
+          color: inherit;
+          width: 100%;
+        }
+        input::placeholder {
+          color: var(--nero-300);
         }
       </style>
       <label for="input"><slot></slot></label>
@@ -19,7 +45,7 @@ class LabeledInput extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['type', 'placeholder'];
+    return ['type', 'placeholder', 'value'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
@@ -29,6 +55,9 @@ class LabeledInput extends HTMLElement {
         break;
       case 'placeholder':
         this.elems.input.setAttribute('placeholder', newVal);
+        break;
+      case 'value':
+        this.elems.input.setAttribute('value', newVal);
         break;
       default:
         break;
@@ -54,6 +83,17 @@ class LabeledInput extends HTMLElement {
       this.setAttribute('placeholder', val);
     } else {
       this.removeAttribute('placeholder');
+    }
+  }
+
+  get value() {
+    return this.getAttribute('value');
+  }
+  set value(val) {
+    if (val) {
+      this.setAttribute('value', val);
+    } else {
+      this.removeAttribute('value');
     }
   }
 }

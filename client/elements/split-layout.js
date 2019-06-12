@@ -5,11 +5,11 @@ class SplitLayout extends HTMLElement {
     const html = /*html*/ `
       <style>
         :host {
-          --left-size: 25rem;
+          --left-size: 18rem;
           --scrubber-size: var(--spacing-300);
           display: grid;
           grid-template-columns: var(--left-size) 1fr;
-          width: 100%;
+          min-height: 100%;
         }
 
         /* hide all but the first two sections */
@@ -26,8 +26,17 @@ class SplitLayout extends HTMLElement {
           --left-size: 50%;
         }
 
-        :host([fixed]){
-          /* TODO: get this working */
+        :host([fixed]) {
+          height: 100%;
+        }
+
+        :host([fixed]) ::slotted(section){
+          height: 100%;
+          overflow: auto;
+        }
+
+        :host([divider]) ::slotted(section:first-child){
+          border-right: var(--border);
         }
 
         .scrubber {

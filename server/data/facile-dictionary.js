@@ -152,5 +152,33 @@ export default {
     fra: ``,
     ita: ``,
     spa: ``
+  },
+  search: {
+    deu: ``,
+    eng: `Search`,
+    fra: ``,
+    ita: ``,
+    spa: ``
+  },
+  type: {
+    deu: ``,
+    eng: `Type`,
+    fra: ``,
+    ita: ``,
+    spa: ``
+  },
+  name: {
+    deu: ``,
+    eng: `Name`,
+    fra: ``,
+    ita: ``,
+    spa: ``
+  },
+  tags: {
+    deu: ``,
+    eng: `Tags`,
+    fra: ``,
+    ita: ``,
+    spa: ``
   }
 };

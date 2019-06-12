@@ -30,7 +30,7 @@ class CheckBox extends HTMLElement {
             padding: var(--spacing-200);
             text-align: center;
             background: var(--background);
-            border: 1px solid var(--black-100);
+            border: var(--border);
             border-radius: var(--br-400);
             cursor: pointer;
           }

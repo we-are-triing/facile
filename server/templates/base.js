@@ -6,6 +6,7 @@ export default class BaseTemplate {
     this.footer = ``;
     this.page = ``;
     this.lang = lang;
+    this.bodyClass = '';
   }
   render() {
     const body = `
@@ -24,18 +25,19 @@ export default class BaseTemplate {
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
         <meta property="og:site_name" content="Luce Studio">
-        <title>${this.head.title}</title>
+        <title>${this.head.title || 'Facile'}</title>
 
-        ${this.head.content}
+        ${this.head.content || ''}
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Playfair+Display:400,400i" rel="stylesheet">
         <link rel="stylesheet" href="/static/index.css" />
         <script src="/static/polyfills/webcomponents-loader.js"></script>
+
         ${this.parseElements(body)
           .map(name => {
             return `<script type="module" src="/static/elements/${name}.js"></script>`;
           })
           .join('')}
-
+          
         <script src="/static/stiva.js"></script>
         <script>
           stiva = new Stiva(${JSON.stringify(this.stiva)});
@@ -44,46 +46,38 @@ export default class BaseTemplate {
             setTimeout(() => stiva.dispatchAll(), 300);
             document.body.classList.add('WebComponentsReady');
           });
+            
         </script>
       </head>
-      <body>
-        ${body}
-        ${
-          process.env.NODE_ENV === 'dev'
-            ? `
-            <script src="/static/lib/socket.io.js"></script>
-                <script>
-                  let socket = io('/');
-                  socket.on('reload', () => location.reload());
-                  socket.on('delayed-reload', () => setTimeout(() => location.reload(), 3000 ));
-                </script>
-          `
-            : ``
-        }
+      <body${this.bodyClass ? ` class="${this.bodyClass}"` : ``}>
+        
+          ${body}
+          ${
+            process.env.NODE_ENV === 'dev'
+              ? `
+              <script src="/static/lib/socket.io.js"></script>
+                  <script>
+                    let socket = io('/');
+                    socket.on('reload', () => location.reload());
+                    socket.on('delayed-reload', () => setTimeout(() => location.reload(), 3000 ));
+                  </script>
+            `
+              : ``
+          }
+        
       </body>
     </html>
   `;
   }
   populateHeader({navigation}) {
     return `
-            <site-header logo="/static/assets/mark.svg">
+            <site-header lang="${this.lang}">
               ${navigation
                 .map(({href, text}) => {
                   return `<nav-item href="${href}">${this.getLang(text)}</nav-item>`;
                 })
                 .join('')}
             </site-header>
-        `;
-  }
-  populateFooter({navigation}) {
-    return `
-            <site-footer>
-              ${navigation
-                .map(({href, text}) => {
-                  return `<nav-item href="${href}">${this.getLang(text)}</nav-item>`;
-                })
-                .join('')}
-            </site-footer>
         `;
   }
   parseElements(str) {

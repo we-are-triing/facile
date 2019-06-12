@@ -2,30 +2,66 @@
   --sans: 'Open Sans', helvetica, sans-serif;
   --serif: 'Playfair Display', Times, serif;
 
-  --red-500: HSLA(12, 100%, 61%, 1);
-  --red-500-t: HSLA(12, 100%, 61%, 0.5);
+  --roso-300: RGBA(255, 113, 118, 1);
+  --roso-400: RGBA(255, 83, 90, 1);
+  --roso-500: RGBA(255, 50, 62, 1);
+  --roso-600: RGBA(255, 0, 36, 1);
+  --roso-700: RGBA(250, 0, 21, 1);
+  --roso-800: RGBA(218, 0, 0, 1);
+  --roso-900: RGBA(188, 0, 0, 1);
 
-  --blue-500: HSLA(198, 100%, 19%, 1);
-  --blue-400: HSLA(186, 56%, 51%, 1);
+  --verde-200: RGBA(162, 255, 202, 1);
+  --verde-300: RGBA(95, 242, 159, 1);
+  --verde-400: RGBA(86, 212, 140, 1);
+  --verde-500: RGBA(39, 185, 107, 1);
+  --verde-600: RGBA(35, 156, 91, 1);
+  --verde-700: RGBA(31, 129, 76, 1);
+  --verde-800: RGBA(27, 103, 62, 1);
 
-  --green-500: HSLA(139, 34%, 61%, 1);
+  --azzurro-200: RGBA(163, 249, 255, 1);
+  --azzurro-300: RGBA(64, 238, 252, 1);
+  --azzurro-400: RGBA(0, 203, 223, 1);
+  --azzurro-500: RGBA(0, 178, 196, 1);
+  --azzurro-600: RGBA(0, 151, 166, 1);
+  --azzurro-700: RGBA(0, 127, 139, 1);
+  --azzurro-800: RGBA(0, 104, 112, 1);
 
-  --white-500: HSLA(40, 100%, 93%, 1);
-  --white: #fff;
-  --white-t: HSLA(0, 100%, 100%, 0.6);
+  --blu-600: RGBA(0, 123, 175, 1);
+  --blu-700: RGBA(0, 101, 146, 1);
+  --blu-800: RGBA(0, 82, 120, 1);
+  --blu-900: RGBA(0, 63, 94, 1);
+  --blu-1000: RGBA(0, 47, 70, 1);
 
-  --black: #333;
-  --black-t: HSLA(0, 0%, 0%, 0.6);
-  --black-t-l: HSLA(0, 0%, 0%, 0.1);
-  --black-500: var(--black);
-  --black-400: HSLA(0, 0%, 30%, 1);
-  --black-300: HSLA(0, 0%, 50%, 1);
-  --black-200: HSLA(0, 0%, 80%, 1);
-  --black-100: HSLA(0, 0%, 90%, 1);
+  --arancione-300: RGBA(255, 130, 101, 1);
+  --arancione-400: RGBA(255, 106, 73, 1);
+  --arancione-500: RGBA(255, 83, 46, 1);
+  --arancione-600: RGBA(255, 60, 0, 1);
+  --arancione-700: RGBA(248, 42, 0, 1);
+  --arancione-800: RGBA(217, 29, 0, 1);
+  --arancione-900: RGBA(187, 13, 0, 1);
 
-  --main: var(--red-500);
-  --main-t: var(--red-500-t);
-  --highlight: var(--white-500);
+  --nero-50: #fff;
+  --nero-100: RGBA(240, 240, 240, 1);
+  --nero-200: RGBA(226, 226, 226, 1);
+  --nero-300: RGBA(197, 197, 197, 1);
+  --nero-400: RGBA(170, 170, 170, 1);
+  --nero-500: RGBA(142, 142, 142, 1);
+  --nero-600: RGBA(117, 117, 117, 1);
+  --nero-700: RGBA(91, 91, 91, 1);
+  --nero-800: RGBA(68, 68, 68, 1);
+  --nero-900: RGBA(44, 44, 44, 1);
+  --nero-1000: RGBA(25, 25, 25, 1);
+  --nero-1100: #000;
+
+  --bianco: var(--nero-50);
+  --nero: var(--nero-900);
+  --arancione: var(--arancione-600);
+  --blu: var(--blu-600);
+  --azzuro: var(--azzurro-600);
+  --verde: var(--verde-600);
+  --roso: var(--roso-600);
+
+  --main: var(--azzurro-500);
   --link-color: var(--main);
   --link-color-hover: var(--main);
 
@@ -64,14 +100,13 @@
   --bp-100: 36rem;
   --bp-200: 62rem;
 
-  --header-height: 5rem;
+  --header-height: 3rem;
   --footer-height: 4.5rem;
 
-  --edge: var(--spacing-300);
   --mid-width: 100%;
   --narrow-width: 100%;
 
-  --border: 1px solid var(--black-100);
+  --border: 1px solid var(--nero-100);
 
   --ratio-3x2: 1.5;
 }
@@ -80,7 +115,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  color: var(--black);
+  color: var(--nero);
 }
 
 * {
@@ -92,9 +127,11 @@ site-footer {
   z-index: 1;
 }
 main {
-  margin: 0 var(--edge);
+  margin: 0;
   position: relative;
   z-index: 0;
+  height: 100%;
+  overflow: hidden;
 }
 body {
   font-family: var(--sans);
@@ -102,27 +139,12 @@ body {
   line-height: var(--lh-100);
   font-size: var(--font-size-500);
   display: grid;
-  grid-template-areas:
-    'header'
-    'main'
-    'footer';
-  grid-template-rows: var(--header-height) 1fr var(--footer-height);
+  grid-template-rows: var(--header-height) 1fr;
   min-height: 100vh;
 }
 
-.full {
-  margin-left: calc(var(--edge) * -1);
-  width: calc(100% + calc(var(--edge) * 2));
-}
-.narrow {
-  margin-left: auto;
-  margin-right: auto;
-  max-width: var(--narrow-width);
-}
-.mid-width {
-  margin-left: auto;
-  margin-right: auto;
-  max-width: var(--mid-width);
+body.fixed {
+  height: 100vh;
 }
 
 @media screen and (min-width: 36rem) {
@@ -165,7 +187,7 @@ h5 + p {
 hr {
   border: none;
   padding: 1px 0 0 0;
-  background: var(--black-100);
+  background: var(--nero-100);
   width: 12em;
   margin: var(--spacing-700) auto;
 }
@@ -179,7 +201,7 @@ a:hover {
 }
 
 pre {
-  background: var(--black-100);
+  background: var(--nero-100);
   padding: var(--spacing-300);
   overflow: scroll;
   border-radius: var(--br-400);

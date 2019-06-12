@@ -6,7 +6,7 @@ class LabeledBadge extends HTMLElement {
       <style>
         :host {
           --label: var(--font-size-300);
-          --color: var(--black-200);
+          --color: var(--nero-200);
 
           font-size: var(--font-size-500);
         }
@@ -20,14 +20,14 @@ class LabeledBadge extends HTMLElement {
         
         span:first-child {
           display: block;
-          color: var(--black);
-          background: var(--white);
+          color: var(--nero);
+          background: var(--bianco);
           padding: var(--spacing-300);
         }
 
         span:last-child {
           display: block;
-          color: var(--white);
+          color: var(--bianco);
           background: var(--color);
           padding: var(--spacing-200);
           font-size: var(--label);

@@ -5,11 +5,10 @@ class NavItem extends HTMLElement {
     const html = `
       <style>
         :host {
-          color: blue;
-          --color: var(--link-color, inherit);
-          --color-hover: var(--link-color-hover, inherit);
+          --color: var(--nero, inherit);
+          --color-hover: var(--nero, inherit);
           --underline: var(--link-color, blue);
-          margin-right: var(--spacing-300);
+          margin: var(--spacing-300);
         }
         a {
           color: var(--color);

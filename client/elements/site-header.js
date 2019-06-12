@@ -1,4 +1,7 @@
 import buildShadowRoot from './buildShadowRoot.js';
+import './an-icon.js';
+import './site-language.js';
+
 class SiteHeader extends HTMLElement {
   constructor() {
     super();
@@ -13,37 +16,35 @@ class SiteHeader extends HTMLElement {
         * {
           box-sizing: border-box;
         }
-        section {
+        header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
           background: var(--header-bg);
           box-sizing: border-box;
           width: 100%;
-          border-bottom: 1px solid var(--black-100);
+          border-bottom: 1px solid var(--nero-100);
         }
-        nav {
+        nav.main {
           display: flex;
           align-items: center;
           justify-content: flex-start;
         }
-        :host([pinned]){
-          padding-bottom: var(--height);
+        nav.secondary {
+          font-size: var(--font-size-600);
+          display: flex
         }
-        :host([pinned]) section{
-          position: fixed;
-          z-index: 1;
+        .nav-container {
+          font-size: var(--font-size-300);
         }
-        :host([overlay]) section{
-          position: absolute;
-        }
-        a {
+        
+        nav.main a {
           max-height: var(--height);
           display: block;
+
         }
-        a img {
-          height: var(--height);
-        }
-        nav-item {
-          --color: var(--black-400);
-          --color-hover: var(--black);
+        nav.main a an-icon {
+          font-size: var(--height);
         }
         .trigger {
           display: none;
@@ -55,41 +56,27 @@ class SiteHeader extends HTMLElement {
 
         /* TODO: get this outta here */
         @media screen and (max-width: 36em){
-          nav {
-            padding: 0 var(--spacing-300) 0 0;
-          }
-          .nav-container {
-            display: none;
-            position: absolute;
-            top: calc(var(--header-height) + 1px);
-            left: 0;
-            background: var(--white);
-            width: 100%;
-            text-align: center;
-            padding: var(--spacing-300) var(--spacing-200);
-            border-bottom: var(--border);
-          }
-          .nav-container.active {
-            display: block;
-          }
-          .trigger {
-            display: block;
-          }
+         
         }
       </style>
-      <section>
-        <nav>
-          <a href="/"><img /></a>
+      <header>
+        <nav class="main">
+          <a href="/"><an-icon type="facile"></an-icon></a>
           <div class="trigger">menu</div>
           <div class="nav-container"></div>
         </nav>
-      </section>
+        <nav class="secondary">
+          <an-icon type="search"></an-icon>
+          <an-icon type="account"></an-icon>
+          <site-language language="eng"></site-language>
+        </nav>
+      </header>
     `;
     buildShadowRoot(html, this);
     this.elems = {
-      logo: this.shadowRoot.querySelector('img'),
       container: this.shadowRoot.querySelector('.nav-container'),
-      trigger: this.shadowRoot.querySelector('.trigger')
+      trigger: this.shadowRoot.querySelector('.trigger'),
+      lang: this.shadowRoot.querySelector('site-language')
     };
     this.observer = this.watchChildren();
     this.updateChildren();
@@ -116,13 +103,13 @@ class SiteHeader extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return [`logo`, `innerHTML`];
+    return [`innerHTML`, `lang`];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
     switch (attrName) {
-      case `logo`:
-        this.elems.logo.src = newVal;
+      case `lang`:
+        this.elems.lang.language = newVal;
         break;
       case `innerHTML`:
         this.updateChildren();
@@ -132,44 +119,14 @@ class SiteHeader extends HTMLElement {
     }
   }
 
-  get logo() {
-    return this.getAttribute('logo');
+  get lang() {
+    return this.getAttribute('lang');
   }
-  set logo(val) {
+  set lang(val) {
     if (val) {
-      this.setAttribute('logo', val);
+      this.setAttribute('lang', val);
     } else {
-      this.removeAttribute('logo');
-    }
-  }
-  get layout() {
-    return this.getAttribute('layout');
-  }
-  set layout(val) {
-    if (val) {
-      this.setAttribute('layout', val);
-    } else {
-      this.removeAttribute('layout');
-    }
-  }
-  get pinned() {
-    return this.getAttribute('pinned');
-  }
-  set pinned(val) {
-    if (val) {
-      this.setAttribute('pinned', val);
-    } else {
-      this.removeAttribute('pinned');
-    }
-  }
-  get overlay() {
-    return this.getAttribute('overlay');
-  }
-  set overlay(val) {
-    if (val) {
-      this.setAttribute('overlay', val);
-    } else {
-      this.removeAttribute('overlay');
+      this.removeAttribute('lang');
     }
   }
 

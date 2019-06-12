@@ -2,7 +2,7 @@ import buildShadowRoot from './buildShadowRoot.js';
 class StyledButton extends HTMLElement {
   constructor() {
     super();
-    const html = `
+    const html = /*html*/ `
       <style>
         :host {
           --color: var(--main, #69f);
