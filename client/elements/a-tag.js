@@ -23,7 +23,20 @@ class ATag extends HTMLElement {
           margin: 0 var(--spacing-50);
           padding: var(--spacing-100) var(--spacing-100) var(--spacing-100) var(--spacing-200);
         }
-
+        :host([add]) input{
+          display: inline;
+        }
+        input {
+          display: none;
+          border: none;
+          background: transparent;
+          color: var(--bianco);
+          font-family: inherit;
+          font-weight: inherit;
+          font-size: inherit;
+          width: 4em;
+          border-bottom: 1px solid var(--bianco-t);
+        }
         an-icon {
           margin-left: var(--spacing-200);
           cursor: pointer;
@@ -31,22 +44,60 @@ class ATag extends HTMLElement {
       </style>
       <section>
         <slot></slot>
+        <input type="text" />
         <an-icon type="close"></an-icon>
       </section>
     `;
     buildShadowRoot(html, this);
     this.elems = {
-      delete: this.shadowRoot.querySelector('an-icon')
+      change: this.shadowRoot.querySelector('an-icon'),
+      input: this.shadowRoot.querySelector('input')
     };
-    this.elems.delete.addEventListener('click', this.handleDelete.bind(this));
+    this.elems.change.addEventListener('click', this.handleChange.bind(this));
   }
-  handleDelete(e) {
+
+  static get observedAttributes() {
+    return ['add'];
+  }
+
+  attributeChangedCallback(attrName, oldVal, newVal) {
+    switch (attrName) {
+      case 'add':
+        this.elems.change.type = 'add';
+        break;
+      default:
+        this.elems.change.type = 'close';
+        break;
+    }
+  }
+
+  get add() {
+    return this.hasAttribute('add');
+  }
+  set add(val) {
+    if (val) {
+      this.setAttribute('add', '');
+    } else {
+      this.removeAttribute('add');
+    }
+  }
+
+  handleChange(e) {
+    let type, tag;
+    if (e.target.type === 'close') {
+      type = 'remove';
+      tag = this.textContent;
+    } else {
+      type = 'add';
+      tag = this.elems.input.value;
+      this.elems.input.value = '';
+      if (tag === '') return;
+    }
+
     this.dispatchEvent(
-      new CustomEvent('delete', {
+      new CustomEvent('change', {
         bubbles: true,
-        detail: {
-          tag: this.textContent
-        }
+        detail: {tag, type}
       })
     );
   }

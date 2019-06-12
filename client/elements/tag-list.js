@@ -10,6 +10,7 @@ class TagList extends HTMLElement {
         }
         .container {
           display: flex;
+          flex-direction: column;
         }
         span {
           margin-right: var(--spacing-200);
@@ -30,14 +31,17 @@ class TagList extends HTMLElement {
         <span></span>
         <div>
           <slot></slot>
+          <a-tag add></a-tag>
         </div>
       </div>
     `;
     buildShadowRoot(html, this);
     this.elems = {
-      label: this.shadowRoot.querySelector('span')
+      label: this.shadowRoot.querySelector('span'),
+      add: this.shadowRoot.querySelector('a-tag')
     };
-    this.addEventListener('delete', this.handleTagChange.bind(this));
+    this.addEventListener('change', this.handleTagChange.bind(this));
+    this.elems.add.addEventListener('change', this.handleTagChange.bind(this));
   }
 
   static get observedAttributes() {
@@ -65,8 +69,16 @@ class TagList extends HTMLElement {
     }
   }
 
-  handleTagChange(e) {
-    [...this.childNodes].forEach(tag => tag.textContent === e.detail.tag && tag.remove());
+  handleTagChange({detail}) {
+    const {type, tag} = detail;
+
+    if (type === 'remove') {
+      [...this.childNodes].forEach(node => node.textContent === tag && node.remove());
+    } else {
+      const elem = document.createElement('a-tag');
+      elem.textContent = tag;
+      this.appendChild(elem);
+    }
     //TODO: send this back to the server.
   }
 }

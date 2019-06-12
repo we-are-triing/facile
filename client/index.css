@@ -54,6 +54,7 @@
   --nero-1100: #000;
 
   --bianco: var(--nero-50);
+  --bianco-t: RGBA(255, 255, 255, 0.3);
   --nero: var(--nero-900);
   --arancione: var(--arancione-600);
   --blu: var(--blu-600);
