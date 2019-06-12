@@ -6,12 +6,13 @@ class ItemHeader extends HTMLElement {
     super();
     const html = `
       <style>
-        :host {}
+        :host {
+          display: block;
+        }
         header {
           display: flex;
           align-items: flex-start;
           justify-content: flex-start;
-          margin: var(--spacing-400);
         }
         div {
           height: 3.1em;
@@ -43,7 +44,7 @@ class ItemHeader extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['title-label', 'tags-label', 'tags', `value`, `icon`];
+    return ['title-label', 'tags-label', 'tags', `value`, `icon`, `add-tag-label`];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
@@ -54,6 +55,9 @@ class ItemHeader extends HTMLElement {
         break;
       case 'tags-label':
         this.elems.tagList.setAttribute('label', newVal);
+        break;
+      case 'add-tag-label':
+        this.elems.tagList.setAttribute('add-label', newVal);
         break;
       case 'icon':
         this.elems.img.setAttribute('src', newVal);
@@ -90,6 +94,16 @@ class ItemHeader extends HTMLElement {
       this.setAttribute('tags-label', val);
     } else {
       this.removeAttribute('tags-label');
+    }
+  }
+  get addTagLabel() {
+    return this.hasAttribute('add-tag-label');
+  }
+  set addTagLabel(val) {
+    if (val) {
+      this.setAttribute('add-tag-label', '');
+    } else {
+      this.removeAttribute('add-tag-label');
     }
   }
   get tags() {

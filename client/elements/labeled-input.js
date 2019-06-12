@@ -1,5 +1,4 @@
 import buildShadowRoot from './buildShadowRoot.js';
-import './tag-list.js';
 
 class LabeledInput extends HTMLElement {
   constructor() {
@@ -42,6 +41,16 @@ class LabeledInput extends HTMLElement {
     this.elems = {
       input: this.shadowRoot.querySelector('input')
     };
+    this.elems.input.addEventListener('change', this.handlChange.bind(this));
+  }
+
+  handlChange(e) {
+    this.value = this.elems.input.value;
+    this.dispatchEvent(
+      new Event('change', {
+        bubbles: true
+      })
+    );
   }
 
   static get observedAttributes() {
@@ -57,7 +66,7 @@ class LabeledInput extends HTMLElement {
         this.elems.input.setAttribute('placeholder', newVal);
         break;
       case 'value':
-        this.elems.input.setAttribute('value', newVal);
+        this.elems.input.value = newVal;
         break;
       default:
         break;

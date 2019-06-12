@@ -1,5 +1,9 @@
 import buildShadowRoot from './buildShadowRoot.js';
 import './item-header.js';
+import './labeled-select.js';
+import './labeled-input.js';
+import './tag-list.js';
+import './item-value.js';
 
 class ComponentCreator extends HTMLElement {
   constructor() {
@@ -10,17 +14,26 @@ class ComponentCreator extends HTMLElement {
           display: block;
           box-sizing: border-box;
         } 
+        item-header,
+        main {
+          margin: var(--spacing-400);
+        }
         an-icon {
           cursor: pointer;
           color: var(--main);
+          font-size: 2em;
+        }
+        .new {
+          display: flex;
+          align-items: center;
         }
       </style>
       <item-header></item-header>
       <main>
         <slot></slot>
         <section class="new">
-          <labeled-input class="new_name"></labeled-input>
-          <labeled-select>
+          <labeled-input no-label class="new_name"></labeled-input>
+          <labeled-select no-label>
             <option></option>
           </labeled-select>
           <an-icon type="add"></an-icon>
@@ -30,13 +43,37 @@ class ComponentCreator extends HTMLElement {
     buildShadowRoot(html, this);
     this.elems = {
       header: this.shadowRoot.querySelector('item-header'),
-      newTitle: this.shadowRoot.querySelector('labeled-input.new_name'),
-      tags: this.shadowRoot.querySelector('tag-list')
+      name: this.shadowRoot.querySelector('labeled-input'),
+      tags: this.shadowRoot.querySelector('tag-list'),
+      select: this.shadowRoot.querySelector('labeled-select'),
+      add: this.shadowRoot.querySelector('an-icon')
     };
+    if (stiva) {
+      stiva.listen('primitives', data => {
+        this.elems.select.innerHTML = Object.keys(data)
+          .map(type => `<option value="${type}">${data[type].label}</option>`)
+          .join('');
+      });
+    }
+    this.elems.add.addEventListener('click', this.handleAdd.bind(this));
+  }
+
+  handleAdd(e) {
+    const elem = document.createElement('item-value');
+    const type = this.elems.select.value;
+    const name = this.elems.name.value;
+
+    if (type && name) {
+      this.elems.select.selectedIndex = 0;
+      this.elems.name.value = '';
+      elem.type = type;
+      elem.textContent = name;
+      this.appendChild(elem);
+    }
   }
 
   static get observedAttributes() {
-    return ['icon', 'title-label', 'property-label', 'type-label', 'tags-label', 'tags', 'title-value'];
+    return ['icon', 'title-label', 'property-label', 'type-label', 'tags-label', `add-tag-label`, 'tags', 'title-value'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
@@ -51,14 +88,18 @@ class ComponentCreator extends HTMLElement {
         this.elems.header.setAttribute('value', newVal);
         break;
       case 'property-label':
-        this.elems.newTitle.setAttribute('placeholder', newVal);
-        this.elems.newTitle.textContent = newVal;
+        this.elems.name.setAttribute('placeholder', newVal);
+        this.elems.name.textContent = newVal;
         break;
       case 'type-label':
         this.elems.header.setAttribute('label', newVal);
+        this.elems.select.setAttribute('label', newVal);
         break;
-      case 'tags-label':
+      case 'tag-label':
         this.elems.header.setAttribute('tags-label', newVal);
+        break;
+      case 'add-tag-label':
+        this.elems.header.setAttribute('add-tag-label', newVal);
         break;
       case 'tags':
         this.elems.header.setAttribute('tags', newVal);
@@ -126,6 +167,16 @@ class ComponentCreator extends HTMLElement {
       this.setAttribute('tags-label', val);
     } else {
       this.removeAttribute('tags-label');
+    }
+  }
+  get addTagLabel() {
+    return this.getAttribute('add-tag-label');
+  }
+  set addTagLabel(val) {
+    if (val) {
+      this.setAttribute('add-tag-label', val);
+    } else {
+      this.removeAttribute('add-tag-label');
     }
   }
   get tags() {

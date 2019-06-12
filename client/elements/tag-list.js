@@ -45,13 +45,16 @@ class TagList extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['label'];
+    return ['label', 'add-label'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
     switch (attrName) {
       case 'label':
         this.elems.label.textContent = newVal;
+        break;
+      case 'add-label':
+        this.elems.add.setAttribute('add-label', newVal);
         break;
       default:
         break;
@@ -66,6 +69,17 @@ class TagList extends HTMLElement {
       this.setAttribute('label', val);
     } else {
       this.removeAttribute('label');
+    }
+  }
+
+  get addLabel() {
+    return this.hasAttribute('add-label');
+  }
+  set addLabel(val) {
+    if (val) {
+      this.setAttribute('add-label', '');
+    } else {
+      this.removeAttribute('add-label');
     }
   }
 

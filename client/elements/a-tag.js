@@ -37,6 +37,10 @@ class ATag extends HTMLElement {
           width: 4em;
           border-bottom: 1px solid var(--bianco-t);
         }
+        input::placeholder {
+          color: var(--bianco-t);
+          font-size: 0.8em;
+        }
         an-icon {
           margin-left: var(--spacing-200);
           cursor: pointer;
@@ -57,13 +61,16 @@ class ATag extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['add'];
+    return ['add', 'add-label'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
     switch (attrName) {
       case 'add':
         this.elems.change.type = 'add';
+        break;
+      case 'add-label':
+        this.elems.input.setAttribute('placeholder', newVal);
         break;
       default:
         this.elems.change.type = 'close';
@@ -79,6 +86,16 @@ class ATag extends HTMLElement {
       this.setAttribute('add', '');
     } else {
       this.removeAttribute('add');
+    }
+  }
+  get addLabel() {
+    return this.hasAttribute('add-label');
+  }
+  set addLabel(val) {
+    if (val) {
+      this.setAttribute('add-label', '');
+    } else {
+      this.removeAttribute('add-label');
     }
   }
 

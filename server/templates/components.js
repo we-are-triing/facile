@@ -1,5 +1,6 @@
 import BaseTemplate from './base.js';
 import d from '../data/facile-dictionary.js';
+import {primitives, regions} from '../data/types.js';
 
 export default class Components extends BaseTemplate {
   constructor({navigation, content, title, lang = `eng`}) {
@@ -11,6 +12,7 @@ export default class Components extends BaseTemplate {
     this.head.title = title;
     this.header = this.populateHeader({navigation});
     this.page = this.populatePage(content);
+    this.stiva = {primitives, regions};
   }
 
   pageContent(content) {
@@ -78,12 +80,14 @@ export default class Components extends BaseTemplate {
           <component-creator 
             icon="/static/assets/mark.svg"
             title-label="${this.getLang(d.type)}" 
-            title-value="test title value" 
             property-label="${this.getLang(d.name)}" 
             type-label="${this.getLang(d.type)}"
             tags-label="${this.getLang(d.tags)}"
+            add-tag-label="${this.getLang(d.add_tag)}"
+            title-value="test title value" 
             tags="test,another,tester yep"
             >
+            <item-value type="The Type">The Name</item-value>
           </component-creator>
         </section>
       </split-layout>

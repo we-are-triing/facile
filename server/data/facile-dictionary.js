@@ -180,5 +180,12 @@ export default {
     fra: ``,
     ita: ``,
     spa: ``
+  },
+  add_tag: {
+    deu: ``,
+    eng: `New Tag`,
+    fra: ``,
+    ita: ``,
+    spa: ``
   }
 };
