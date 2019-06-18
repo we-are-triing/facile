@@ -25,6 +25,7 @@ class TagList extends HTMLElement {
         .container div {
           display: flex;
           flex-wrap: wrap;
+          align-items: center;
         }
       </style>
       <div class="container">
@@ -42,6 +43,28 @@ class TagList extends HTMLElement {
     };
     this.addEventListener('change', this.handleTagChange.bind(this));
     this.elems.add.addEventListener('change', this.handleTagChange.bind(this));
+  }
+
+  handleTagChange(e) {
+    e.stopPropagation();
+    const {type, tag} = e.detail;
+
+    if (type === 'remove') {
+      [...this.children].forEach(node => node.textContent === tag && node.remove());
+    } else {
+      const elem = document.createElement('a-tag');
+      elem.textContent = tag;
+      this.appendChild(elem);
+    }
+
+    this.dispatchEvent(
+      new CustomEvent('tag-update', {
+        bubbles: true,
+        detail: {
+          tags: [...this.children].map(child => child.textContent).join(',')
+        }
+      })
+    );
   }
 
   static get observedAttributes() {
@@ -81,19 +104,6 @@ class TagList extends HTMLElement {
     } else {
       this.removeAttribute('add-label');
     }
-  }
-
-  handleTagChange({detail}) {
-    const {type, tag} = detail;
-
-    if (type === 'remove') {
-      [...this.childNodes].forEach(node => node.textContent === tag && node.remove());
-    } else {
-      const elem = document.createElement('a-tag');
-      elem.textContent = tag;
-      this.appendChild(elem);
-    }
-    //TODO: send this back to the server.
   }
 }
 

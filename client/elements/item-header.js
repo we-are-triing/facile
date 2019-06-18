@@ -4,13 +4,14 @@ import './a-tag.js';
 class ItemHeader extends HTMLElement {
   constructor() {
     super();
-    const html = `
+    const html = /*html*/ `
       <style>
         :host {
           display: block;
         }
         header {
-          display: flex;
+          display: grid;
+          grid-template-columns: 50% 50%;
           align-items: flex-start;
           justify-content: flex-start;
         }
@@ -41,6 +42,24 @@ class ItemHeader extends HTMLElement {
       tagList: this.shadowRoot.querySelector('tag-list'),
       img: this.shadowRoot.querySelector('img')
     };
+    this.elems.tagList.addEventListener('tag-update', this.handleTags.bind(this));
+    this.elems.title.addEventListener('change', this.handleTitle.bind(this));
+  }
+  handleTags(e) {
+    this.dispatchEvent(
+      new CustomEvent('tag-update', {
+        detail: e.detail
+      })
+    );
+  }
+  handleTitle(e) {
+    this.dispatchEvent(
+      new CustomEvent('title-update', {
+        detail: {
+          title: e.target.value
+        }
+      })
+    );
   }
 
   static get observedAttributes() {

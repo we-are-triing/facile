@@ -1,4 +1,5 @@
 import buildShadowRoot from './buildShadowRoot.js';
+import {sendComponent} from '../utils/services.js';
 import './item-header.js';
 import './labeled-select.js';
 import './labeled-input.js';
@@ -54,8 +55,20 @@ class ComponentCreator extends HTMLElement {
           .map(type => `<option value="${type}">${data[type].label}</option>`)
           .join('');
       });
+      stiva.dispatch('primitives');
     }
     this.elems.add.addEventListener('click', this.handleAdd.bind(this));
+    this.elems.header.addEventListener('tag-update', this.handleTags.bind(this));
+    this.elems.header.addEventListener('title-update', this.handleTitle.bind(this));
+    this.addEventListener('remove', this.handleRemove.bind(this));
+    this.addEventListener('update', this.handleChange.bind(this));
+  }
+  handleRemove(e) {
+    e.target.remove();
+    this.handleItems();
+  }
+  handleChange(e) {
+    this.handleItems();
   }
 
   handleAdd(e) {
@@ -64,12 +77,47 @@ class ComponentCreator extends HTMLElement {
     const name = this.elems.name.value;
 
     if (type && name) {
-      this.elems.select.selectedIndex = 0;
-      this.elems.name.value = '';
       elem.type = type;
       elem.textContent = name;
       this.appendChild(elem);
+
+      this.elems.select.selectedIndex = 0;
+      this.elems.name.value = '';
+      this.handleItems();
     }
+  }
+
+  handleItems() {
+    this.send();
+  }
+
+  handleTags(e) {
+    this.tags = e.detail.tags;
+    this.send();
+  }
+  handleTitle(e) {
+    this.titleValue = e.detail.title;
+    this.send();
+  }
+  handleIcon(e) {
+    //TODO: this isn't hooked up at all yet.
+    console.log(e.detail);
+    this.send();
+  }
+
+  send() {
+    const component = {
+      meta: {
+        type: this.titleValue,
+        tags: this.tags.split(','),
+        icon: 'temp'
+      },
+      values: [...this.children].reduce((a, child) => {
+        a[child.textContent] = child.type;
+        return a;
+      }, {})
+    };
+    sendComponent(component);
   }
 
   static get observedAttributes() {

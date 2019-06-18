@@ -49,5 +49,9 @@ export const regions = {
   single: {
     label: 'single',
     definition: 'Allows one of a defined set.'
+  },
+  static: {
+    label: 'static',
+    definition: 'Is not editable, the values persist.'
   }
 };

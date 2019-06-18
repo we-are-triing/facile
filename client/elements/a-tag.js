@@ -4,12 +4,13 @@ import './an-icon.js';
 class ATag extends HTMLElement {
   constructor() {
     super();
-    const html = `
+    const html = /* html */ `
       <style>
         :host {
           --bg: var(--main);
           --color: var(--bianco);
           display: inline-block;
+          font-size: var(--font-size-300);
         }
 
         section {
@@ -23,6 +24,9 @@ class ATag extends HTMLElement {
           margin: 0 var(--spacing-50);
           padding: var(--spacing-100) var(--spacing-100) var(--spacing-100) var(--spacing-200);
         }
+        :host([add]) section {
+          padding: var(--spacing-50) var(--spacing-100) var(--spacing-50) var(--spacing-200);
+        }
         :host([add]) input{
           display: inline;
         }
@@ -34,12 +38,10 @@ class ATag extends HTMLElement {
           font-family: inherit;
           font-weight: inherit;
           font-size: inherit;
-          width: 4em;
-          border-bottom: 1px solid var(--bianco-t);
+          width: 5em;
         }
         input::placeholder {
           color: var(--bianco-t);
-          font-size: 0.8em;
         }
         an-icon {
           margin-left: var(--spacing-200);
@@ -49,6 +51,7 @@ class ATag extends HTMLElement {
       <section>
         <slot></slot>
         <input type="text" />
+        
         <an-icon type="close"></an-icon>
       </section>
     `;

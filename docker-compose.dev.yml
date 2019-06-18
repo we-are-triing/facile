@@ -1,10 +1,16 @@
 version: '3'
 services:
-  web:
+  cms:
+    networks:
+      - facile
     build: .
     ports:
       - '8000:8000'
-      - '9229:9229'
+      - '9000:9000'
     volumes:
       - .:/home/node/app
     entrypoint: 'npm run dev'
+networks:
+  facile:
+    external:
+      name: facile

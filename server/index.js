@@ -17,8 +17,7 @@ import locale from './routes/locale.js';
 
 const server = Hapi.server({
   // listener: http2.createServer(options),
-  port: process.env.PORT || 8000,
-  host: process.env.HOST || '0.0.0.0'
+  port: process.env.PORT || 8000
 });
 
 const init = async () => {

@@ -1,9 +1,15 @@
-version: "3"
+version: '3'
 services:
   cms:
+    networks:
+      - facile
     build: .
     restart: always
     ports:
-      - "8000:8000"
+      - '8000:8000'
     volumes:
       - .:/home/node/app
+networks:
+  facile:
+    external:
+      name: facile
