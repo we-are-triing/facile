@@ -1,4 +1,8 @@
 import buildShadowRoot from './buildShadowRoot.js';
+import './region-editor.js';
+import './an-icon.js';
+import './labeled-input.js';
+import './labeled-select.js';
 
 class ItemValue extends HTMLElement {
   constructor() {
@@ -46,6 +50,12 @@ class ItemValue extends HTMLElement {
         :host(:active) .view .actions {
           opacity: 1;
         }
+        .region {
+          display: none;
+        }
+        :host([type="region"]) .region{
+          display: block;
+        }
       </style>
       <section class="view active">
         <div class="labels">
@@ -69,6 +79,9 @@ class ItemValue extends HTMLElement {
           <an-icon type="check" class="check"></an-icon>
         </div>
       </section>
+      <region-editor class="region">
+        this is the region editor
+      </region-editor>
     `;
     buildShadowRoot(html, this);
     this.elems = {

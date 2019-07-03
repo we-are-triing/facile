@@ -12,6 +12,7 @@ class FilterList extends HTMLElement {
           
           background: var(--color);
           display: grid;
+          grid-template-rows: 3.4em 4em 1fr; 
         }
 
         :host([full]){
@@ -22,20 +23,22 @@ class FilterList extends HTMLElement {
           box-sizing: border-box;
         }
         .title {
-          display: block;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           background: var(--main);
           font-size: var(--font-size-600);
           font-weight: 900;
           color: var(--bianco);
-          text-align: center;
           padding: var(--spacing-200);
         }
-        .grid {
+        .grid slot {
           display: flex;
+          align-items: flex-start;
           justify-content: space-between;
           flex-wrap: wrap;
           padding: var(--spacing-400);
-          height: 100%;
+          max-height: 100%;
           overflow: auto;
         }
         .filters {

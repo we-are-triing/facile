@@ -7,13 +7,13 @@ class StyledButton extends HTMLElement {
         :host {
           --color: var(--main, #69f);
           --color-hover: var(--main, #69f);
-          --spacing: 1.3em;
-          --padding: calc(var(--spacing) / 2) var(--spacing) calc(var(--spacing) / 1.6);
-          --font: var(--serif);
+          --spacing: 1em;
+          --padding: calc(var(--spacing) / 2) var(--spacing) calc(var(--spacing) / 1.8);
+          
+          --font: var(--sans);
 
-          color: var(--white);
+          color: var(--bianco);
           display: inline-block;
-          font-size: var(--font-size-700);
           user-select: none;
         }
         a {
@@ -27,15 +27,21 @@ class StyledButton extends HTMLElement {
           line-height: var(--lh-50);
           padding: var(--padding);
           text-align: center;
+          font-weight: 700;
         }
         a:hover {
           --color: var(--color-hover); 
           color: inherit;
         }
-        :host([type="sans"]) a {
-          --font: var(--sans);
-          --spacing: 1em;
-          --padding: calc(var(--spacing) / 2) var(--spacing) calc(var(--spacing) / 1.8);
+        :host([type="serif"]) a {
+          --font: var(--serif);
+          --spacing: 1.3em;
+          font-weight: 500;
+          --padding: calc(var(--spacing) / 2) var(--spacing) calc(var(--spacing) / 1.6);
+        }
+        :host([destructive]){
+          --color: var(--roso, #69f);
+          --color-hover: var(--roso, #69f);
         }
       </style>
       <a><slot></slot></a>

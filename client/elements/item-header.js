@@ -1,5 +1,7 @@
 import buildShadowRoot from './buildShadowRoot.js';
 import './a-tag.js';
+import './tag-list.js';
+import './labeled-input.js';
 
 class ItemHeader extends HTMLElement {
   constructor() {
@@ -30,8 +32,6 @@ class ItemHeader extends HTMLElement {
           <labeled-input class="title" large no-label></labeled-input>
         </div>
         <tag-list>
-          <a-tag>test</a-tag>
-          <a-tag>test 2</a-tag>
         </tag-list>
         <slot></slot>
       </header>

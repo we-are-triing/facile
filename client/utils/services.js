@@ -3,21 +3,38 @@ const fetchOptions = {
   mode: 'cors',
   headers: {'Content-Type': 'application/json'}
 };
-export const sendComponent = async component => {
-  const comp = await fetch(`${storeRoot}/content/component/${component.meta.type}`, fetchOptions);
-  const result = await comp.json();
+
+const send = async (item, compOrTemplate) => {
+  const temp = await fetch(`${storeRoot}/content/${compOrTemplate}/${item.meta.type}`, fetchOptions);
+  const result = await temp.json();
   const isUpdate = result.length > 0;
 
-  let path = `${storeRoot}/content/component/create`;
+  let path = `${storeRoot}/content/${compOrTemplate}/create`;
   if (isUpdate) {
-    path = `${storeRoot}/content/component/update/${component.meta.type}`;
+    path = `${storeRoot}/content/${compOrTemplate}/update/${item.meta.type}`;
   }
-  const body = JSON.stringify(component);
+  const body = JSON.stringify(item);
 
   const resp = await fetch(path, {
     ...fetchOptions,
     method: 'POST',
     body
   });
-  console.log(resp);
+
+  return resp;
 };
+
+const del = async (type, compOrTemplate) => {
+  const del = await fetch(`${storeRoot}/content/${compOrTemplate}/delete`, {
+    ...fetchOptions,
+    method: 'DELETE',
+    body: JSON.stringify({type})
+  });
+  return del;
+};
+
+export const sendComponent = async component => send(component, 'component');
+export const sendTemplate = async template => send(template, 'template');
+
+export const deleteComponent = async type => del(type, 'component');
+export const deleteTemplate = async type => del(type, 'template');

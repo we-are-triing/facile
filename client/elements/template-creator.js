@@ -1,12 +1,12 @@
 import buildShadowRoot from './buildShadowRoot.js';
-import {sendComponent, deleteComponent} from '../utils/services.js';
+import {sendTemplate, deleteTemplate} from '../utils/services.js';
 import './item-header.js';
 import './labeled-select.js';
 import './labeled-input.js';
 import './item-value.js';
 import './styled-button.js';
 
-class ComponentCreator extends HTMLElement {
+class TemplateCreator extends HTMLElement {
   constructor() {
     super();
     const html = /* html */ `
@@ -121,15 +121,15 @@ class ComponentCreator extends HTMLElement {
   }
   handleCreate(e) {
     this.send(true);
-    window.location = `/component/${this.titleValue}`;
+    window.location = `/template/${this.titleValue}`;
   }
   async handleDelete(e) {
-    await deleteComponent(this.titleValue);
-    window.location = `/components`;
+    await deleteTemplate(this.titleValue);
+    window.location = `/templates`;
   }
 
   async send(force = false) {
-    const component = {
+    const template = {
       meta: {
         type: this.titleValue,
         tags: this.tags ? this.tags.split(',') : [],
@@ -141,7 +141,7 @@ class ComponentCreator extends HTMLElement {
       }, {})
     };
     if (!this.new || force) {
-      await sendComponent(component);
+      await sendTemplate(template);
     }
   }
 
@@ -300,5 +300,5 @@ class ComponentCreator extends HTMLElement {
   }
 }
 
-customElements.define('component-creator', ComponentCreator);
-export default ComponentCreator;
+customElements.define('template-creator', TemplateCreator);
+export default TemplateCreator;

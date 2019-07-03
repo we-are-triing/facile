@@ -125,6 +125,13 @@ export default {
     ita: ``,
     spa: ``
   },
+  new_template: {
+    deu: ``,
+    eng: `New Template`,
+    fra: ``,
+    ita: ``,
+    spa: ``
+  },
   regions: {
     deu: ``,
     eng: `Regions`,
@@ -135,6 +142,13 @@ export default {
   components: {
     deu: ``,
     eng: `Components`,
+    fra: ``,
+    ita: ``,
+    spa: ``
+  },
+  new_component: {
+    deu: ``,
+    eng: `New Component`,
     fra: ``,
     ita: ``,
     spa: ``
@@ -184,6 +198,20 @@ export default {
   add_tag: {
     deu: ``,
     eng: `New Tag`,
+    fra: ``,
+    ita: ``,
+    spa: ``
+  },
+  create: {
+    deu: ``,
+    eng: `Create`,
+    fra: ``,
+    ita: ``,
+    spa: ``
+  },
+  delete: {
+    deu: ``,
+    eng: `Delete`,
     fra: ``,
     ita: ``,
     spa: ``
