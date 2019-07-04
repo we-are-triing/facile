@@ -79,9 +79,7 @@ class ItemValue extends HTMLElement {
           <an-icon type="check" class="check"></an-icon>
         </div>
       </section>
-      <region-editor class="region">
-        this is the region editor
-      </region-editor>
+      <region-editor class="region"></region-editor>
     `;
     buildShadowRoot(html, this);
     this.elems = {
