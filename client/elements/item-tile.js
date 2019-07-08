@@ -7,6 +7,7 @@ class ItemTile extends HTMLElement {
       <style>
         :host {
           display: block;
+          position: relative;
         }
         a {
           display: block;
@@ -21,6 +22,15 @@ class ItemTile extends HTMLElement {
           margin: var(--spacing-100) 0 var(--spacing-400);
           text-align: center;
         }
+        an-icon { 
+          display: none;
+          position: absolute;
+          right: 0;
+          top: 0;
+        }
+        :host([closeable]) an-icon {
+          display: block;
+        }
       </style>
       <a href>
         <img />
@@ -28,12 +38,25 @@ class ItemTile extends HTMLElement {
           <slot></slot>
         </p>
       </a>
+      <an-icon type="close"></an-icon>
     `;
     buildShadowRoot(html, this);
     this.elems = {
       img: this.shadowRoot.querySelector('img'),
-      a: this.shadowRoot.querySelector('a')
+      a: this.shadowRoot.querySelector('a'),
+      close: this.shadowRoot.querySelector('an-icon')
     };
+    this.elems.close.addEventListener('click', this.handleClose.bind(this));
+  }
+
+  handleClose(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    this.dispatchEvent(
+      new Event('close', {
+        bubbles: true
+      })
+    );
   }
 
   static get observedAttributes() {

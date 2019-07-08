@@ -51,7 +51,6 @@ export default class Components extends BaseTemplate {
     `;
     }
     if (component.meta) {
-      const vals = component.values || {};
       return `
         <component-creator 
           ${labels}
@@ -59,12 +58,17 @@ export default class Components extends BaseTemplate {
           title-value="${component.meta.type}" 
           ${component.meta.tags.length > 0 ? `tags="${component.meta.tags.join(',')}"` : ''}
           >
-          ${Object.keys(vals)
-            .map(key => `<item-value type="${vals[key]}">${key}</item-value>`)
-            .join('')}
+          ${this.mapVals(component.values)}
         </component-creator>
       `;
     }
     return ``;
+  }
+  mapVals(vals = []) {
+    return vals.map(({name, type, region = '', components = []}) => `<item-value type="${type}" name="${name}"${type === 'region' ? ` region="${region}">${this.mapComponents(components)}` : '>'}</item-value>`).join('');
+  }
+  mapComponents(components) {
+    //TODO: get the src for this.
+    return components.map(c => `<item-tile src="test" closeable>${c}</item-tile>`).join('');
   }
 }

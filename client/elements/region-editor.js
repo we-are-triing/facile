@@ -98,6 +98,14 @@ class RegionEditor extends HTMLElement {
     this.elems.add.addEventListener('click', this.toggleAdd.bind(this));
     this.elems.componentList.addEventListener('click', this.handleAdd.bind(this));
     this.addEventListener('click', this.handleClick);
+    this.addEventListener('close', this.handleRemoveComponent.bind(this));
+  }
+
+  handleRemoveComponent(e) {
+    e.target.remove();
+    // this.elems.components.classList.toggle('active');
+    this.updateComponentOptions();
+    this.sendChange();
   }
 
   handleClick(e) {
@@ -107,10 +115,10 @@ class RegionEditor extends HTMLElement {
 
   typeChange(e) {
     this.type = e.target.value;
+    this.sendChange();
   }
 
   updateComponentOptions() {
-    console.log(this.list);
     const components = this.list.filter(({type}) => ![...this.children].reduce((a, n) => (a ? a : type === n.textContent), false));
     if (components.length > 0) {
       this.elems.componentList.innerHTML = components.map(({type, icon, tags}) => `<li tags="${tags.join(',')}"><img src="${icon}" />${type}</li>`).join('');
@@ -121,14 +129,26 @@ class RegionEditor extends HTMLElement {
     }
   }
 
+  sendChange() {
+    this.dispatchEvent(
+      new CustomEvent('update', {
+        bubbles: true,
+        detail: {
+          type: this.type,
+          items: [...this.children].filter(child => child.localName === 'item-tile')
+        }
+      })
+    );
+  }
+
   toggleAdd(e) {
     e.stopPropagation();
     e.preventDefault();
+    this.updateComponentOptions();
     this.elems.components.classList.toggle('active');
   }
 
   handleAdd(e) {
-    console.log(e.target);
     const tag = e.target.tagName.toLowerCase();
     if (tag === 'ul') {
       return;
@@ -141,9 +161,11 @@ class RegionEditor extends HTMLElement {
     const el = document.createElement('item-tile');
     el.textContent = elem.textContent;
     el.setAttribute('src', elem.children[0].src);
+    el.setAttribute('closeable', '');
     this.appendChild(el);
     this.elems.components.classList.toggle('active');
     this.updateComponentOptions();
+    this.sendChange();
   }
 
   static get observedAttributes() {

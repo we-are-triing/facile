@@ -93,7 +93,7 @@ class ComponentCreator extends HTMLElement {
 
     if (type && name) {
       elem.type = type;
-      elem.textContent = name;
+      elem.name = name;
       this.appendChild(elem);
 
       this.elems.select.selectedIndex = 0;
@@ -135,10 +135,17 @@ class ComponentCreator extends HTMLElement {
         tags: this.tags ? this.tags.split(',') : [],
         icon: 'temp'
       },
-      values: [...this.children].reduce((a, child) => {
-        a[child.textContent] = child.type;
-        return a;
-      }, {})
+      values: [...this.children].map(itemValue => {
+        let item = {
+          name: itemValue.name,
+          type: itemValue.type
+        };
+        if (itemValue.type === 'region') {
+          item.region = itemValue.region;
+          item.components = itemValue.items ? [...itemValue.items].map(gc => gc.textContent) : [];
+        }
+        return item;
+      })
     };
     if (!this.new || force) {
       await sendComponent(component);

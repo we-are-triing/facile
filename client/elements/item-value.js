@@ -59,8 +59,8 @@ class ItemValue extends HTMLElement {
       </style>
       <section class="view active">
         <div class="labels">
-          <slot></slot>:
-          <span></span>
+          <span class="name"></span>:
+          <span class="type"></span>
         </div>
         <div class="actions">
           <an-icon type="edit" class="edit"></an-icon>
@@ -83,7 +83,8 @@ class ItemValue extends HTMLElement {
     `;
     buildShadowRoot(html, this);
     this.elems = {
-      type: this.shadowRoot.querySelector('span'),
+      name: this.shadowRoot.querySelector('span.name'),
+      type: this.shadowRoot.querySelector('span.type'),
       newName: this.shadowRoot.querySelector('labeled-input.new_name'),
       newType: this.shadowRoot.querySelector('labeled-select'),
       delete: this.shadowRoot.querySelector('an-icon.delete'),
@@ -91,7 +92,8 @@ class ItemValue extends HTMLElement {
       update: this.shadowRoot.querySelector('an-icon.check'),
       close: this.shadowRoot.querySelector('an-icon.close'),
       editView: this.shadowRoot.querySelector('section.edit'),
-      viewView: this.shadowRoot.querySelector('section.view')
+      viewView: this.shadowRoot.querySelector('section.view'),
+      region: this.shadowRoot.querySelector('region-editor')
     };
     this.elems.delete.addEventListener('click', this.handleDelete.bind(this));
 
@@ -99,16 +101,56 @@ class ItemValue extends HTMLElement {
     this.elems.close.addEventListener('click', this.showView.bind(this));
 
     this.elems.update.addEventListener('click', this.handleEdit.bind(this));
+    this.elems.region.addEventListener('update', this.handleRegion.bind(this));
 
     if (stiva) {
       stiva.listen('primitives', this.handlePrimitives.bind(this));
       stiva.dispatch('primitives');
     }
+
+    this.observer = this.watchChildren();
+    this.updateChildren();
   }
+
+  watchChildren() {
+    return new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        this.updateChildren();
+      });
+    });
+  }
+
+  updateChildren() {
+    this.observer.disconnect();
+
+    [...this.elems.region.children].forEach(child => child.remove());
+
+    [...this.children].forEach(child => {
+      if (child.localName === 'item-tile') {
+        this.elems.region.appendChild(child.cloneNode(true));
+      }
+    });
+
+    this.observer.observe(this, {childList: true});
+  }
+
   handlePrimitives(data) {
     this.elems.newType.innerHTML = Object.keys(data)
       .map(type => `<option value="${type}"${data[type].label === this.type ? ' selected' : ''}>${data[type].label}</option>`)
       .join('');
+  }
+  handleRegion(e) {
+    this.region = e.detail.type;
+    this.items = e.detail.items;
+    this.dispatchEvent(
+      new CustomEvent('update', {
+        bubbles: true,
+        detail: {
+          type: this.region,
+          items: e.detail.items
+        }
+      })
+    );
   }
   handleDelete(e) {
     this.dispatchEvent(
@@ -119,7 +161,7 @@ class ItemValue extends HTMLElement {
   }
   handleEdit(e) {
     this.type = this.elems.newType.value;
-    this.textContent = this.elems.newName.value;
+    this.name = this.elems.newName.value;
     this.showView();
     this.dispatchEvent(
       new Event('update', {
@@ -132,7 +174,7 @@ class ItemValue extends HTMLElement {
     this.elems.editView.classList.add('active');
     this.elems.viewView.classList.remove('active');
     this.elems.newType.value = this.type;
-    this.elems.newName.value = this.textContent;
+    this.elems.newName.value = this.name;
   }
   showView() {
     this.elems.editView.classList.remove('active');
@@ -140,14 +182,19 @@ class ItemValue extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['type'];
+    return ['type', 'name', 'region'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
     switch (attrName) {
       case 'type':
         this.elems.type.textContent = newVal;
-        this.elems.newType.value = newVal;
+        break;
+      case 'name':
+        this.elems.name.textContent = newVal;
+        break;
+      case 'region':
+        this.elems.region.type = newVal;
         break;
       default:
         break;
@@ -162,6 +209,26 @@ class ItemValue extends HTMLElement {
       this.setAttribute('type', val);
     } else {
       this.removeAttribute('type');
+    }
+  }
+  get name() {
+    return this.getAttribute('name');
+  }
+  set name(val) {
+    if (val) {
+      this.setAttribute('name', val);
+    } else {
+      this.removeAttribute('name');
+    }
+  }
+  get region() {
+    return this.getAttribute('region');
+  }
+  set region(val) {
+    if (val) {
+      this.setAttribute('region', val);
+    } else {
+      this.removeAttribute('region');
     }
   }
 }
