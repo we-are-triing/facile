@@ -50,7 +50,6 @@ export default class Templates extends BaseTemplate {
     `;
     }
     if (template.meta) {
-      const vals = template.values || {};
       return `
         <template-creator 
           ${labels}
@@ -58,12 +57,17 @@ export default class Templates extends BaseTemplate {
           title-value="${template.meta.type}" 
           ${template.meta.tags.length > 0 ? `tags="${template.meta.tags.join(',')}"` : ''}
           >
-          ${Object.keys(vals)
-            .map(key => `<item-value type="${vals[key]}">${key}</item-value>`)
-            .join('')}
+          ${this.mapVals(template.values)}
         </template-creator>
       `;
     }
     return ``;
+  }
+  mapVals(vals = []) {
+    return vals.map(({name, type, region = '', components = []}) => `<item-value type="${type}" name="${name}"${type === 'region' ? ` region="${region}">${this.mapComponents(components)}` : '>'}</item-value>`).join('');
+  }
+  mapComponents(components) {
+    //TODO: get the src for this.
+    return components.map(c => `<item-tile src="test" closeable>${c}</item-tile>`).join('');
   }
 }

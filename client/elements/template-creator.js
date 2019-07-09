@@ -1,7 +1,6 @@
 import buildShadowRoot from './buildShadowRoot.js';
 import {sendTemplate, deleteTemplate} from '../utils/services.js';
 import './item-header.js';
-import './labeled-select.js';
 import './labeled-input.js';
 import './item-value.js';
 import './styled-button.js';
@@ -44,9 +43,6 @@ class TemplateCreator extends HTMLElement {
         <slot></slot>
         <section class="new">
           <labeled-input no-label class="new_name"></labeled-input>
-          <labeled-select no-label>
-            <option></option>
-          </labeled-select>
           <an-icon type="add"></an-icon>
         </section>
         <styled-button class="create"></styled-button>
@@ -57,19 +53,11 @@ class TemplateCreator extends HTMLElement {
     this.elems = {
       header: this.shadowRoot.querySelector('item-header'),
       name: this.shadowRoot.querySelector('labeled-input'),
-      select: this.shadowRoot.querySelector('labeled-select'),
       add: this.shadowRoot.querySelector('an-icon'),
       submit: this.shadowRoot.querySelector('.create'),
       delete: this.shadowRoot.querySelector('.delete')
     };
-    if (stiva) {
-      stiva.listen('primitives', data => {
-        this.elems.select.innerHTML = Object.keys(data)
-          .map(type => `<option value="${type}">${data[type].label}</option>`)
-          .join('');
-      });
-      stiva.dispatch('primitives');
-    }
+
     this.elems.add.addEventListener('click', this.handleAdd.bind(this));
     this.elems.header.addEventListener('tag-update', this.handleTags.bind(this));
     this.elems.header.addEventListener('title-update', this.handleTitle.bind(this));
@@ -88,15 +76,12 @@ class TemplateCreator extends HTMLElement {
 
   handleAdd(e) {
     const elem = document.createElement('item-value');
-    const type = this.elems.select.value;
     const name = this.elems.name.value;
 
-    if (type && name) {
-      elem.type = type;
+    if (name) {
+      elem.type = 'region';
       elem.textContent = name;
       this.appendChild(elem);
-
-      this.elems.select.selectedIndex = 0;
       this.elems.name.value = '';
       this.handleItems();
     }
@@ -135,10 +120,17 @@ class TemplateCreator extends HTMLElement {
         tags: this.tags ? this.tags.split(',') : [],
         icon: 'temp'
       },
-      values: [...this.children].reduce((a, child) => {
-        a[child.textContent] = child.type;
-        return a;
-      }, {})
+      values: [...this.children].map(itemValue => {
+        let item = {
+          name: itemValue.name,
+          type: itemValue.type
+        };
+        if (itemValue.type === 'region') {
+          item.region = itemValue.region;
+          item.components = itemValue.items ? [...itemValue.items].map(gc => gc.textContent) : [];
+        }
+        return item;
+      })
     };
     if (!this.new || force) {
       await sendTemplate(template);
@@ -166,7 +158,6 @@ class TemplateCreator extends HTMLElement {
         break;
       case 'type-label':
         this.elems.header.setAttribute('label', newVal);
-        this.elems.select.setAttribute('label', newVal);
         break;
       case 'tags-label':
         this.elems.header.setAttribute('tags-label', newVal);

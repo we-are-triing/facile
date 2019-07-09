@@ -191,8 +191,7 @@ export default server => {
 
           const templates = await getTemplateList();
 
-          const clist = await getSimpleComponentList();
-          const components = clist.map();
+          const components = await getSimpleComponentList();
 
           const raw = await fetch(`${dataDomain}/content/template/${type}`);
           const [template] = await raw.json();
