@@ -16,15 +16,15 @@
   },
   "dependencies": {
     "@hapi/hapi": "^18.3.1",
-    "@hapi/inert": "^5.2.0",
+    "@hapi/inert": "^5.2.1",
     "@webcomponents/webcomponentsjs": "^2.2.10",
-    "node-fetch": "^2.4.1",
+    "node-fetch": "^2.6.0",
     "stiva": "^1.0.1"
   },
   "devDependencies": {
-    "chokidar": "^3.0.0",
+    "chokidar": "^3.0.2",
     "eslint": "^5.16.0",
-    "nodemon": "^1.18.11",
+    "nodemon": "^1.19.1",
     "socket.io": "^2.2.0"
   }
 }
