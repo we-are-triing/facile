@@ -13,7 +13,9 @@ const fetchOptions = {
   headers: {'Content-Type': 'application/json'}
 };
 
+// TODO: this will go away when I get a home page working.
 const port = process.env.PORT || 8000;
+
 const dataDomain = `http://api:8001`;
 
 const fourOFour = () => {

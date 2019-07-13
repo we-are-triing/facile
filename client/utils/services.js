@@ -1,4 +1,5 @@
 const storeRoot = `http://localhost:8001`;
+const mediaRoot = `http://localhost:8002`;
 const fetchOptions = {
   mode: 'cors',
   headers: {'Content-Type': 'application/json'}
@@ -15,13 +16,13 @@ const send = async (item, compOrTemplate) => {
   }
   const body = JSON.stringify(item);
 
-  const resp = await fetch(path, {
+  const res = await fetch(path, {
     ...fetchOptions,
     method: 'POST',
     body
   });
 
-  return resp;
+  return await res.json();
 };
 
 const del = async (type, compOrTemplate) => {
@@ -30,7 +31,7 @@ const del = async (type, compOrTemplate) => {
     method: 'DELETE',
     body: JSON.stringify({type})
   });
-  return del;
+  return await del.json();
 };
 
 export const sendComponent = async component => send(component, 'component');
@@ -38,3 +39,18 @@ export const sendTemplate = async template => send(template, 'template');
 
 export const deleteComponent = async type => del(type, 'component');
 export const deleteTemplate = async type => del(type, 'template');
+
+export const sendMedia = async (file, meta) => {
+  // send the image to the media server and the meta to the db.
+  const res = await fetch(`${mediaRoot}/media`, {
+    mode: 'cors',
+    method: `POST`,
+    body: JSON.stringify({
+      tags: [],
+      name: 'temp',
+      media: file,
+      meta
+    })
+  });
+  return await res.json();
+};
