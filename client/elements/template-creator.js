@@ -1,5 +1,5 @@
 import buildShadowRoot from './buildShadowRoot.js';
-import {sendTemplate, deleteTemplate} from '../utils/services.js';
+import {sendTemplate, deleteTemplate, sendMedia} from '../utils/services.js';
 import './item-header.js';
 import './labeled-input.js';
 import './item-value.js';
@@ -61,6 +61,7 @@ class TemplateCreator extends HTMLElement {
     this.elems.add.addEventListener('click', this.handleAdd.bind(this));
     this.elems.header.addEventListener('tag-update', this.handleTags.bind(this));
     this.elems.header.addEventListener('title-update', this.handleTitle.bind(this));
+    this.elems.header.addEventListener('upload', this.handleUpload.bind(this));
     this.addEventListener('remove', this.handleRemove.bind(this));
     this.addEventListener('update', this.handleChange.bind(this));
     this.elems.submit.addEventListener('click', this.handleCreate.bind(this));
@@ -99,11 +100,16 @@ class TemplateCreator extends HTMLElement {
     this.titleValue = e.detail.title;
     this.send();
   }
-  handleIcon(e) {
-    //TODO: this isn't hooked up at all yet.
-    console.log(e.detail);
+
+  async handleUpload(e) {
+    const {file, fileData} = e.detail;
+    this.file = file;
+    this.meta = fileData;
+    const {path} = await sendMedia(file, this.meta);
+    this.icon = path;
     this.send();
   }
+
   handleCreate(e) {
     this.send(true);
     window.location = `/template/${this.titleValue}`;
@@ -118,7 +124,7 @@ class TemplateCreator extends HTMLElement {
       meta: {
         type: this.titleValue,
         tags: this.tags ? this.tags.split(',') : [],
-        icon: 'temp'
+        icon: this.icon
       },
       values: [...this.children].map(itemValue => {
         let item = {
