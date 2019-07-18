@@ -5,32 +5,34 @@ import {primitives, regions} from '../data/types.js';
 export default class Components extends BaseTemplate {
   constructor({navigation, components, component = {}, lang = `eng`}) {
     super(lang);
-    this.createParts({navigation, components, component});
+    this.components = components;
+    this.component = component;
+    this.createParts(navigation);
   }
-  async createParts({navigation, components, component}) {
+  createParts(navigation) {
     this.bodyClass = 'fixed';
-    this.head.title = component.meta ? component.meta.type : this.getLang(d.components);
+    this.head.title = this.component.meta ? this.component.meta.type : this.getLang(d.components);
     this.header = this.populateHeader({navigation});
-    this.page = this.populatePage(components, component);
-    this.stiva = {primitives, regions, components};
+    this.page = this.populatePage();
+    this.stiva = {primitives, regions, components: this.components};
   }
 
-  populatePage(components, component) {
+  populatePage() {
     return `
       <split-layout fixed>
         <section>
           <filter-list full section-title="${this.getLang(d.components)}" placeholder="${this.getLang(d.search)}">
             <item-tile href="/component/new" src="/static/assets/add.svg">${this.getLang(d.new_component)}</item-tile>
-            ${components.map(({type, icon, tags}) => `<item-tile href="/component/${type}" src="${icon}" tags="${tags}">${type}</item-tile>`).join('')}
+            ${this.components.map(({type, icon, tags}) => `<item-tile href="/component/${type}" src="${icon}" tags="${tags}">${type}</item-tile>`).join('')}
           </filter-list>
         </section>
         <section>
-          ${this.loadComponentDetails(component)}
+          ${this.loadComponentDetails()}
         </section>
       </split-layout>
       `;
   }
-  loadComponentDetails(component) {
+  loadComponentDetails() {
     const labels = `
       title-label="${this.getLang(d.type)}" 
       property-label="${this.getLang(d.name)}" 
@@ -41,7 +43,7 @@ export default class Components extends BaseTemplate {
       add-tag-label="${this.getLang(d.add_tag)}"
       `;
 
-    if (component === 'new') {
+    if (this.component === 'new') {
       return `
       <component-creator
         ${labels}
@@ -50,15 +52,15 @@ export default class Components extends BaseTemplate {
       </component-creator>
     `;
     }
-    if (component.meta) {
+    if (this.component.meta) {
       return `
         <component-creator 
           ${labels}
-          icon="${component.meta.icon}"
-          title-value="${component.meta.type}" 
-          ${component.meta.tags.length > 0 ? `tags="${component.meta.tags.join(',')}"` : ''}
+          icon="${this.component.meta.icon}"
+          title-value="${this.component.meta.type}" 
+          ${this.component.meta.tags.length > 0 ? `tags="${this.component.meta.tags.join(',')}"` : ''}
           >
-          ${this.mapVals(component.values)}
+          ${this.mapVals(this.component.values)}
         </component-creator>
       `;
     }
@@ -68,7 +70,11 @@ export default class Components extends BaseTemplate {
     return vals.map(({name, type, region = '', components = []}) => `<item-value type="${type}" name="${name}"${type === 'region' ? ` region="${region}">${this.mapComponents(components)}` : '>'}</item-value>`).join('');
   }
   mapComponents(components) {
-    //TODO: get the src for this.
-    return components.map(c => `<item-tile src="test" closeable>${c}</item-tile>`).join('');
+    return components
+      .map(c => {
+        const item = this.components.find(i => i.type === c);
+        return `<item-tile src="${item.icon}" closeable>${c}</item-tile>`;
+      })
+      .join('');
   }
 }
