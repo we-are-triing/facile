@@ -38,6 +38,7 @@ class RegionEditor extends HTMLElement {
           left: var(--spacing-400);
           white-space: nowrap;
           display: none;
+          max-width: 300%;
         }
         .components.active {
           display: block;
@@ -49,10 +50,12 @@ class RegionEditor extends HTMLElement {
           list-style: none;
           margin: 0;
           padding: var(--spacing-200);
+          display: flex;
         }
         .components li {
           cursor: pointer;
         }
+        
       </style>
       <div class="container">
         <labeled-select no-label>
@@ -121,7 +124,7 @@ class RegionEditor extends HTMLElement {
   updateComponentOptions() {
     const components = this.list.filter(({type}) => ![...this.children].reduce((a, n) => (a ? a : type === n.textContent), false));
     if (components.length > 0) {
-      this.elems.componentList.innerHTML = components.map(({type, icon, tags}) => `<li tags="${tags.join(',')}"><img src="${icon}" />${type}</li>`).join('');
+      this.elems.componentList.innerHTML = components.map(({type, icon, tags}) => `<li tags="${tags.join(',')}"><item-tile src="${icon}">${type}</item-tile></li>`).join('');
       this.elems.add.classList.remove('hide');
     } else {
       this.elems.componentList.innterHTML = '';
@@ -155,12 +158,10 @@ class RegionEditor extends HTMLElement {
     }
 
     let elem = e.target;
-    if (tag === 'img') {
-      elem = e.target.parentElement;
-    }
+
     const el = document.createElement('item-tile');
     el.textContent = elem.textContent;
-    el.setAttribute('src', elem.children[0].src);
+    el.setAttribute('src', elem.src);
     el.setAttribute('closeable', '');
     this.appendChild(el);
     this.elems.components.classList.toggle('active');
