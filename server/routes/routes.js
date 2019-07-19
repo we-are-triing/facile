@@ -1,5 +1,6 @@
 import Home from '../templates/home.js';
 import Components from '../templates/components.js';
+import Content from '../templates/content.js';
 import Templates from '../templates/templates.js';
 import FourOFour from '../templates/fourofour.js';
 import fetch from 'node-fetch';
@@ -202,6 +203,24 @@ export default server => {
           return t.render();
         } catch (err) {
           console.error(`template page failure`, err);
+          return fourOFour();
+        }
+      }
+    },
+    {
+      method: `GET`,
+      path: `/{lang}/content`,
+      handler: async (req, h) => {
+        try {
+          const {lang} = req.params;
+
+          const raw = await fetch(`${dataDomain}/content`);
+          const content = await raw.json();
+
+          const c = new Content({navigation: header.navigation, lang});
+          return c.render();
+        } catch (err) {
+          console.error(`content page failure`, err);
           return fourOFour();
         }
       }
