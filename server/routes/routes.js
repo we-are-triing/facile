@@ -1,41 +1,13 @@
 import Home from '../templates/home.js';
-import Components from '../templates/components.js';
-import Content from '../templates/content.js';
-import Templates from '../templates/templates.js';
-import FourOFour from '../templates/fourofour.js';
 import fetch from 'node-fetch';
 import {join} from 'path';
 import require from './require.cjs';
 import LoginRegistration from '../templates/login_registration.js';
-import header from '../data/header.js';
+import content from './content.js';
+import templates from './templates.js';
+import components from './components.js';
 
-const fetchOptions = {
-  mode: 'cors',
-  headers: {'Content-Type': 'application/json'}
-};
-
-// TODO: this will go away when I get a home page working.
 const port = process.env.PORT || 8000;
-
-const dataDomain = `http://api:8001`;
-
-const fourOFour = () => {
-  const fof = new FourOFour({navigation: header.navigation});
-  return fof.render();
-};
-const getSimpleComponentList = async () => {
-  const temp = await getComponentList();
-  return simplifyComponentList(temp);
-};
-const simplifyComponentList = list => list.map(({meta}) => ({icon: meta.icon, type: meta.type, tags: meta.tags}));
-const getComponentList = async () => {
-  const raw = await fetch(`${dataDomain}/content/components`);
-  return raw.json();
-};
-const getTemplateList = async () => {
-  const raw = await fetch(`${dataDomain}/content/templates`);
-  return raw.json();
-};
 
 export default server => {
   const polyfillsURL = require.resolve('@webcomponents/webcomponentsjs');
@@ -87,6 +59,7 @@ export default server => {
       handler: async (req, h) => {
         try {
           // Simulating a fetch to some service to get content.
+          // TODO: this is going away, it is just a placeholder for now.
           const {lang} = req.params;
           const raw = await fetch(`http://localhost:${port}/api/home`);
           const json = await raw.json();
@@ -94,133 +67,6 @@ export default server => {
           return home.render();
         } catch (err) {
           console.error(`home page failure`, err);
-          return fourOFour();
-        }
-      }
-    },
-    {
-      method: `GET`,
-      path: `/{lang}/components`,
-      handler: async (req, h) => {
-        try {
-          const {lang} = req.params;
-
-          const components = await getSimpleComponentList();
-
-          const c = new Components({navigation: header.navigation, components, lang});
-          return c.render();
-        } catch (err) {
-          console.error(`component page failure`, err);
-          return fourOFour();
-        }
-      }
-    },
-    {
-      method: `GET`,
-      path: `/{lang}/component/new`,
-      handler: async (req, h) => {
-        try {
-          const {lang} = req.params;
-
-          const components = await getSimpleComponentList();
-          const c = new Components({navigation: header.navigation, components, component: 'new', lang});
-          return c.render();
-        } catch (err) {
-          console.error(`component page failure`, err);
-          return fourOFour();
-        }
-      }
-    },
-    {
-      method: `GET`,
-      path: `/{lang}/component/{type}`,
-      handler: async (req, h) => {
-        try {
-          const {lang, type} = req.params;
-
-          const components = await getSimpleComponentList();
-          const raw = await fetch(`${dataDomain}/content/component/${type}`);
-          const [component] = await raw.json();
-
-          const c = new Components({navigation: header.navigation, components, component, lang});
-          return c.render();
-        } catch (err) {
-          console.error(`component page failure`, err);
-          return fourOFour();
-        }
-      }
-    },
-    {
-      method: `GET`,
-      path: `/{lang}/templates`,
-      handler: async (req, h) => {
-        try {
-          const {lang} = req.params;
-
-          const templates = await getTemplateList();
-
-          const t = new Templates({navigation: header.navigation, templates, lang});
-          return t.render();
-        } catch (err) {
-          console.error(`component page failure`, err);
-          return fourOFour();
-        }
-      }
-    },
-    {
-      method: `GET`,
-      path: `/{lang}/template/new`,
-      handler: async (req, h) => {
-        try {
-          const {lang} = req.params;
-
-          const templates = await getTemplateList();
-          const components = await getSimpleComponentList();
-
-          const t = new Templates({navigation: header.navigation, templates, components, template: 'new', lang});
-          return t.render();
-        } catch (err) {
-          console.error(`template page failure`, err);
-          return fourOFour();
-        }
-      }
-    },
-    {
-      method: `GET`,
-      path: `/{lang}/template/{type}`,
-      handler: async (req, h) => {
-        try {
-          const {lang, type} = req.params;
-
-          const templates = await getTemplateList();
-
-          const components = await getSimpleComponentList();
-
-          const raw = await fetch(`${dataDomain}/content/template/${type}`);
-          const [template] = await raw.json();
-
-          const t = new Templates({navigation: header.navigation, templates, components, template, lang});
-          return t.render();
-        } catch (err) {
-          console.error(`template page failure`, err);
-          return fourOFour();
-        }
-      }
-    },
-    {
-      method: `GET`,
-      path: `/{lang}/content`,
-      handler: async (req, h) => {
-        try {
-          const {lang} = req.params;
-
-          const raw = await fetch(`${dataDomain}/content`);
-          const content = await raw.json();
-
-          const c = new Content({navigation: header.navigation, lang});
-          return c.render();
-        } catch (err) {
-          console.error(`content page failure`, err);
           return fourOFour();
         }
       }
@@ -240,4 +86,7 @@ export default server => {
       }
     }
   ]);
+  components(server);
+  templates(server);
+  content(server);
 };

@@ -1,6 +1,6 @@
 import BaseTemplate from './base.js';
 
-export default class Home extends BaseTemplate {
+export class FourOFour extends BaseTemplate {
   constructor({navigation, lang = `eng`}) {
     super(lang);
     this.createParts({navigation});
@@ -16,3 +16,13 @@ export default class Home extends BaseTemplate {
     `;
   }
 }
+
+let rendered;
+
+export const fof = () => {
+  if (typeof rendered !== 'undefined') {
+    const fof = new FourOFour({navigation: header.navigation});
+    rendered = fof.render();
+  }
+  return rendered;
+};

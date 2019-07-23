@@ -19,6 +19,11 @@ class FilterList extends HTMLElement {
           height: 100%;
           width: 100%;
         }
+
+        :host([list]) .grid slot {
+          display: block;
+        }
+        
         * {
           box-sizing: border-box;
         }
@@ -57,6 +62,9 @@ class FilterList extends HTMLElement {
         }
         ::slotted(*){
           display: none;
+        }
+        ::slotted(nav-item) {
+          display: block;
         }
         ::slotted(item-tile) {
           display: block;

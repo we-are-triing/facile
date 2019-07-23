@@ -4,7 +4,7 @@ import icons from '../assets/icons.js';
 class AnIcon extends HTMLElement {
   constructor() {
     super();
-    const html = `
+    const html = /*html*/ `
       <style>
         :host {
          font-size: 1.2em;
@@ -16,6 +16,21 @@ class AnIcon extends HTMLElement {
           height: 1em;
           width: 1em;
           fill: currentColor;
+        }
+        :host([rotate]){
+          transition: transform 300ms ease-in-out;
+        }
+        :host([rotate="left"]){
+          transform: rotate(90deg)
+        }
+        :host([rotate="right"]){
+          transform: rotate(270deg)
+        }
+        :host([rotate="up"]){
+          transform: rotate(180deg)
+        }
+        :host([reflect]) {
+          transform: scaleX(-1);
         }
       </style>
       <svg viewBox="" xmlns="http://www.w3.org/2000/svg">

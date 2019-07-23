@@ -6,7 +6,7 @@ import './labeled-input.js';
 import './item-value.js';
 import './styled-button.js';
 
-class ComponentCreator extends HTMLElement {
+class ComponentEditor extends HTMLElement {
   constructor() {
     super();
     const html = /* html */ `
@@ -311,5 +311,5 @@ class ComponentCreator extends HTMLElement {
   }
 }
 
-customElements.define('component-creator', ComponentCreator);
-export default ComponentCreator;
+customElements.define('component-editor', ComponentEditor);
+export default ComponentEditor;

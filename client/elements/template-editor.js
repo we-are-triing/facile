@@ -5,7 +5,7 @@ import './labeled-input.js';
 import './item-value.js';
 import './styled-button.js';
 
-class TemplateCreator extends HTMLElement {
+class TemplateEditor extends HTMLElement {
   constructor() {
     super();
     const html = /* html */ `
@@ -297,5 +297,5 @@ class TemplateCreator extends HTMLElement {
   }
 }
 
-customElements.define('template-creator', TemplateCreator);
-export default TemplateCreator;
+customElements.define('template-editor', TemplateEditor);
+export default TemplateEditor;

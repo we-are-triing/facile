@@ -15,13 +15,17 @@ export default class Components extends BaseTemplate {
   }
 
   populatePage() {
-    return `
+    return /*html*/ `
       <split-layout fixed>
         <section>
-          
+          <filter-list full list section-title="${this.getLang(d.content)}">
+            <nav-item add href="/content/new">${this.getLang(d.create)}</nav-item>
+            <nav-item folder>folder</nav-item>
+            <nav-item item>item</nav-item>
+          </filter-list>
         </section>
         <section>
-          
+          <content-editor></content-editor>
         </section>
       </split-layout>
       `;

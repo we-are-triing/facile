@@ -117,6 +117,13 @@ export default {
     title: `check`,
     description: `a checkmark that indicates a positive or completed response.`
   },
+  arrow: {
+    content: [`<path d="M114.243 130.757a6 6 0 0 0-8.486 8.486l50 50a6 6 0 0 0 8.486 0l50-50a6 6 0 0 0-8.486-8.486L160 176.515l-45.757-45.758z"/>`],
+    height: `320`,
+    width: `320`,
+    title: `arrow`,
+    description: `An indication that there is more content, signifing a direction.`
+  },
   facile: {
     content: [
       `<path d="M230.241 227.886c17.452-17.356 28.259-41.414 28.259-68.004 0-52.906-42.788-95.792-95.566-95.792-1.233 0-2.46.023-3.683.07a13.45 13.45 0 0 0-1.018-4.962c1.558-.072 3.125-.108 4.701-.108 55.542 0 100.566 45.127 100.566 100.792 0 28.532-11.829 54.296-30.84 72.633a13.58 13.58 0 0 0-2.419-4.629z" fill="#B3B3B3"/>`,
