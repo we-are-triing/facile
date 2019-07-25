@@ -13,8 +13,8 @@ export default server => {
         try {
           const {lang} = req.params;
 
-          const raw = await fetch(`${dataDomain}/content`);
-          const content = await raw.json();
+          // const raw = await fetch(`${dataDomain}/content`);
+          // const content = await raw.json();
 
           const c = new Content({navigation: header.navigation, lang});
           return c.render();

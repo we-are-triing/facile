@@ -25,9 +25,37 @@ export default class Components extends BaseTemplate {
           </filter-list>
         </section>
         <section>
-          <content-editor></content-editor>
+          ${this.loadContentDetails()}
         </section>
       </split-layout>
       `;
+  }
+
+  loadContentDetails() {
+    const labels = `
+      name-label="${this.getLang(d.name)}" 
+      slug-label="${this.getLang(d.slug)}" 
+      path-label="${this.getLang(d.path)}"
+      menu-label="${this.getLang(d.menu)}"
+      tags-label="${this.getLang(d.tags)}"
+      `;
+    // if (this.template === 'new') {
+    //   return `
+    //   <content-editor
+    //     ${labels}
+    //     new
+    //     >
+    //   </content-editor>
+    // `;
+    // }
+    // if (this.content.meta) {
+    return `
+        <content-editor 
+          ${labels}
+          >
+        </content-editor>
+      `;
+    // }
+    // return ``;
   }
 }

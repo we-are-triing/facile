@@ -3,7 +3,7 @@ import buildShadowRoot from './buildShadowRoot.js';
 class LabeledInput extends HTMLElement {
   constructor() {
     super();
-    const html = `
+    const html = /* html */ `
       <style>
         :host {
           display: block;
@@ -14,11 +14,13 @@ class LabeledInput extends HTMLElement {
         * {
           box-sizing: border-box;
         }
-        :host([large]) input{
+        :host([large]) input {
           border: none;
           border-bottom: var(--border);
-          font-size: 2em;
           border-radius: 0;
+        }
+        :host([large]) input{
+          font-size: 2em;
         }
         input {
           font-size: inherit;

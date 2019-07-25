@@ -215,5 +215,26 @@ export default {
     fra: ``,
     ita: ``,
     spa: ``
+  },
+  slug: {
+    deu: ``,
+    eng: `Slug`,
+    fra: ``,
+    ita: ``,
+    spa: ``
+  },
+  path: {
+    deu: ``,
+    eng: `Path`,
+    fra: ``,
+    ita: ``,
+    spa: ``
+  },
+  menu: {
+    deu: ``,
+    eng: `Menu`,
+    fra: ``,
+    ita: ``,
+    spa: ``
   }
 };

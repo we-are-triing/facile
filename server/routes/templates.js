@@ -52,7 +52,7 @@ export default server => {
 
           const components = await getSimpleComponentList();
 
-          const raw = await fetch(`${dataDomain}/content/template/${type}`);
+          const raw = await fetch(`${dataDomain}/template/${type}`);
           const [template] = await raw.json();
 
           const t = new Templates({navigation: header.navigation, templates, components, template, lang});

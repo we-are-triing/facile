@@ -6,13 +6,13 @@ const fetchOptions = {
 };
 
 const send = async (item, compOrTemplate) => {
-  const temp = await fetch(`${storeRoot}/content/${compOrTemplate}/${item.meta.type}`, fetchOptions);
+  const temp = await fetch(`${storeRoot}/${compOrTemplate}/${item.meta.type}`, fetchOptions);
   const result = await temp.json();
   const isUpdate = result.length > 0;
 
-  let path = `${storeRoot}/content/${compOrTemplate}/create`;
+  let path = `${storeRoot}/${compOrTemplate}/create`;
   if (isUpdate) {
-    path = `${storeRoot}/content/${compOrTemplate}/update/${item.meta.type}`;
+    path = `${storeRoot}/${compOrTemplate}/update`;
   }
   const body = JSON.stringify(item);
 
@@ -26,7 +26,7 @@ const send = async (item, compOrTemplate) => {
 };
 
 const del = async (type, compOrTemplate) => {
-  const del = await fetch(`${storeRoot}/content/${compOrTemplate}/delete`, {
+  const del = await fetch(`${storeRoot}/${compOrTemplate}/delete`, {
     ...fetchOptions,
     method: 'DELETE',
     body: JSON.stringify({type})
@@ -41,7 +41,6 @@ export const deleteComponent = async type => del(type, 'component');
 export const deleteTemplate = async type => del(type, 'template');
 
 export const sendMedia = async (file, meta) => {
-  // send the image to the media server and the meta to the db.
   const res = await fetch(`${mediaRoot}/media`, {
     mode: 'cors',
     method: `POST`,

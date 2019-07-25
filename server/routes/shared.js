@@ -8,12 +8,12 @@ export const getSimpleComponentList = async () => {
 };
 export const simplifyComponentList = list => list.map(({meta}) => ({icon: meta.icon, type: meta.type, tags: meta.tags}));
 export const getComponentList = async () => {
-  const raw = await fetch(`${dataDomain}/content/components`);
+  const raw = await fetch(`${dataDomain}/components`);
   return raw.json();
 };
 
 export const getTemplateList = async () => {
-  const raw = await fetch(`${dataDomain}/content/templates`);
+  const raw = await fetch(`${dataDomain}/templates`);
   return raw.json();
 };
 

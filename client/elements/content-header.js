@@ -1,20 +1,42 @@
 import buildShadowRoot from './buildShadowRoot.js';
-import './content-header.js';
+import './labeled-input.js';
+import './tag-list.js';
 
-class ContentEditor extends HTMLElement {
+class ContentHeader extends HTMLElement {
   constructor() {
     super();
     const html = /* html */ `
       <style>
         :host {
         }
+        header {
+          display: flex;
+          border-bottom: var(--border);
+        }
+        header div {
+          flex-basis: 50%;
+        }
       </style>
-      <content-header></content-header>
-      <slot></slot>
+      <header>
+        <div>
+          <labeled-input class="name"></labeled-input>
+          <labeled-input class="slug"></labeled-input>
+          <labeled-input class="path"></labeled-input>
+          <labeled-input class="menu"></labeled-input>
+        </div>
+        <div>
+          <tag-list></tag-list>
+        </div>
+        <slot></slot>
+      </header>
     `;
     buildShadowRoot(html, this);
     this.elems = {
-      header: this.shadowRoot.querySelector('content-header')
+      name: this.shadowRoot.querySelector('.name'),
+      slug: this.shadowRoot.querySelector('.slug'),
+      path: this.shadowRoot.querySelector('.path'),
+      menu: this.shadowRoot.querySelector('.menu'),
+      tags: this.shadowRoot.querySelector('tag-list')
     };
   }
 
@@ -25,19 +47,23 @@ class ContentEditor extends HTMLElement {
   attributeChangedCallback(attrName, oldVal, newVal) {
     switch (attrName) {
       case 'name-label':
-        this.elems.header.setAttribute('name-label', newVal);
+        this.elems.name.textContent = newVal;
+        this.elems.name.setAttribute('placeholder', newVal);
         break;
       case 'slug-label':
-        this.elems.header.setAttribute('slug-label', newVal);
+        this.elems.slug.textContent = newVal;
+        this.elems.slug.setAttribute('placeholder', newVal);
         break;
       case 'path-label':
-        this.elems.header.setAttribute('path-label', newVal);
+        this.elems.path.textContent = newVal;
+        this.elems.path.setAttribute('placeholder', newVal);
         break;
       case 'menu-label':
-        this.elems.header.setAttribute('menu-label', newVal);
+        this.elems.menu.textContent = newVal;
+        this.elems.menu.setAttribute('placeholder', newVal);
         break;
       case 'tags-label':
-        this.elems.header.setAttribute('tags-label', newVal);
+        this.elems.tags.label = newVal;
         break;
       default:
         break;
@@ -96,5 +122,5 @@ class ContentEditor extends HTMLElement {
   }
 }
 
-customElements.define('content-editor', ContentEditor);
-export default ContentEditor;
+customElements.define('content-header', ContentHeader);
+export default ContentHeader;

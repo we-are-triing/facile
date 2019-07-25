@@ -1,4 +1,5 @@
 import buildShadowRoot from './buildShadowRoot.js';
+import './a-tag.js';
 
 class TagList extends HTMLElement {
   constructor() {

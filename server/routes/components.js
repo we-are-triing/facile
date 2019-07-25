@@ -47,7 +47,7 @@ export default server => {
           const {lang, type} = req.params;
 
           const components = await getSimpleComponentList();
-          const raw = await fetch(`${dataDomain}/content/component/${type}`);
+          const raw = await fetch(`${dataDomain}/component/${type}`);
           const [component] = await raw.json();
 
           const c = new Components({navigation: header.navigation, components, component, lang});
