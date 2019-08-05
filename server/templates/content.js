@@ -1,10 +1,14 @@
 import BaseTemplate from './base.js';
 import d from '../data/facile-dictionary.js';
-import {primitives, regions} from '../data/types.js';
+import {primitives, regions} from '../../isomorphic/types.js';
 
 export default class Components extends BaseTemplate {
-  constructor({navigation, lang = `eng`}) {
+  constructor({navigation, lang = `eng`, template, contentList, content = {}, templateList}) {
     super(lang);
+    this.template = template;
+    this.content = content;
+    this.list = contentList;
+    this.templateList = templateList;
     this.createParts(navigation);
   }
   createParts(navigation) {
@@ -12,6 +16,11 @@ export default class Components extends BaseTemplate {
     this.head.title = this.getLang(d.content);
     this.header = this.populateHeader({navigation});
     this.page = this.populatePage();
+    if (this.templateList) {
+      this.stiva = {
+        templates: this.templateList.map(({meta}) => ({type: meta.type}))
+      };
+    }
   }
 
   populatePage() {
@@ -20,8 +29,7 @@ export default class Components extends BaseTemplate {
         <section>
           <filter-list full list section-title="${this.getLang(d.content)}">
             <nav-item add href="/content/new">${this.getLang(d.create)}</nav-item>
-            <nav-item folder>folder</nav-item>
-            <nav-item item>item</nav-item>
+            ${this.generateContentList()}
           </filter-list>
         </section>
         <section>
@@ -29,6 +37,10 @@ export default class Components extends BaseTemplate {
         </section>
       </split-layout>
       `;
+  }
+
+  generateContentList() {
+    return this.list.map(({name}) => `<nav-item href="/content/${name}" item>${name}</nav-item>`).join('');
   }
 
   loadContentDetails() {
@@ -39,23 +51,24 @@ export default class Components extends BaseTemplate {
       menu-label="${this.getLang(d.menu)}"
       tags-label="${this.getLang(d.tags)}"
       `;
-    // if (this.template === 'new') {
-    //   return `
-    //   <content-editor
-    //     ${labels}
-    //     new
-    //     >
-    //   </content-editor>
-    // `;
-    // }
-    // if (this.content.meta) {
-    return `
+    if (this.template === 'new') {
+      return `
+      <content-editor
+        ${labels}
+        new
+        >
+      </content-editor>
+    `;
+    }
+    if (this.content.meta) {
+      return `
         <content-editor 
           ${labels}
           >
+          ${this.template.values.map(({type, region, components, name}) => `<form-region type="${region}" name="${name}" components="${components.join(',')}"></form-region>`).join('')}
         </content-editor>
       `;
-    // }
-    // return ``;
+    }
+    return ``;
   }
 }

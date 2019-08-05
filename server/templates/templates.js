@@ -1,6 +1,6 @@
 import BaseTemplate from './base.js';
 import d from '../data/facile-dictionary.js';
-import {primitives, regions} from '../data/types.js';
+import {primitives, regions} from '../../isomorphic/types.js';
 
 export default class Templates extends BaseTemplate {
   constructor({navigation, templates = [], template = {}, components = [], lang = `eng`}) {

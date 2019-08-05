@@ -17,7 +17,19 @@ export const getTemplateList = async () => {
   return raw.json();
 };
 
+export const getTemplateByType = async type => {
+  const raw = await fetch(`${dataDomain}/template/${type}`);
+  const template = await raw.json();
+  return template[0];
+};
+
 export const getContentList = async () => {
   const raw = await fetch(`${dataDomain}/content`);
-  return raw.json();
+  const content = await raw.json();
+  return content.map(({meta}) => ({...meta}));
+};
+export const getContentByName = async name => {
+  const raw = await fetch(`${dataDomain}/content/${name}`);
+  const content = await raw.json();
+  return content[0];
 };

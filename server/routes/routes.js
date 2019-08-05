@@ -35,6 +35,15 @@ export default server => {
     },
     {
       method: `GET`,
+      path: `/static/workers/{param*}`,
+      handler: {
+        directory: {
+          path: 'client/workers'
+        }
+      }
+    },
+    {
+      method: `GET`,
       path: `/static/polyfills/{param*}`,
       handler: {
         directory: {

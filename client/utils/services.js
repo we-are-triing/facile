@@ -5,6 +5,11 @@ const fetchOptions = {
   headers: {'Content-Type': 'application/json'}
 };
 
+const get = async (type, compOrTemplate) => {
+  const temp = await fetch(`${storeRoot}/${compOrTemplate}/${type}`);
+  return temp.json();
+};
+
 const send = async (item, compOrTemplate) => {
   const temp = await fetch(`${storeRoot}/${compOrTemplate}/${item.meta.type}`, fetchOptions);
   const result = await temp.json();
@@ -52,4 +57,12 @@ export const sendMedia = async (file, meta) => {
     })
   });
   return await res.json();
+};
+
+export const getComponentData = async components => {
+  const comps = components.split(',');
+  const proms = comps.map(comp => get(comp, `component`));
+  const data = await Promise.all(proms);
+  const val = data.map(item => item[0]);
+  return val;
 };

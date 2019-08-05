@@ -1,8 +1,7 @@
 import Content from '../templates/content.js';
 import {fof} from '../templates/fourofour.js';
-import fetch from 'node-fetch';
 import header from '../data/header.js';
-import {getContentList, dataDomain} from './shared.js';
+import {getContentList, getContentByName, getTemplateList, getTemplateByType} from './shared.js';
 
 export default server => {
   server.route([
@@ -12,11 +11,8 @@ export default server => {
       handler: async (req, h) => {
         try {
           const {lang} = req.params;
-
-          // const raw = await fetch(`${dataDomain}/content`);
-          // const content = await raw.json();
-
-          const c = new Content({navigation: header.navigation, lang});
+          const contentList = await getContentList();
+          const c = new Content({navigation: header.navigation, lang, contentList});
           return c.render();
         } catch (err) {
           console.error(`content page failure`, err);
@@ -30,11 +26,10 @@ export default server => {
       handler: async (req, h) => {
         try {
           const {lang} = req.params;
-
-          const raw = await fetch(`${dataDomain}/content`);
-          const content = await raw.json();
-
-          const c = new Content({navigation: header.navigation, lang});
+          const contentList = await getContentList();
+          const template = 'new';
+          const templateList = await getTemplateList();
+          const c = new Content({navigation: header.navigation, lang, template, contentList, templateList});
           return c.render();
         } catch (err) {
           console.error(`content page failure`, err);
@@ -44,15 +39,15 @@ export default server => {
     },
     {
       method: `GET`,
-      path: `/{lang}/content/{type}`,
+      path: `/{lang}/content/{name}`,
       handler: async (req, h) => {
         try {
-          const {lang} = req.params;
-
-          const raw = await fetch(`${dataDomain}/content`);
-          const content = await raw.json();
-
-          const c = new Content({navigation: header.navigation, lang});
+          const {lang, name} = req.params;
+          const contentList = await getContentList();
+          const content = await getContentByName(name);
+          const templateList = await getTemplateList();
+          const template = await getTemplateByType(content.meta.type);
+          const c = new Content({navigation: header.navigation, lang, contentList, content, templateList, template});
           return c.render();
         } catch (err) {
           console.error(`content page failure`, err);
