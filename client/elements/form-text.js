@@ -1,5 +1,6 @@
 import buildShadowRoot from './buildShadowRoot.js';
-import {down} from '../utils/formattedText.js';
+import {downline} from '../utils/formattedText.js';
+import debounce from '../utils/debounce.js';
 import './labeled-input.js';
 
 class FormText extends HTMLElement {
@@ -10,11 +11,27 @@ class FormText extends HTMLElement {
         :host {
           display: block;
         }
+        * {
+          box-sizing: border-box;
+        }
+        section {
+          display: flex;
+          justify-content: space-between;
+        }
+        section > * {
+          width: 100%;
+          padding: var(--spacing-200);
+        }
+        section > div > *:first-child {
+          margin-top: 0;
+          padding-top: 0;
+        }
       </style>
-      <slot></slot>
       <span></span>
-      <textarea></textarea>
-      <div></div>
+      <section>
+        <textarea></textarea>
+        <div></div>
+      </section>
     `;
     buildShadowRoot(html, this);
     this.elems = {
@@ -22,11 +39,15 @@ class FormText extends HTMLElement {
       input: this.shadowRoot.querySelector('textarea'),
       output: this.shadowRoot.querySelector('div')
     };
-    this.elems.input.addEventListener('change', this.handleText.bind(this));
+    const debouncedHandleText = debounce(this.handleText).bind(this);
+    this.elems.input.addEventListener('keyup', debouncedHandleText);
   }
-
+  // TODO: this will eventually be replaced with a WYSIWYG editor with markdown as it's engine,
+  // It will not allow markup.
+  // But we need a simple version to begin with.
   async handleText(e) {
-    this.output = await down(e.target.value);
+    // TODO: Why is the debounce altering the returned event object from the input to this?
+    this.output = await downline(this.elems.input.value);
     this.elems.output.innerHTML = this.output;
   }
 
