@@ -16,6 +16,9 @@ class RegionItem extends HTMLElement {
       <style>
         :host {
         }
+        section {
+          margin: var(--spacing-500);
+        }
         img {
           width: 2em;
         }
