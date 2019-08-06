@@ -16,3 +16,18 @@ export default (func, wait = 100) => {
     }
   };
 };
+
+// let start;
+// let imm;
+
+// export default (func, wait = 300, immediate = true) => function(...args) {
+//   const context = this;
+//   imm = immediate;
+//   const step = ts => {
+//     if(!start) start = ts;
+//     const delta = ts - start;
+//     if(delta < wait){
+//       window.requestAnimationFrame(step);
+//     }
+//   }
+// };

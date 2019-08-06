@@ -8,7 +8,6 @@ onmessage = e => {
 };
 
 const clean = (markdown, type) => {
-  console.log(type);
   const blacklist = type === 'inline' ? inline : block;
   const flattened = blacklist.reduce((a, n) => [...a, ...n]);
   return flattened.reduce((a, n) => a.replace(new RegExp(n, 'gi'), ''), markdown);

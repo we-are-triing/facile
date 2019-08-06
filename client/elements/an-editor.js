@@ -36,24 +36,15 @@ class AnEditor extends HTMLElement {
       input: this.shadowRoot.querySelector('textarea'),
       output: this.shadowRoot.querySelector('div')
     };
-    const debouncedHandleText = debounce(this.handleText).bind(this);
-    this.elems.input.addEventListener('keyup', debouncedHandleText);
-    //this.elems.input.addEventListener('keyup', this.handleText.bind(this));
-  }
-  // TODO: this will eventually be replaced with a WYSIWYG editor with markdown as it's engine,
-  // It will not allow markup.
-  // But we need a simple version to begin with.
-  async handleText(e) {
-    // TODO: Why is the debounce altering the returned event object from the input to this?
-    this.output = await this.parse(this.elems.input.value);
-    this.elems.output.innerHTML = this.output;
+    this.debouncedHandleText = debounce(this.handleText).bind(this);
+    this.elems.input.addEventListener('keyup', this.debouncedHandleText);
   }
 
-  parse(val) {
-    if (this.type === 'inline') {
-      return downline(val);
-    }
-    return down(val);
+  async handleText(e) {
+    // TODO: figure out why this is behaving poorly thorugh the debounce.
+    let func = this.type === 'inline' ? downline : down;
+    this.output = await func(this.elems.input.value);
+    this.elems.output.innerHTML = this.output;
   }
 
   get type() {
