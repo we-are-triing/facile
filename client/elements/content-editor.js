@@ -16,6 +16,11 @@ class ContentEditor extends HTMLElement {
     this.elems = {
       header: this.shadowRoot.querySelector('content-header')
     };
+    this.addEventListener('region-change', this.handleChange.bind(this));
+  }
+
+  handleChange(e) {
+    console.log(e.detail);
   }
 
   static get observedAttributes() {

@@ -41,10 +41,18 @@ class AnEditor extends HTMLElement {
   }
 
   async handleText(e) {
-    // TODO: figure out why this is behaving poorly thorugh the debounce.
+    // TODO: figure out why this is behaving poorly through the debounce.
     let func = this.type === 'inline' ? downline : down;
     this.output = await func(this.elems.input.value);
-    this.elems.output.innerHTML = this.output;
+    this.elems.output.innerHTML = this.output.html;
+    this.elems.input.value = this.output.markdown;
+
+    this.dispatchEvent(
+      new CustomEvent('change', {
+        bubbles: true,
+        detail: this.output
+      })
+    );
   }
 
   get type() {

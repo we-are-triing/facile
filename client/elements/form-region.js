@@ -47,6 +47,17 @@ class FormRegion extends HTMLElement {
 
     this.elems.add.addEventListener('click', this.toggleList.bind(this));
     this.elems.showList.addEventListener('click', this.addForm.bind(this));
+    this.addEventListener('item-change', this.handleChanges.bind(this));
+  }
+
+  handleChanges(e) {
+    console.log(e.detail);
+    this.dispatchEvent(
+      new CustomEvent('region-change', {
+        bubbles: true,
+        detail: e.detail
+      })
+    );
   }
 
   async updateList(components) {

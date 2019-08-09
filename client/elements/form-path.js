@@ -1,6 +1,6 @@
 import buildShadowRoot from './buildShadowRoot.js';
 
-class FormNumber extends HTMLElement {
+class FormPath extends HTMLElement {
   constructor() {
     super();
     const html = `
@@ -8,7 +8,7 @@ class FormNumber extends HTMLElement {
         :host {
         }
       </style>
-      <labeled-input type="number"><slot></slot></labeled-input>
+      <labeled-input><slot></slot></labeled-input>
       
     `;
     buildShadowRoot(html, this);
@@ -43,5 +43,5 @@ class FormNumber extends HTMLElement {
   }
 }
 
-customElements.define('form-number', FormNumber);
-export default FormNumber;
+customElements.define('form-path', FormPath);
+export default FormPath;

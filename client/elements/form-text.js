@@ -18,6 +18,17 @@ class FormText extends HTMLElement {
       title: this.shadowRoot.querySelector('span'),
       editor: this.shadowRoot.querySelector('an-editor')
     };
+    this.elems.editor.addEventListener('change', this.handleChange.bind(this));
+  }
+
+  handleChange(e) {
+    this.value = e.detail.markdown;
+    this.dispatchEvent(
+      new CustomEvent('change', {
+        bubbles: true,
+        detail: e.detail
+      })
+    );
   }
 
   static get observedAttributes() {

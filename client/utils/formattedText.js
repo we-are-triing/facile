@@ -3,8 +3,8 @@ export const downline = async md => up(md, 'inline');
 
 const up = async (md, type) => {
   try {
-    const html = await handler(md, type);
-    return html;
+    const {html, markdown} = await handler(md, type);
+    return {html, markdown};
   } catch (err) {
     console.error(err);
   }

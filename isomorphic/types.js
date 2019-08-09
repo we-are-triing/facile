@@ -43,6 +43,11 @@ export const primitives = {
     label: 'list',
     definition: 'an array of a type',
     handler: 'form-list'
+  },
+  path: {
+    label: 'path',
+    definition: 'a path to a resource, a url or uri.',
+    handler: 'form-path'
   }
 };
 
@@ -71,9 +76,10 @@ export const mapToString = v => {
   const {tag, name, val, type} = mapValues(v);
   if (type === 'region') {
     const {components, region} = v;
-    return mapRegionToString({tag, name, val, components, region});
+    return mapRegionToString({tag, name, components, region});
   }
-  return `<${tag}${val !== '' ? ` value="${val}"` : ''}>${name}</${tag}>`;
+  const escv = val.replace(/"/gi, '"');
+  return `<${tag}${escv !== '' ? ` value="${escv}"` : ''}>${name}</${tag}>`;
 };
 
 export const mapToElement = v => {
@@ -84,17 +90,17 @@ export const mapToElement = v => {
   }
   const elem = document.createElement(tag);
   if (val) {
-    elem.setAttribute('value', val);
+    elem.value = val;
   }
   elem.textContent = name;
   return elem;
 };
 
-export const mapRegionToString = ({tag, name, val, components, region}) => {
+export const mapRegionToString = ({tag, name, components, region}) => {
   return `<${tag} name="${name}" type="${region}" components="${components.join(',')}"></${tag}>`;
 };
 
-export const mapRegionToElement = ({tag, name, val, components, region}) => {
+export const mapRegionToElement = ({tag, name, components, region}) => {
   const elem = document.createElement(tag);
   elem.setAttribute('name', name);
   elem.setAttribute('type', region);
