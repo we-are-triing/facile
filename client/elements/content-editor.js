@@ -1,4 +1,5 @@
 import buildShadowRoot from './buildShadowRoot.js';
+import getChildren from '../utils/selectDirectChildren.js';
 import './content-header.js';
 
 class ContentEditor extends HTMLElement {
@@ -20,7 +21,35 @@ class ContentEditor extends HTMLElement {
   }
 
   handleChange(e) {
-    console.log(e.detail);
+    this.buildData(this);
+  }
+
+  buildData(elem) {
+    const regions = [...elem.children].map(child => this.getRegions(child));
+    console.log(regions);
+  }
+
+  getRegions(elem) {
+    return {
+      meta: {
+        name: elem.name
+      },
+      regions: [...elem.children].map(item => this.getItems(item))
+    };
+  }
+
+  getItems(elem) {
+    return [...elem.children].reduce(
+      (a, n) => {
+        if (n.localName === 'form-region') {
+          a.regions.push(this.getRegions(n));
+          return a;
+        }
+        a.values[n.textContent] = n.value ? n.value.toString() : '';
+        return a;
+      },
+      {meta: {type: elem.type}, regions: [], values: {}}
+    );
   }
 
   static get observedAttributes() {

@@ -32,14 +32,11 @@ class FormText extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['name', 'value'];
+    return ['value'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
     switch (attrName) {
-      case 'name':
-        this.elems.title.textContent = newVal;
-        break;
       case 'value':
         this.elems.editor.value = newVal;
       default:
@@ -47,16 +44,6 @@ class FormText extends HTMLElement {
     }
   }
 
-  get name() {
-    return this.getAttribute('name');
-  }
-  set name(val) {
-    if (val) {
-      this.setAttribute('name', val);
-    } else {
-      this.removeAttribute('name');
-    }
-  }
   get value() {
     return this.getAttribute('value');
   }

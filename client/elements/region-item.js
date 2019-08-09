@@ -1,5 +1,4 @@
 import buildShadowRoot from './buildShadowRoot.js';
-import getChildren from '../utils/selectDirectChildren.js';
 import './form-boolean.js';
 import './form-list.js';
 import './form-number.js';
@@ -40,34 +39,10 @@ class RegionItem extends HTMLElement {
 
   handleChange(e) {
     this.dispatchEvent(
-      new CustomEvent('item-change', {
-        bubbles: true,
-        detail: this.getValues(this)
+      new Event('item-change', {
+        bubbles: true
       })
     );
-  }
-
-  getValues(elem) {
-    const obj = {
-      meta: {
-        type: elem.type
-      }
-    };
-
-    const temp = [...elem.children].reduce(
-      (a, n) => {
-        if (n.localName === 'form-region') {
-          getChildren(n, 'region-item').forEach(item => {
-            a.regions.push(this.getValues(item));
-          });
-          return a;
-        }
-        a.values[n.textContent] = n.value ? n.value.toString() : '';
-        return a;
-      },
-      {regions: [], values: {}}
-    );
-    return {...obj, ...temp};
   }
 
   static get observedAttributes() {

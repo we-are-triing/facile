@@ -51,11 +51,9 @@ class FormRegion extends HTMLElement {
   }
 
   handleChanges(e) {
-    console.log(e.detail);
     this.dispatchEvent(
-      new CustomEvent('region-change', {
-        bubbles: true,
-        detail: e.detail
+      new Event('region-change', {
+        bubbles: true
       })
     );
   }

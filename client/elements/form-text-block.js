@@ -18,17 +18,25 @@ class FormTextBlock extends HTMLElement {
       title: this.shadowRoot.querySelector('span'),
       editor: this.shadowRoot.querySelector('an-editor')
     };
+    this.elems.editor.addEventListener('change', this.handleChange.bind(this));
+  }
+
+  handleChange(e) {
+    this.value = e.detail.markdown;
+    this.dispatchEvent(
+      new CustomEvent('change', {
+        bubbles: true,
+        detail: e.detail
+      })
+    );
   }
 
   static get observedAttributes() {
-    return ['name', 'value'];
+    return ['value'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
     switch (attrName) {
-      case 'name':
-        this.elems.title.textContent = newVal;
-        break;
       case 'value':
         this.elems.editor.value = newVal;
       default:
@@ -36,16 +44,6 @@ class FormTextBlock extends HTMLElement {
     }
   }
 
-  get name() {
-    return this.getAttribute('name');
-  }
-  set name(val) {
-    if (val) {
-      this.setAttribute('name', val);
-    } else {
-      this.removeAttribute('name');
-    }
-  }
   get value() {
     return this.getAttribute('value');
   }
