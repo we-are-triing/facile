@@ -63,7 +63,8 @@ class FilterList extends HTMLElement {
         ::slotted(*){
           display: none;
         }
-        ::slotted(nav-item) {
+        ::slotted(nav-item),
+        ::slotted(nav-folder) {
           display: block;
         }
         ::slotted(item-tile) {

@@ -45,23 +45,23 @@ export default class Templates extends BaseTemplate {
       `;
     if (this.template === 'new') {
       return `
-      <template-editor
+      <item-editor  type="template"
         ${labels}
         new
         >
-      </template-editor>
+      </item-editor>
     `;
     }
     if (this.template.meta) {
       return `
-        <template-editor 
+        <item-editor  type="template"
           ${labels}
           icon="${this.template.meta.icon}"
           title-value="${this.template.meta.type}" 
           ${this.template.meta.tags.length > 0 ? `tags="${this.template.meta.tags.join(',')}"` : ''}
           >
           ${this.mapVals(this.template.values)}
-        </template-editor>
+        </item-editor>
       `;
     }
     return ``;

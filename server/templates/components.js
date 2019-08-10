@@ -45,23 +45,23 @@ export default class Components extends BaseTemplate {
 
     if (this.component === 'new') {
       return `
-      <component-editor
+      <item-editor type="component"
         ${labels}
         new
         >
-      </component-editor>
+      </item-editor>
     `;
     }
     if (this.component.meta) {
       return `
-        <component-editor 
+        <item-editor type="component"
           ${labels}
           icon="${this.component.meta.icon}"
           title-value="${this.component.meta.type}" 
           ${this.component.meta.tags.length > 0 ? `tags="${this.component.meta.tags.join(',')}"` : ''}
           >
           ${this.mapVals(this.component.values)}
-        </component-editor>
+        </item-editor>
       `;
     }
     return ``;

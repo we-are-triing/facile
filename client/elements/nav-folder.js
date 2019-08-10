@@ -1,6 +1,6 @@
 import buildShadowRoot from './buildShadowRoot.js';
 import './an-icon.js';
-class NavItem extends HTMLElement {
+class NavFolder extends HTMLElement {
   constructor() {
     super();
     const html = /* html */ `
@@ -29,69 +29,49 @@ class NavItem extends HTMLElement {
           border-bottom: 1px solid transparent;
         }
 
-        a {
+        span {
           color: var(--color);
           text-decoration: none;
           border-bottom: 1px solid transparent;
         }
-        a:hover {
+        span:hover {
           color: var(--color-hover);
           border-bottom: 1px solid var(--underline);
         }
-        an-icon {
-          display: none;
-        }
-        :host([icon]) an-icon {
-          display: inline-block;
-        }
       </style>
-      <!-- TODO: add icon based on item, folder, and add -->
-      <a href="">
+      <span></span>
+      <an-icon type="arrow"></an-icon>
+      <section>
         <slot></slot>
-        <an-icon></an-icon>
-      </a>
+      </section>
     `;
     buildShadowRoot(html, this);
     this.elems = {
-      link: this.shadowRoot.querySelector('a'),
-      icon: this.shadowRoot.querySelector('an-icon')
+      label: this.shadowRoot.querySelector('span')
     };
   }
 
   static get observedAttributes() {
-    return ['href', 'icon'];
+    return ['label'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
-    if (attrName === 'href') {
-      this.elems.link.setAttribute('href', newVal);
-    }
-    if (attrName === 'icon') {
-      this.elems.icon.setAttribute('type', newVal);
+    if (attrName === 'label') {
+      this.elems.label.textContent = newVal;
     }
   }
 
-  get href() {
-    return this.getAttribute('href');
+  get label() {
+    return this.getAttribute('label');
   }
-  set href(val) {
+  set label(val) {
     if (val) {
-      this.setAttribute('href', val);
+      this.setAttribute('label', val);
     } else {
-      this.removeAttribute('href');
-    }
-  }
-  get icon() {
-    return this.getAttribute('icon');
-  }
-  set icon(val) {
-    if (val) {
-      this.setAttribute('icon', val);
-    } else {
-      this.removeAttribute('icon');
+      this.removeAttribute('label');
     }
   }
 }
 
-customElements.define('nav-item', NavItem);
-export default NavItem;
+customElements.define('nav-folder', NavFolder);
+export default NavFolder;

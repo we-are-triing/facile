@@ -21,12 +21,26 @@ class ContentEditor extends HTMLElement {
   }
 
   handleChange(e) {
-    this.buildData(this);
+    const data = this.buildData(this);
+    console.log(data);
   }
 
   buildData(elem) {
-    const regions = [...elem.children].map(child => this.getRegions(child));
-    console.log(regions);
+    return {
+      meta: {
+        name: this.name,
+        type: this.type,
+        slug: this.slug,
+        path: this.path,
+        menu: this.menu,
+        tags: [''],
+        publish_date: '',
+        status: '',
+        approvals: {}
+      },
+      values: {},
+      regions: [...elem.children].map(child => this.getRegions(child))
+    };
   }
 
   getRegions(elem) {
@@ -53,7 +67,7 @@ class ContentEditor extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['name-label', 'slug-label', 'path-label', 'menu-label', 'tags-label'];
+    return ['name-label', 'slug-label', 'path-label', 'menu-label', 'tags-label', 'name', 'slug', 'path', 'menu', 'tags'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
@@ -72,6 +86,21 @@ class ContentEditor extends HTMLElement {
         break;
       case 'tags-label':
         this.elems.header.setAttribute('tags-label', newVal);
+        break;
+      case 'name':
+        this.elems.header.setAttribute('name', newVal);
+        break;
+      case 'slug':
+        this.elems.header.setAttribute('slug', newVal);
+        break;
+      case 'path':
+        this.elems.header.setAttribute('path', newVal);
+        break;
+      case 'menu':
+        this.elems.header.setAttribute('menu', newVal);
+        break;
+      case 'tags':
+        this.elems.header.setAttribute('tags', newVal);
         break;
       default:
         break;
@@ -126,6 +155,57 @@ class ContentEditor extends HTMLElement {
       this.setAttribute('tags-label', val);
     } else {
       this.removeAttribute('tags-label');
+    }
+  }
+
+  get name() {
+    return this.getAttribute('name');
+  }
+  set name(val) {
+    if (val) {
+      this.setAttribute('name', val);
+    } else {
+      this.removeAttribute('name');
+    }
+  }
+  get slug() {
+    return this.getAttribute('slug');
+  }
+  set slug(val) {
+    if (val) {
+      this.setAttribute('slug', val);
+    } else {
+      this.removeAttribute('slug');
+    }
+  }
+  get path() {
+    return this.getAttribute('path');
+  }
+  set path(val) {
+    if (val) {
+      this.setAttribute('path', val);
+    } else {
+      this.removeAttribute('path');
+    }
+  }
+  get menu() {
+    return this.getAttribute('menu');
+  }
+  set menu(val) {
+    if (val) {
+      this.setAttribute('menu', val);
+    } else {
+      this.removeAttribute('menu');
+    }
+  }
+  get tags() {
+    return this.getAttribute('tags');
+  }
+  set tags(val) {
+    if (val) {
+      this.setAttribute('tags', val);
+    } else {
+      this.removeAttribute('tags');
     }
   }
 }

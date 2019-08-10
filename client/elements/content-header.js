@@ -38,10 +38,15 @@ class ContentHeader extends HTMLElement {
       menu: this.shadowRoot.querySelector('.menu'),
       tags: this.shadowRoot.querySelector('tag-list')
     };
+    this.elems.tags.addEventListener('tag-update', this.handleTags.bind(this));
+  }
+
+  handleTags(e) {
+    this.tags = e.detail.tags;
   }
 
   static get observedAttributes() {
-    return ['name-label', 'slug-label', 'path-label', 'menu-label', 'tags-label'];
+    return ['name-label', 'slug-label', 'path-label', 'menu-label', 'tags-label', 'name', 'slug', 'path', 'menu', 'tags'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
@@ -64,6 +69,24 @@ class ContentHeader extends HTMLElement {
         break;
       case 'tags-label':
         this.elems.tags.label = newVal;
+        break;
+      case 'name':
+        this.elems.name.setAttribute('value', newVal);
+        break;
+      case 'slug':
+        this.elems.slug.setAttribute('value', newVal);
+        break;
+      case 'path':
+        this.elems.path.setAttribute('value', newVal);
+        break;
+      case 'menu':
+        this.elems.menu.setAttribute('value', newVal);
+        break;
+      case 'tags':
+        this.elems.tags.innerHTML = newVal
+          .split(',')
+          .map(tag => `<a-tag>${tag}</a-tag>`)
+          .join('');
         break;
       default:
         break;
@@ -118,6 +141,57 @@ class ContentHeader extends HTMLElement {
       this.setAttribute('tags-label', val);
     } else {
       this.removeAttribute('tags-label');
+    }
+  }
+
+  get name() {
+    return this.getAttribute('name');
+  }
+  set name(val) {
+    if (val) {
+      this.setAttribute('name', val);
+    } else {
+      this.removeAttribute('name');
+    }
+  }
+  get slug() {
+    return this.getAttribute('slug');
+  }
+  set slug(val) {
+    if (val) {
+      this.setAttribute('slug', val);
+    } else {
+      this.removeAttribute('slug');
+    }
+  }
+  get path() {
+    return this.getAttribute('path');
+  }
+  set path(val) {
+    if (val) {
+      this.setAttribute('path', val);
+    } else {
+      this.removeAttribute('path');
+    }
+  }
+  get menu() {
+    return this.getAttribute('menu');
+  }
+  set menu(val) {
+    if (val) {
+      this.setAttribute('menu', val);
+    } else {
+      this.removeAttribute('menu');
+    }
+  }
+  get tags() {
+    return this.getAttribute('tags');
+  }
+  set tags(val) {
+    if (val) {
+      this.setAttribute('tags', val);
+    } else {
+      this.removeAttribute('tags');
     }
   }
 }

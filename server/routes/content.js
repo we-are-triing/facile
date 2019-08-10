@@ -12,7 +12,8 @@ export default server => {
         try {
           const {lang} = req.params;
           const contentList = await getContentList();
-          const c = new Content({navigation: header.navigation, lang, contentList});
+          const templateList = await getTemplateList();
+          const c = new Content({navigation: header.navigation, lang, contentList, templateList});
           return c.render();
         } catch (err) {
           console.error(`content page failure`, err);
@@ -22,14 +23,14 @@ export default server => {
     },
     {
       method: `GET`,
-      path: `/{lang}/content/new`,
+      path: `/{lang}/content/new/{type}`,
       handler: async (req, h) => {
         try {
-          const {lang} = req.params;
+          const {lang, type} = req.params;
           const contentList = await getContentList();
-          const template = 'new';
+          const template = await getTemplateByType(type);
           const templateList = await getTemplateList();
-          const c = new Content({navigation: header.navigation, lang, template, contentList, templateList});
+          const c = new Content({navigation: header.navigation, lang, contentList, templateList, template});
           return c.render();
         } catch (err) {
           console.error(`content page failure`, err);

@@ -1,11 +1,12 @@
 import buildShadowRoot from './buildShadowRoot.js';
-import {sendTemplate, deleteTemplate, sendMedia} from '../utils/services.js';
+import {sendComponent, deleteComponent, sendMedia, sendTemplate, deleteTemplate} from '../utils/services.js';
 import './item-header.js';
+import './labeled-select.js';
 import './labeled-input.js';
 import './item-value.js';
 import './styled-button.js';
 
-class TemplateEditor extends HTMLElement {
+class ItemEditor extends HTMLElement {
   constructor() {
     super();
     const html = /* html */ `
@@ -43,6 +44,9 @@ class TemplateEditor extends HTMLElement {
         <slot></slot>
         <section class="new">
           <labeled-input no-label class="new_name"></labeled-input>
+          <labeled-select no-label>
+            <option></option>
+          </labeled-select>
           <an-icon type="add"></an-icon>
         </section>
         <styled-button class="create"></styled-button>
@@ -53,11 +57,19 @@ class TemplateEditor extends HTMLElement {
     this.elems = {
       header: this.shadowRoot.querySelector('item-header'),
       name: this.shadowRoot.querySelector('labeled-input'),
+      select: this.shadowRoot.querySelector('labeled-select'),
       add: this.shadowRoot.querySelector('an-icon'),
       submit: this.shadowRoot.querySelector('.create'),
       delete: this.shadowRoot.querySelector('.delete')
     };
-
+    if (stiva) {
+      stiva.listen('primitives', data => {
+        this.elems.select.innerHTML = Object.keys(data)
+          .map(type => `<option value="${type}">${data[type].label}</option>`)
+          .join('');
+      });
+      stiva.dispatch('primitives');
+    }
     this.elems.add.addEventListener('click', this.handleAdd.bind(this));
     this.elems.header.addEventListener('tag-update', this.handleTags.bind(this));
     this.elems.header.addEventListener('title-update', this.handleTitle.bind(this));
@@ -77,12 +89,15 @@ class TemplateEditor extends HTMLElement {
 
   handleAdd(e) {
     const elem = document.createElement('item-value');
+    const type = this.elems.select.value;
     const name = this.elems.name.value;
 
-    if (name) {
-      elem.type = 'region';
-      elem.textContent = name;
+    if (type && name) {
+      elem.type = type;
+      elem.name = name;
       this.appendChild(elem);
+
+      this.elems.select.selectedIndex = 0;
       this.elems.name.value = '';
       this.handleItems();
     }
@@ -100,7 +115,10 @@ class TemplateEditor extends HTMLElement {
     this.titleValue = e.detail.title;
     this.send();
   }
-
+  handleCreate(e) {
+    this.send(true);
+    window.location = `/${this.type}/${this.titleValue}`;
+  }
   async handleUpload(e) {
     const {file, fileData} = e.detail;
     this.file = file;
@@ -109,18 +127,13 @@ class TemplateEditor extends HTMLElement {
     this.icon = path;
     this.send();
   }
-
-  handleCreate(e) {
-    this.send(true);
-    window.location = `/template/${this.titleValue}`;
-  }
   async handleDelete(e) {
-    await deleteTemplate(this.titleValue);
-    window.location = `/templates`;
+    await deleteComponent(this.titleValue);
+    window.location = `/${this.type}s`;
   }
 
   async send(force = false) {
-    const template = {
+    const obj = {
       meta: {
         type: this.titleValue,
         tags: this.tags ? this.tags.split(',') : [],
@@ -139,7 +152,8 @@ class TemplateEditor extends HTMLElement {
       })
     };
     if (!this.new || force) {
-      await sendTemplate(template);
+      const func = this.type === 'component' ? sendComponent : sendTemplate;
+      await func(obj);
     }
   }
 
@@ -164,6 +178,7 @@ class TemplateEditor extends HTMLElement {
         break;
       case 'type-label':
         this.elems.header.setAttribute('label', newVal);
+        this.elems.select.setAttribute('label', newVal);
         break;
       case 'tags-label':
         this.elems.header.setAttribute('tags-label', newVal);
@@ -185,6 +200,16 @@ class TemplateEditor extends HTMLElement {
     }
   }
 
+  get type() {
+    return this.getAttribute('type');
+  }
+  set type(val) {
+    if (val) {
+      this.setAttribute('type', val);
+    } else {
+      this.removeAttribute('type');
+    }
+  }
   get icon() {
     return this.getAttribute('icon');
   }
@@ -297,5 +322,5 @@ class TemplateEditor extends HTMLElement {
   }
 }
 
-customElements.define('template-editor', TemplateEditor);
-export default TemplateEditor;
+customElements.define('item-editor', ItemEditor);
+export default ItemEditor;

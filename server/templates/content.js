@@ -1,6 +1,6 @@
 import BaseTemplate from './base.js';
 import d from '../data/facile-dictionary.js';
-import {primitives, regions} from '../../isomorphic/types.js';
+import {primitives, regions, mapToString} from '../../isomorphic/types.js';
 
 export default class Components extends BaseTemplate {
   constructor({navigation, lang = `eng`, template, contentList, content = {}, templateList}) {
@@ -28,7 +28,9 @@ export default class Components extends BaseTemplate {
       <split-layout fixed>
         <section>
           <filter-list full list section-title="${this.getLang(d.content)}">
-            <nav-item add href="/content/new">${this.getLang(d.create)}</nav-item>
+            <nav-folder vertical label="${this.getLang(d.create)}">
+            ${this.generateTemplateList()}
+            </nav-folder>
             ${this.generateContentList()}
           </filter-list>
         </section>
@@ -40,32 +42,26 @@ export default class Components extends BaseTemplate {
   }
 
   generateContentList() {
-    return this.list.map(({name}) => `<nav-item href="/content/${name}" item>${name}</nav-item>`).join('');
+    return this.list.map(({name}) => `<nav-item vertical href="/content/${name}">${name}</nav-item>`).join('');
+  }
+  generateTemplateList() {
+    return this.templateList.map(({meta}) => `<nav-item vertical href="/content/new/${meta.type}">${meta.type}</nav-item>`).join('');
   }
 
   loadContentDetails() {
     const labels = `
-      name-label="${this.getLang(d.name)}" 
+      name-label="${this.getLang(d.name)}"
       slug-label="${this.getLang(d.slug)}" 
       path-label="${this.getLang(d.path)}"
       menu-label="${this.getLang(d.menu)}"
       tags-label="${this.getLang(d.tags)}"
       `;
-    if (this.template === 'new') {
-      return `
-      <content-editor
-        ${labels}
-        new
-        >
-      </content-editor>
-    `;
-    }
-    if (this.content.meta) {
+    if (this.template) {
       return `
         <content-editor 
           ${labels}
           >
-          ${this.template.values.map(({type, region, components, name}) => `<form-region type="${region}" name="${name}" components="${components.join(',')}"></form-region>`).join('')}
+          ${this.template.values.map(val => mapToString(val)).join('')}
         </content-editor>
       `;
     }
