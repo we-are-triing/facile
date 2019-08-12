@@ -1,13 +1,4 @@
 import buildShadowRoot from './buildShadowRoot.js';
-import './form-boolean.js';
-import './form-list.js';
-import './form-number.js';
-import './form-object.js';
-import './form-region.js';
-import './form-set.js';
-import './form-string.js';
-import './form-text.js';
-import './form-text-block.js';
 
 class RegionItem extends HTMLElement {
   constructor() {

@@ -15,6 +15,12 @@ class FormPath extends HTMLElement {
     this.elems = {
       input: this.shadowRoot.querySelector('labeled-input')
     };
+    this.elems.input.addEventListener('change', this.handleChange.bind(this));
+  }
+
+  handleChange(e) {
+    this.value = e.target.value;
+    this.dispatchEvent(new Event('change', {bubbles: true}));
   }
 
   static get observedAttributes() {

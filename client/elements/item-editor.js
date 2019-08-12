@@ -84,6 +84,7 @@ class ItemEditor extends HTMLElement {
     this.handleItems();
   }
   handleChange(e) {
+    e.stopPropagation();
     this.handleItems();
   }
 
@@ -146,11 +147,15 @@ class ItemEditor extends HTMLElement {
         };
         if (itemValue.type === 'region') {
           item.region = itemValue.region;
-          item.components = itemValue.items ? [...itemValue.items].map(gc => gc.textContent) : [];
+          item.components = itemValue.components ? itemValue.components : [];
+        }
+        if (itemValue.type === 'set') {
+          item.set = itemValue.set ? itemValue.set.split(',') : [];
         }
         return item;
       })
     };
+    console.log(obj);
     if (!this.new || force) {
       const func = this.type === 'component' ? sendComponent : sendTemplate;
       await func(obj);

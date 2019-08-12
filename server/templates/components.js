@@ -67,7 +67,7 @@ export default class Components extends BaseTemplate {
     return ``;
   }
   mapVals(vals = []) {
-    return vals.map(({name, type, region = '', components = []}) => `<item-value type="${type}" name="${name}"${type === 'region' ? ` region="${region}">${this.mapComponents(components)}` : '>'}</item-value>`).join('');
+    return vals.map(({name, type, region = '', components = [], set = []}) => `<item-value type="${type}" name="${name}" ${set.length > 0 ? ` set="${set.join(',')}"` : ``}${type === 'region' ? ` region="${region}" >${this.mapComponents(components)}` : '>'}</item-value>`).join('');
   }
   mapComponents(components) {
     return components

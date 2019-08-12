@@ -73,10 +73,15 @@ export const regions = {
 const mapValues = ({type, name, val = ''}) => ({tag: primitives[type].handler, type, name, val});
 
 export const mapToString = v => {
+  console.log(v);
   const {tag, name, val, type} = mapValues(v);
   if (type === 'region') {
     const {components, region} = v;
     return mapRegionToString({tag, name, components, region});
+  }
+  if (type === 'set') {
+    const {set} = v;
+    return mapSetToString({tag, name, set});
   }
   const escv = val.replace(/"/gi, '"');
   return `<${tag}${escv !== '' ? ` value="${escv}"` : ''}>${name}</${tag}>`;
@@ -87,6 +92,10 @@ export const mapToElement = v => {
   if (type === 'region') {
     const {components, region} = v;
     return mapRegionToElement({tag, name, val, components, region});
+  }
+  if (type === 'set') {
+    const {set} = v;
+    return mapSetToElement({tag, name, val, set});
   }
   const elem = document.createElement(tag);
   if (val) {
@@ -105,5 +114,17 @@ export const mapRegionToElement = ({tag, name, components, region}) => {
   elem.setAttribute('name', name);
   elem.setAttribute('type', region);
   elem.setAttribute('components', components.join(','));
+  return elem;
+};
+export const mapSetToString = ({tag, name, set}) => {
+  return `<${tag} label="${name}">
+    ${set.map(item => `<option value="${item}">${item}</option>`).join('')}
+  </${tag}>`;
+};
+
+export const mapSetToElement = ({tag, name, set}) => {
+  const elem = document.createElement(tag);
+  elem.setAttribute('label', name);
+  elem.innerHTML = set.map(item => `<option value="${item}">${item}</option>`);
   return elem;
 };

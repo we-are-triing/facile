@@ -1,43 +1,50 @@
 import buildShadowRoot from './buildShadowRoot.js';
+import './check-box.js';
 
 class FormBoolean extends HTMLElement {
   constructor() {
     super();
-    const html = `
+    const html = /* html */ `
       <style>
         :host {
         }
       </style>
-      <input type="checkbox" />
+      <check-box><slot></slot></check-box>
     `;
     buildShadowRoot(html, this);
     this.elems = {
-      checkbox: this.shadowRoot.querySelector('input')
+      checkbox: this.shadowRoot.querySelector('check-box')
     };
+    this.elems.checkbox.addEventListener('change', this.handleChange.bind(this));
+  }
+
+  handleChange(e) {
+    this.value = e.target.checked;
+    this.dispatchEvent(new Event('change', {bubbles: true}));
   }
 
   static get observedAttributes() {
-    return ['on'];
+    return ['value'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
     switch (attrName) {
-      case 'on':
-        this.elems.checkbox.setAttribute('on', newVal);
+      case 'value':
+        this.elems.checkbox.setAttribute('checked', newVal);
         break;
       default:
         break;
     }
   }
 
-  get on() {
-    return this.getAttribute('on');
+  get value() {
+    return this.getAttribute('value');
   }
-  set on(val) {
+  set value(val) {
     if (val) {
-      this.setAttribute('on', val);
+      this.setAttribute('value', val);
     } else {
-      this.removeAttribute('on');
+      this.removeAttribute('value');
     }
   }
 }

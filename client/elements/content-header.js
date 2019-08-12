@@ -36,13 +36,44 @@ class ContentHeader extends HTMLElement {
       slug: this.shadowRoot.querySelector('.slug'),
       path: this.shadowRoot.querySelector('.path'),
       menu: this.shadowRoot.querySelector('.menu'),
-      tags: this.shadowRoot.querySelector('tag-list')
+      tags: this.shadowRoot.querySelector('tag-list'),
+      header: this.shadowRoot.querySelector('header')
     };
     this.elems.tags.addEventListener('tag-update', this.handleTags.bind(this));
+    this.elems.header.addEventListener('change', this.handleChange.bind(this));
+  }
+
+  handleChange(e) {
+    switch (e.target) {
+      case this.elems.name:
+        this.name = e.target.value;
+        break;
+      case this.elems.slug:
+        this.slug = e.target.value;
+        break;
+      case this.elems.path:
+        this.path = e.target.value;
+        break;
+      case this.elems.menu:
+        this.menu = e.target.value;
+        break;
+      default:
+        break;
+    }
+    this.sendChange();
   }
 
   handleTags(e) {
     this.tags = e.detail.tags;
+    this.sendChange();
+  }
+
+  sendChange() {
+    this.dispatchEvent(
+      new Event('header-change', {
+        bubbles: true
+      })
+    );
   }
 
   static get observedAttributes() {

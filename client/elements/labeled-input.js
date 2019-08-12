@@ -1,4 +1,5 @@
 import buildShadowRoot from './buildShadowRoot.js';
+import debounce from '../utils/debounce.js';
 
 class LabeledInput extends HTMLElement {
   constructor() {
@@ -43,10 +44,13 @@ class LabeledInput extends HTMLElement {
     this.elems = {
       input: this.shadowRoot.querySelector('input')
     };
-    this.elems.input.addEventListener('change', this.handlChange.bind(this));
+    // this.elems.input.addEventListener('change', this.handleChange.bind(this));
+
+    this.debouncedHandleChange = debounce(this.handleChange).bind(this);
+    this.elems.input.addEventListener('keyup', this.debouncedHandleChange);
   }
 
-  handlChange(e) {
+  handleChange(e) {
     this.value = this.elems.input.value;
     this.dispatchEvent(
       new Event('change', {

@@ -1,15 +1,16 @@
 import buildShadowRoot from './buildShadowRoot.js';
+import './labeled-input.js';
 
-class FormString extends HTMLElement {
+class SetEditor extends HTMLElement {
   constructor() {
     super();
-    const html = `
+    const html = /*html*/ `
       <style>
         :host {
         }
       </style>
-      <labeled-input><slot></slot></labeled-input>
-      
+      <slot></slot>
+      <labeled-input></labeled-input>
     `;
     buildShadowRoot(html, this);
     this.elems = {
@@ -49,5 +50,5 @@ class FormString extends HTMLElement {
   }
 }
 
-customElements.define('form-string', FormString);
-export default FormString;
+customElements.define('set-editor', SetEditor);
+export default SetEditor;

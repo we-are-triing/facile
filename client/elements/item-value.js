@@ -1,5 +1,6 @@
 import buildShadowRoot from './buildShadowRoot.js';
 import './region-editor.js';
+import './set-editor.js';
 import './an-icon.js';
 import './labeled-input.js';
 import './labeled-select.js';
@@ -50,10 +51,11 @@ class ItemValue extends HTMLElement {
         :host(:active) .view .actions {
           opacity: 1;
         }
-        .region {
+        .region, .set {
           display: none;
         }
-        :host([type="region"]) .region{
+        :host([type="region"]) .region,
+        :host([type="set"]) .set {
           display: block;
         }
       </style>
@@ -80,6 +82,7 @@ class ItemValue extends HTMLElement {
         </div>
       </section>
       <region-editor class="region"></region-editor>
+      <set-editor class="set"></set-editor>
     `;
     buildShadowRoot(html, this);
     this.elems = {
@@ -93,7 +96,8 @@ class ItemValue extends HTMLElement {
       close: this.shadowRoot.querySelector('an-icon.close'),
       editView: this.shadowRoot.querySelector('section.edit'),
       viewView: this.shadowRoot.querySelector('section.view'),
-      region: this.shadowRoot.querySelector('region-editor')
+      region: this.shadowRoot.querySelector('region-editor'),
+      set: this.shadowRoot.querySelector('set-editor')
     };
     this.elems.delete.addEventListener('click', this.handleDelete.bind(this));
 
@@ -101,7 +105,8 @@ class ItemValue extends HTMLElement {
     this.elems.close.addEventListener('click', this.showView.bind(this));
 
     this.elems.update.addEventListener('click', this.handleEdit.bind(this));
-    this.elems.region.addEventListener('update', this.handleRegion.bind(this));
+    this.elems.region.addEventListener('update', this.handleChange.bind(this));
+    this.elems.set.addEventListener('change', this.handleChange.bind(this));
 
     if (stiva) {
       stiva.listen('primitives', this.handlePrimitives.bind(this));
@@ -139,32 +144,29 @@ class ItemValue extends HTMLElement {
       .map(type => `<option value="${type}"${data[type].label === this.type ? ' selected' : ''}>${data[type].label}</option>`)
       .join('');
   }
-  handleRegion(e) {
-    this.region = e.detail.type;
-    this.items = e.detail.items;
-    this.dispatchEvent(
-      new CustomEvent('update', {
-        bubbles: true,
-        detail: {
-          type: this.region,
-          items: e.detail.items
-        }
-      })
-    );
-  }
-  handleDelete(e) {
-    this.dispatchEvent(
-      new Event('remove', {
-        bubbles: true
-      })
-    );
-  }
+
   handleEdit(e) {
     this.type = this.elems.newType.value;
     this.name = this.elems.newName.value;
     this.showView();
+    this.handleChange();
+  }
+  handleChange() {
+    this.set = this.elems.set.value;
+
+    this.region = this.elems.region.type;
+    this.components = this.elems.region.components;
+
     this.dispatchEvent(
       new Event('update', {
+        bubbles: true
+      })
+    );
+  }
+
+  handleDelete(e) {
+    this.dispatchEvent(
+      new Event('remove', {
         bubbles: true
       })
     );
@@ -182,7 +184,7 @@ class ItemValue extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['type', 'name', 'region'];
+    return ['type', 'name', 'region', `set`];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
@@ -195,6 +197,9 @@ class ItemValue extends HTMLElement {
         break;
       case 'region':
         this.elems.region.type = newVal;
+        break;
+      case 'set':
+        this.elems.set.value = newVal;
         break;
       default:
         break;
@@ -229,6 +234,16 @@ class ItemValue extends HTMLElement {
       this.setAttribute('region', val);
     } else {
       this.removeAttribute('region');
+    }
+  }
+  get set() {
+    return this.getAttribute('set');
+  }
+  set set(val) {
+    if (val) {
+      this.setAttribute('set', val);
+    } else {
+      this.removeAttribute('set');
     }
   }
 }

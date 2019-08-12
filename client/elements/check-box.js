@@ -3,7 +3,7 @@ import buildShadowRoot from './buildShadowRoot.js';
 class CheckBox extends HTMLElement {
   constructor() {
     super();
-    const html = `
+    const html = /* html */ `
         <style>
           :host {
             display: inline-block;
@@ -54,15 +54,15 @@ class CheckBox extends HTMLElement {
     this.elems.input.addEventListener('change', this.handleChange.bind(this));
   }
 
-  static get observedAttributes() {
-    return [`checked`];
-  }
+  // static get observedAttributes() {
+  //   return [`checked`];
+  // }
 
-  attributeChangedCallback(attrName, oldVal, newVal) {
-    if (attrName === `checked`) {
-      // this.elems.input.checked = !!newVal;
-    }
-  }
+  // attributeChangedCallback(attrName, oldVal, newVal) {
+  //   if (attrName === `checked`) {
+  //     // this.elems.input.checked = !!newVal;
+  //   }
+  // }
 
   get checked() {
     return this.hasAttribute(`checked`);

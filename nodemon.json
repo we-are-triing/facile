@@ -1,4 +1,4 @@
 {
   "ignore": ["client/**/*.js"],
-  "watch" : ["client","server"]
+  "watch": ["client", "server", "isomorphic"]
 }

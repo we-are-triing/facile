@@ -1,6 +1,15 @@
 import buildShadowRoot from './buildShadowRoot.js';
-import getChildren from '../utils/selectDirectChildren.js';
 import './content-header.js';
+import './form-boolean.js';
+import './form-list.js';
+import './form-number.js';
+import './form-object.js';
+import './form-region.js';
+import './form-set.js';
+import './form-string.js';
+import './form-text.js';
+import './form-text-block.js';
+import './form-path.js';
 
 class ContentEditor extends HTMLElement {
   constructor() {
@@ -18,31 +27,41 @@ class ContentEditor extends HTMLElement {
       header: this.shadowRoot.querySelector('content-header')
     };
     this.addEventListener('region-change', this.handleChange.bind(this));
+    this.addEventListener('change', this.handleChange.bind(this));
+    this.elems.header.addEventListener('header-change', this.handleChange.bind(this));
   }
 
   handleChange(e) {
+    this.name = e.target.name;
+    this.slug = e.target.slug;
+    this.path = e.target.path;
+    this.menu = e.target.menu;
+    this.tags = e.target.tags;
+
     const data = this.buildData(this);
-    console.log(data);
+    console.log(JSON.stringify(data));
   }
 
   buildData(elem) {
-    return {
-      meta: {
-        name: this.name,
-        type: this.type,
-        slug: this.slug,
-        path: this.path,
-        menu: this.menu,
-        tags: [''],
-        publish_date: '',
-        status: '',
-        approvals: {}
-      },
-      values: {},
-      regions: [...elem.children].map(child => this.getRegions(child))
+    const obj = this.getItems(elem);
+    obj.meta = {
+      name: this.name,
+      type: this.type,
+      slug: this.slug,
+      path: this.path ? this.path.split('/') : '',
+      menu: this.menu ? this.menu.split('/') : '',
+      tags: this.tags ? this.tags.split(',') : '',
+      publish_date: '',
+      status: '',
+      approvals: {}
     };
+
+    return obj;
   }
 
+  // TODO: with the change that a template can have values, this dosen't work anymore,
+  // the assumption was that a only form-regions would be children of the editor.
+  // that isn't the case anymore.
   getRegions(elem) {
     return {
       meta: {
@@ -158,6 +177,16 @@ class ContentEditor extends HTMLElement {
     }
   }
 
+  get type() {
+    return this.getAttribute('type');
+  }
+  set type(val) {
+    if (val) {
+      this.setAttribute('type', val);
+    } else {
+      this.removeAttribute('type');
+    }
+  }
   get name() {
     return this.getAttribute('name');
   }

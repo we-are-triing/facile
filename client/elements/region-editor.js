@@ -134,12 +134,8 @@ class RegionEditor extends HTMLElement {
 
   sendChange() {
     this.dispatchEvent(
-      new CustomEvent('update', {
-        bubbles: true,
-        detail: {
-          type: this.type,
-          items: [...this.children].filter(child => child.localName === 'item-tile')
-        }
+      new Event('update', {
+        bubbles: true
       })
     );
   }
@@ -203,6 +199,10 @@ class RegionEditor extends HTMLElement {
     } else {
       this.removeAttribute('label');
     }
+  }
+
+  get components() {
+    return [...this.children].filter(child => child.localName === 'item-tile').map(child => child.textContent);
   }
 }
 

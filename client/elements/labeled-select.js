@@ -127,6 +127,28 @@ class LabeledSelect extends HTMLElement {
       this.removeAttribute('value');
     }
   }
+
+  get placeholder() {
+    return this.getAttribute('placeholder');
+  }
+  set placeholder(val) {
+    if (val) {
+      this.setAttribute('placeholder', val);
+    } else {
+      this.removeAttribute('placeholder');
+    }
+  }
+
+  get label() {
+    return this.getAttribute('label');
+  }
+  set label(val) {
+    if (val) {
+      this.setAttribute('label', val);
+    } else {
+      this.removeAttribute('label');
+    }
+  }
 }
 
 customElements.define('labeled-select', LabeledSelect);

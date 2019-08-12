@@ -24,7 +24,7 @@ export default class Components extends BaseTemplate {
   }
 
   populatePage() {
-    return /*html*/ `
+    const html = /*html*/ `
       <split-layout fixed>
         <section>
           <filter-list full list section-title="${this.getLang(d.content)}">
@@ -39,6 +39,7 @@ export default class Components extends BaseTemplate {
         </section>
       </split-layout>
       `;
+    return html;
   }
 
   generateContentList() {
@@ -60,6 +61,7 @@ export default class Components extends BaseTemplate {
       return `
         <content-editor 
           ${labels}
+          type="${this.template.meta.type}"
           >
           ${this.template.values.map(val => mapToString(val)).join('')}
         </content-editor>
