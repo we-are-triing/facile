@@ -44,10 +44,10 @@ class LabeledInput extends HTMLElement {
     this.elems = {
       input: this.shadowRoot.querySelector('input')
     };
-    // this.elems.input.addEventListener('change', this.handleChange.bind(this));
 
     this.debouncedHandleChange = debounce(this.handleChange).bind(this);
     this.elems.input.addEventListener('keyup', this.debouncedHandleChange);
+    this.elems.input.addEventListener('change', this.handleChange.bind(this));
   }
 
   handleChange(e) {

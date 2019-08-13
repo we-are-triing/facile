@@ -1,4 +1,5 @@
 import buildShadowRoot from './buildShadowRoot.js';
+import {sendContent, deleteContent} from '../utils/services.js';
 import './content-header.js';
 import './form-boolean.js';
 import './form-list.js';
@@ -37,9 +38,12 @@ class ContentEditor extends HTMLElement {
     this.path = e.target.path;
     this.menu = e.target.menu;
     this.tags = e.target.tags;
+    this.publishDate = e.target.publishDate;
 
     const data = this.buildData(this);
-    console.log(JSON.stringify(data));
+    if (this.name && this.slug) {
+      this.send(data);
+    }
   }
 
   buildData(elem) {
@@ -48,20 +52,16 @@ class ContentEditor extends HTMLElement {
       name: this.name,
       type: this.type,
       slug: this.slug,
-      path: this.path ? this.path.split('/') : '',
-      menu: this.menu ? this.menu.split('/') : '',
-      tags: this.tags ? this.tags.split(',') : '',
-      publish_date: '',
-      status: '',
+      path: this.path ? this.path.split('/') : [],
+      menu: this.menu ? this.menu.split('/') : [],
+      tags: this.tags ? this.tags.split(',') : [],
+      publish_date: this.publishDate || 0,
       approvals: {}
     };
 
     return obj;
   }
 
-  // TODO: with the change that a template can have values, this dosen't work anymore,
-  // the assumption was that a only form-regions would be children of the editor.
-  // that isn't the case anymore.
   getRegions(elem) {
     return {
       meta: {
@@ -89,8 +89,12 @@ class ContentEditor extends HTMLElement {
     );
   }
 
+  send(data) {
+    sendContent(data);
+  }
+
   static get observedAttributes() {
-    return ['name-label', 'slug-label', 'path-label', 'menu-label', 'tags-label', 'name', 'slug', 'path', 'menu', 'tags'];
+    return ['name-label', 'slug-label', 'path-label', 'menu-label', 'tags-label', 'publish-date-label', 'name', 'slug', 'path', 'menu', 'tags', 'publish-date'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
@@ -110,6 +114,9 @@ class ContentEditor extends HTMLElement {
       case 'tags-label':
         this.elems.header.setAttribute('tags-label', newVal);
         break;
+      case 'publish-date-label':
+        this.elems.header.setAttribute('publish-date-label', newVal);
+        break;
       case 'name':
         this.elems.header.setAttribute('name', newVal);
         break;
@@ -124,6 +131,9 @@ class ContentEditor extends HTMLElement {
         break;
       case 'tags':
         this.elems.header.setAttribute('tags', newVal);
+        break;
+      case 'publish-date':
+        this.elems.header.setAttribute('publish-date', newVal);
         break;
       default:
         break;
@@ -178,6 +188,16 @@ class ContentEditor extends HTMLElement {
       this.setAttribute('tags-label', val);
     } else {
       this.removeAttribute('tags-label');
+    }
+  }
+  get publishDateLabel() {
+    return this.getAttribute('publish-date-label');
+  }
+  set publishDateLabel(val) {
+    if (val) {
+      this.setAttribute('publish-date-label', val);
+    } else {
+      this.removeAttribute('publish-date-label');
     }
   }
 
@@ -239,6 +259,16 @@ class ContentEditor extends HTMLElement {
       this.setAttribute('tags', val);
     } else {
       this.removeAttribute('tags');
+    }
+  }
+  get publishDate() {
+    return this.getAttribute('publish-date');
+  }
+  set publishDate(val) {
+    if (val) {
+      this.setAttribute('publish-date', val);
+    } else {
+      this.removeAttribute('publish-date');
     }
   }
 }

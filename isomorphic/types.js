@@ -73,7 +73,6 @@ export const regions = {
 const mapValues = ({type, name, val = ''}) => ({tag: primitives[type].handler, type, name, val});
 
 export const mapToString = v => {
-  console.log(v);
   const {tag, name, val, type} = mapValues(v);
   if (type === 'region') {
     const {components, region} = v;

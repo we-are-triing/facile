@@ -5,22 +5,22 @@ const fetchOptions = {
   headers: {'Content-Type': 'application/json'}
 };
 
-const get = async (type, compOrTemplate) => {
-  const temp = await fetch(`${storeRoot}/${compOrTemplate}/${type}`);
+const get = async (type, route) => {
+  const temp = await fetch(`${storeRoot}/${route}/${type}`);
   return temp.json();
 };
 
-const send = async (item, compOrTemplate) => {
-  const temp = await fetch(`${storeRoot}/${compOrTemplate}/${item.meta.type}`, fetchOptions);
+const send = async (item, route, id) => {
+  const temp = await fetch(`${storeRoot}/${route}/${id}`, fetchOptions);
   const result = await temp.json();
   const isUpdate = result.length > 0;
 
-  let path = `${storeRoot}/${compOrTemplate}/create`;
+  let path = `${storeRoot}/${route}/create`;
   if (isUpdate) {
-    path = `${storeRoot}/${compOrTemplate}/update`;
+    path = `${storeRoot}/${route}/update`;
   }
   const body = JSON.stringify(item);
-
+  console.log(item);
   const res = await fetch(path, {
     ...fetchOptions,
     method: 'POST',
@@ -30,20 +30,23 @@ const send = async (item, compOrTemplate) => {
   return await res.json();
 };
 
-const del = async (type, compOrTemplate) => {
-  const del = await fetch(`${storeRoot}/${compOrTemplate}/delete`, {
+const del = async (type, route) => {
+  const del = await fetch(`${storeRoot}/${route}/delete`, {
     ...fetchOptions,
     method: 'DELETE',
-    body: JSON.stringify({type})
+    body: JSON.stringify(type)
   });
   return await del.json();
 };
 
-export const sendComponent = async component => send(component, 'component');
-export const sendTemplate = async template => send(template, 'template');
+export const sendComponent = async component => send(component, 'component', component.meta.type);
+export const deleteComponent = async type => del({type}, 'component');
 
-export const deleteComponent = async type => del(type, 'component');
-export const deleteTemplate = async type => del(type, 'template');
+export const sendTemplate = async template => send(template, 'template', component.meta.type);
+export const deleteTemplate = async type => del({type}, 'template');
+
+export const sendContent = async content => send(content, 'content', content.meta.name);
+export const deleteContent = async content => del({name}, 'content');
 
 export const sendMedia = async (file, meta) => {
   const res = await fetch(`${mediaRoot}/media`, {

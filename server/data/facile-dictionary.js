@@ -236,5 +236,12 @@ export default {
     fra: ``,
     ita: ``,
     spa: ``
+  },
+  publish_date: {
+    deu: ``,
+    eng: `Publish Date`,
+    fra: ``,
+    ita: ``,
+    spa: ``
   }
 };

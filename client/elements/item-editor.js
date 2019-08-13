@@ -129,7 +129,11 @@ class ItemEditor extends HTMLElement {
     this.send();
   }
   async handleDelete(e) {
-    await deleteComponent(this.titleValue);
+    let func = deleteComponent;
+    if (this.type === 'template') {
+      func = deleteTemplate;
+    }
+    await func(this.titleValue);
     window.location = `/${this.type}s`;
   }
 
@@ -155,7 +159,6 @@ class ItemEditor extends HTMLElement {
         return item;
       })
     };
-    console.log(obj);
     if (!this.new || force) {
       const func = this.type === 'component' ? sendComponent : sendTemplate;
       await func(obj);

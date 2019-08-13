@@ -3,13 +3,13 @@
   --serif: 'Playfair Display', Times, serif;
   --mono: monospace;
 
-  --roso-300: RGBA(255, 113, 118, 1);
-  --roso-400: RGBA(255, 83, 90, 1);
-  --roso-500: RGBA(255, 50, 62, 1);
-  --roso-600: RGBA(255, 0, 36, 1);
-  --roso-700: RGBA(250, 0, 21, 1);
-  --roso-800: RGBA(218, 0, 0, 1);
-  --roso-900: RGBA(188, 0, 0, 1);
+  --rosso-300: RGBA(255, 113, 118, 1);
+  --rosso-400: RGBA(255, 83, 90, 1);
+  --rosso-500: RGBA(255, 50, 62, 1);
+  --rosso-600: RGBA(255, 0, 36, 1);
+  --rosso-700: RGBA(250, 0, 21, 1);
+  --rosso-800: RGBA(218, 0, 0, 1);
+  --rosso-900: RGBA(188, 0, 0, 1);
 
   --verde-200: RGBA(162, 255, 202, 1);
   --verde-300: RGBA(95, 242, 159, 1);
@@ -61,7 +61,7 @@
   --blu: var(--blu-600);
   --azzuro: var(--azzurro-600);
   --verde: var(--verde-600);
-  --roso: var(--roso-600);
+  --rosso: var(--rosso-600);
 
   --main: var(--azzurro-500);
   --link-color: var(--main);

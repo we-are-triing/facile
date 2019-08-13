@@ -56,6 +56,7 @@ export default class Components extends BaseTemplate {
       path-label="${this.getLang(d.path)}"
       menu-label="${this.getLang(d.menu)}"
       tags-label="${this.getLang(d.tags)}"
+      publish-date-label="${this.getLang(d.publish_date)}"
       `;
     if (this.template) {
       return `

@@ -40,8 +40,8 @@ class StyledButton extends HTMLElement {
           --padding: calc(var(--spacing) / 2) var(--spacing) calc(var(--spacing) / 1.6);
         }
         :host([destructive]){
-          --color: var(--roso, #69f);
-          --color-hover: var(--roso, #69f);
+          --color: var(--rosso, #69f);
+          --color-hover: var(--rosso, #69f);
         }
       </style>
       <a><slot></slot></a>

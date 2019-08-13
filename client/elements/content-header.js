@@ -1,6 +1,7 @@
 import buildShadowRoot from './buildShadowRoot.js';
 import './labeled-input.js';
 import './tag-list.js';
+import './content-status.js';
 
 class ContentHeader extends HTMLElement {
   constructor() {
@@ -26,6 +27,8 @@ class ContentHeader extends HTMLElement {
         </div>
         <div>
           <tag-list></tag-list>
+          <content-status></content-status>
+          <labeled-input type="date" class="date"></labeled-input>
         </div>
         <slot></slot>
       </header>
@@ -37,7 +40,9 @@ class ContentHeader extends HTMLElement {
       path: this.shadowRoot.querySelector('.path'),
       menu: this.shadowRoot.querySelector('.menu'),
       tags: this.shadowRoot.querySelector('tag-list'),
-      header: this.shadowRoot.querySelector('header')
+      header: this.shadowRoot.querySelector('header'),
+      date: this.shadowRoot.querySelector('.date'),
+      status: this.shadowRoot.querySelector('content-status')
     };
     this.elems.tags.addEventListener('tag-update', this.handleTags.bind(this));
     this.elems.header.addEventListener('change', this.handleChange.bind(this));
@@ -56,6 +61,9 @@ class ContentHeader extends HTMLElement {
         break;
       case this.elems.menu:
         this.menu = e.target.value;
+        break;
+      case this.elems.date:
+        this.publishDate = e.target.value;
         break;
       default:
         break;
@@ -77,7 +85,7 @@ class ContentHeader extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['name-label', 'slug-label', 'path-label', 'menu-label', 'tags-label', 'name', 'slug', 'path', 'menu', 'tags'];
+    return ['name-label', 'slug-label', 'path-label', 'menu-label', 'tags-label', 'publish-date-label', 'name', 'slug', 'path', 'menu', 'tags', 'publish-date'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
@@ -101,6 +109,10 @@ class ContentHeader extends HTMLElement {
       case 'tags-label':
         this.elems.tags.label = newVal;
         break;
+      case 'publish-date-label':
+        this.elems.date.textContent = newVal;
+        this.elems.date.setAttribute('placeholder', newVal);
+        break;
       case 'name':
         this.elems.name.setAttribute('value', newVal);
         break;
@@ -118,6 +130,21 @@ class ContentHeader extends HTMLElement {
           .split(',')
           .map(tag => `<a-tag>${tag}</a-tag>`)
           .join('');
+        break;
+      case 'publish-date':
+        if (!newVal) {
+          this.elems.status.status = 'draft';
+        } else {
+          const today = new Date();
+          const pub = new Date(newVal);
+          if (pub.getTime() > today.getTime()) {
+            this.elems.status.status = 'scheduled';
+          } else {
+            this.elems.status.status = 'published';
+          }
+        }
+
+        this.elems.date.setAttribute('value', newVal);
         break;
       default:
         break;
@@ -174,6 +201,16 @@ class ContentHeader extends HTMLElement {
       this.removeAttribute('tags-label');
     }
   }
+  get publishDateLabel() {
+    return this.getAttribute('publish-date-label');
+  }
+  set publishDateLabel(val) {
+    if (val) {
+      this.setAttribute('publish-date-label', val);
+    } else {
+      this.removeAttribute('publish-date-label');
+    }
+  }
 
   get name() {
     return this.getAttribute('name');
@@ -223,6 +260,16 @@ class ContentHeader extends HTMLElement {
       this.setAttribute('tags', val);
     } else {
       this.removeAttribute('tags');
+    }
+  }
+  get publishDate() {
+    return this.getAttribute('publish-date');
+  }
+  set publishDate(val) {
+    if (val) {
+      this.setAttribute('publish-date', val);
+    } else {
+      this.removeAttribute('publish-date');
     }
   }
 }
