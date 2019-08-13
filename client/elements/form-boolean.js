@@ -7,6 +7,7 @@ class FormBoolean extends HTMLElement {
     const html = /* html */ `
       <style>
         :host {
+          display: block;
         }
       </style>
       <check-box><slot></slot></check-box>

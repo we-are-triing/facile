@@ -1,6 +1,7 @@
 :root {
   --sans: 'Open Sans', helvetica, sans-serif;
   --serif: 'Playfair Display', Times, serif;
+  --mono: monospace;
 
   --roso-300: RGBA(255, 113, 118, 1);
   --roso-400: RGBA(255, 83, 90, 1);

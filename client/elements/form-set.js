@@ -7,6 +7,7 @@ class FormSet extends HTMLElement {
     const html = /* html */ `
       <style>
         :host {
+          display: block;
         }
       </style>
       <labeled-select><slot></slot></labeled-select>

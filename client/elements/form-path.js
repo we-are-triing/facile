@@ -1,4 +1,5 @@
 import buildShadowRoot from './buildShadowRoot.js';
+import './labeled-input.js';
 
 class FormPath extends HTMLElement {
   constructor() {
@@ -6,6 +7,7 @@ class FormPath extends HTMLElement {
     const html = `
       <style>
         :host {
+          display: block;
         }
       </style>
       <labeled-input><slot></slot></labeled-input>
