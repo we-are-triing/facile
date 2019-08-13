@@ -78,7 +78,11 @@ class ContentEditor extends HTMLElement {
           a.regions.push(this.getRegions(n));
           return a;
         }
-        a.values[n.textContent] = n.value ? n.value.toString() : '';
+        let name = n.textContent;
+        if (n.localName === `form-set`) {
+          name = n.label;
+        }
+        a.values[name] = n.value ? n.value.toString() : '';
         return a;
       },
       {meta: {type: elem.type}, regions: [], values: {}}

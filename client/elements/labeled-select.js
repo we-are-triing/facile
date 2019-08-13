@@ -3,7 +3,7 @@ import buildShadowRoot from './buildShadowRoot.js';
 class LabeledSelect extends HTMLElement {
   constructor() {
     super();
-    const html = `
+    const html = /* html */ `
       <style>
         :host {
           display: block;

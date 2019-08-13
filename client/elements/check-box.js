@@ -54,16 +54,6 @@ class CheckBox extends HTMLElement {
     this.elems.input.addEventListener('change', this.handleChange.bind(this));
   }
 
-  // static get observedAttributes() {
-  //   return [`checked`];
-  // }
-
-  // attributeChangedCallback(attrName, oldVal, newVal) {
-  //   if (attrName === `checked`) {
-  //     // this.elems.input.checked = !!newVal;
-  //   }
-  // }
-
   get checked() {
     return this.hasAttribute(`checked`);
   }

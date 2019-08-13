@@ -30,7 +30,7 @@ class FormBoolean extends HTMLElement {
   attributeChangedCallback(attrName, oldVal, newVal) {
     switch (attrName) {
       case 'value':
-        this.elems.checkbox.setAttribute('checked', newVal);
+        this.elems.checkbox.checked = newVal;
         break;
       default:
         break;

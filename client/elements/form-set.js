@@ -4,7 +4,7 @@ import './labeled-select.js';
 class FormSet extends HTMLElement {
   constructor() {
     super();
-    const html = `
+    const html = /* html */ `
       <style>
         :host {
         }
@@ -17,6 +17,7 @@ class FormSet extends HTMLElement {
     };
     this.observer = this.watchChildren();
     this.updateChildren();
+    this.elems.select.addEventListener('change', this.handleChange.bind(this));
   }
 
   watchChildren() {
@@ -44,17 +45,26 @@ class FormSet extends HTMLElement {
     this.observer.observe(this, {childList: true});
   }
 
+  handleChange(e) {
+    this.value = this.elems.select.value;
+    this.dispatchEvent(
+      new Event('change', {
+        bubbles: true
+      })
+    );
+  }
+
   static get observedAttributes() {
-    return ['value'];
+    return ['value', 'label'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
     switch (attrName) {
       case 'value':
-        this.elems.select.setAttribute('value', newVal);
+        this.elems.select.value = newVal;
         break;
       case 'label':
-        this.elems.select.setAttribute('label', newVal);
+        this.elems.select.label = newVal;
         break;
       default:
         break;
