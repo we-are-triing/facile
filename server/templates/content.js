@@ -52,7 +52,6 @@ export default class Components extends BaseTemplate {
   loadContentDetails() {
     const labels = `
       name-label="${this.getLang(d.name)}"
-      slug-label="${this.getLang(d.slug)}" 
       path-label="${this.getLang(d.path)}"
       menu-label="${this.getLang(d.menu)}"
       tags-label="${this.getLang(d.tags)}"

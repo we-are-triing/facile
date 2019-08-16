@@ -21,7 +21,6 @@ class ContentHeader extends HTMLElement {
       <header>
         <div>
           <labeled-input class="name"></labeled-input>
-          <labeled-input class="slug"></labeled-input>
           <labeled-input class="path"></labeled-input>
           <labeled-input class="menu"></labeled-input>
         </div>
@@ -36,7 +35,6 @@ class ContentHeader extends HTMLElement {
     buildShadowRoot(html, this);
     this.elems = {
       name: this.shadowRoot.querySelector('.name'),
-      slug: this.shadowRoot.querySelector('.slug'),
       path: this.shadowRoot.querySelector('.path'),
       menu: this.shadowRoot.querySelector('.menu'),
       tags: this.shadowRoot.querySelector('tag-list'),
@@ -52,9 +50,6 @@ class ContentHeader extends HTMLElement {
     switch (e.target) {
       case this.elems.name:
         this.name = e.target.value;
-        break;
-      case this.elems.slug:
-        this.slug = e.target.value;
         break;
       case this.elems.path:
         this.path = e.target.value;
@@ -85,7 +80,7 @@ class ContentHeader extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['name-label', 'slug-label', 'path-label', 'menu-label', 'tags-label', 'publish-date-label', 'name', 'slug', 'path', 'menu', 'tags', 'publish-date'];
+    return ['name-label', 'path-label', 'menu-label', 'tags-label', 'publish-date-label', 'name', 'path', 'menu', 'tags', 'publish-date'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
@@ -93,10 +88,6 @@ class ContentHeader extends HTMLElement {
       case 'name-label':
         this.elems.name.textContent = newVal;
         this.elems.name.setAttribute('placeholder', newVal);
-        break;
-      case 'slug-label':
-        this.elems.slug.textContent = newVal;
-        this.elems.slug.setAttribute('placeholder', newVal);
         break;
       case 'path-label':
         this.elems.path.textContent = newVal;
@@ -116,9 +107,6 @@ class ContentHeader extends HTMLElement {
       case 'name':
         this.elems.name.setAttribute('value', newVal);
         break;
-      case 'slug':
-        this.elems.slug.setAttribute('value', newVal);
-        break;
       case 'path':
         this.elems.path.setAttribute('value', newVal);
         break;
@@ -137,7 +125,7 @@ class ContentHeader extends HTMLElement {
         } else {
           const today = new Date();
           const pub = new Date(newVal);
-          if (pub.getTime() > today.getTime()) {
+          if (pub.getTime() > today.getTime() && pub.getTime() > 0) {
             this.elems.status.status = 'scheduled';
           } else {
             this.elems.status.status = 'published';
@@ -159,16 +147,6 @@ class ContentHeader extends HTMLElement {
       this.setAttribute('name-label', val);
     } else {
       this.removeAttribute('name-label');
-    }
-  }
-  get slugLabel() {
-    return this.getAttribute('slug-label');
-  }
-  set slugLabel(val) {
-    if (val) {
-      this.setAttribute('slug-label', val);
-    } else {
-      this.removeAttribute('slug-label');
     }
   }
   get pathLabel() {
@@ -220,16 +198,6 @@ class ContentHeader extends HTMLElement {
       this.setAttribute('name', val);
     } else {
       this.removeAttribute('name');
-    }
-  }
-  get slug() {
-    return this.getAttribute('slug');
-  }
-  set slug(val) {
-    if (val) {
-      this.setAttribute('slug', val);
-    } else {
-      this.removeAttribute('slug');
     }
   }
   get path() {

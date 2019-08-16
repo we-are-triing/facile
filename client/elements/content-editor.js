@@ -34,14 +34,13 @@ class ContentEditor extends HTMLElement {
 
   handleChange(e) {
     this.name = e.target.name;
-    this.slug = e.target.slug;
     this.path = e.target.path;
     this.menu = e.target.menu;
     this.tags = e.target.tags;
     this.publishDate = e.target.publishDate;
 
     const data = this.buildData(this);
-    if (this.name && this.slug) {
+    if (this.name) {
       this.send(data);
     }
   }
@@ -51,7 +50,6 @@ class ContentEditor extends HTMLElement {
     obj.meta = {
       name: this.name,
       type: this.type,
-      slug: this.slug,
       path: this.path ? this.path.split('/') : [],
       menu: this.menu ? this.menu.split('/') : [],
       tags: this.tags ? this.tags.split(',') : [],
@@ -73,10 +71,12 @@ class ContentEditor extends HTMLElement {
 
   getItems(elem) {
     return [...elem.children].reduce(
-      (a, n) => {
+      (a, n, i, arr) => {
         if (n.localName === 'form-region') {
           a.regions.push(this.getRegions(n));
           return a;
+        } else if (i === arr.length - 1 && a.regions.length === 0) {
+          delete a.regions;
         }
         let name = n.textContent;
         if (n.localName === `form-set`) {
@@ -94,16 +94,13 @@ class ContentEditor extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['name-label', 'slug-label', 'path-label', 'menu-label', 'tags-label', 'publish-date-label', 'name', 'slug', 'path', 'menu', 'tags', 'publish-date'];
+    return ['name-label', 'path-label', 'menu-label', 'tags-label', 'publish-date-label', 'name', 'path', 'menu', 'tags', 'publish-date'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
     switch (attrName) {
       case 'name-label':
         this.elems.header.setAttribute('name-label', newVal);
-        break;
-      case 'slug-label':
-        this.elems.header.setAttribute('slug-label', newVal);
         break;
       case 'path-label':
         this.elems.header.setAttribute('path-label', newVal);
@@ -119,9 +116,6 @@ class ContentEditor extends HTMLElement {
         break;
       case 'name':
         this.elems.header.setAttribute('name', newVal);
-        break;
-      case 'slug':
-        this.elems.header.setAttribute('slug', newVal);
         break;
       case 'path':
         this.elems.header.setAttribute('path', newVal);
@@ -148,16 +142,6 @@ class ContentEditor extends HTMLElement {
       this.setAttribute('name-label', val);
     } else {
       this.removeAttribute('name-label');
-    }
-  }
-  get slugLabel() {
-    return this.getAttribute('slug-label');
-  }
-  set slugLabel(val) {
-    if (val) {
-      this.setAttribute('slug-label', val);
-    } else {
-      this.removeAttribute('slug-label');
     }
   }
   get pathLabel() {
@@ -219,16 +203,6 @@ class ContentEditor extends HTMLElement {
       this.setAttribute('name', val);
     } else {
       this.removeAttribute('name');
-    }
-  }
-  get slug() {
-    return this.getAttribute('slug');
-  }
-  set slug(val) {
-    if (val) {
-      this.setAttribute('slug', val);
-    } else {
-      this.removeAttribute('slug');
     }
   }
   get path() {
