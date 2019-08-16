@@ -3,9 +3,9 @@ import d from '../data/facile-dictionary.js';
 import {primitives, regions, mapToString} from '../../isomorphic/types.js';
 
 export default class Content extends BaseTemplate {
-  constructor({navigation, lang = `eng`, template, contentList, content = {}, templateList}) {
+  constructor({navigation, lang = `eng`, template, contentList, content, templateList}) {
     super(lang);
-    this.content = this.combine(content, template);
+    this.content = content ? this.combine(content, template) : template;
     this.list = contentList;
     this.templateList = templateList;
     this.createParts(navigation);
