@@ -46,7 +46,7 @@ class FormObject extends HTMLElement {
   attributeChangedCallback(attrName, oldVal, newVal) {
     switch (attrName) {
       case 'value':
-        this.elems.input.setAttribute('value', newVal);
+        this.elems.input.value = newVal;
         break;
       default:
         break;

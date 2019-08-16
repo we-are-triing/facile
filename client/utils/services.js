@@ -20,7 +20,6 @@ const send = async (item, route, id) => {
     path = `${storeRoot}/${route}/update`;
   }
   const body = JSON.stringify(item);
-  console.log(item);
   const res = await fetch(path, {
     ...fetchOptions,
     method: 'POST',

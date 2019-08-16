@@ -26,7 +26,7 @@ export const primitives = {
   },
   object: {
     label: 'object',
-    definition: 'a json object { prop: val }',
+    definition: 'a json object { prop: value }',
     handler: 'form-object'
   },
   region: {
@@ -70,59 +70,62 @@ export const regions = {
   }
 };
 
-const mapValues = ({type, name, val = ''}) => ({tag: primitives[type].handler, type, name, val});
+const strEsc = str => str.replace(/"/gi, '&quot;');
+
+const mapValues = ({type, name, value = ''}) => ({tag: primitives[type].handler, type, name, value});
 
 export const mapToString = v => {
-  const {tag, name, val, type} = mapValues(v);
+  const {tag, name, value, type} = mapValues(v);
   if (type === 'region') {
     const {components, region} = v;
-    return mapRegionToString({tag, name, components, region});
+    return mapRegionToString({tag, name, components, region, value});
   }
   if (type === 'set') {
     const {set} = v;
-    return mapSetToString({tag, name, set});
+    return mapSetToString({tag, name, set, value});
   }
-  const escv = val.replace(/"/gi, '"');
+  const escv = strEsc(value);
   return `<${tag}${escv !== '' ? ` value="${escv}"` : ''}>${name}</${tag}>`;
 };
 
 export const mapToElement = v => {
-  const {tag, name, val, type} = mapValues(v);
+  const {tag, name, value, type} = mapValues(v);
   if (type === 'region') {
     const {components, region} = v;
-    return mapRegionToElement({tag, name, val, components, region});
+    return mapRegionToElement({tag, name, value, components, region});
   }
   if (type === 'set') {
     const {set} = v;
-    return mapSetToElement({tag, name, val, set});
+    return mapSetToElement({tag, name, value, set});
   }
   const elem = document.createElement(tag);
-  if (val) {
-    elem.value = val;
+  if (value) {
+    elem.value = value;
   }
   elem.textContent = name;
   return elem;
 };
 
-export const mapRegionToString = ({tag, name, components, region}) => {
+export const mapRegionToString = ({tag, name, components, region, value}) => {
   return `<${tag} name="${name}" type="${region}" components="${components.join(',')}"></${tag}>`;
 };
 
-export const mapRegionToElement = ({tag, name, components, region}) => {
+export const mapRegionToElement = ({tag, name, components, region, value}) => {
   const elem = document.createElement(tag);
   elem.setAttribute('name', name);
   elem.setAttribute('type', region);
   elem.setAttribute('components', components.join(','));
   return elem;
 };
-export const mapSetToString = ({tag, name, set}) => {
-  return `<${tag} label="${name}">
+export const mapSetToString = ({tag, name, set, value}) => {
+  return `<${tag} label="${name}" value="${value}">
     ${set.map(item => `<option value="${item}">${item}</option>`).join('')}
   </${tag}>`;
 };
 
-export const mapSetToElement = ({tag, name, set}) => {
+export const mapSetToElement = ({tag, name, set, value}) => {
   const elem = document.createElement(tag);
+  elem.value = value;
   elem.setAttribute('label', name);
   elem.innerHTML = set.map(item => `<option value="${item}">${item}</option>`);
   return elem;

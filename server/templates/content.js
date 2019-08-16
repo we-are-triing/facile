@@ -2,11 +2,10 @@ import BaseTemplate from './base.js';
 import d from '../data/facile-dictionary.js';
 import {primitives, regions, mapToString} from '../../isomorphic/types.js';
 
-export default class Components extends BaseTemplate {
+export default class Content extends BaseTemplate {
   constructor({navigation, lang = `eng`, template, contentList, content = {}, templateList}) {
     super(lang);
-    this.template = template;
-    this.content = content;
+    this.content = this.combine(content, template);
     this.list = contentList;
     this.templateList = templateList;
     this.createParts(navigation);
@@ -21,6 +20,22 @@ export default class Components extends BaseTemplate {
         templates: this.templateList.map(({meta}) => ({type: meta.type}))
       };
     }
+  }
+
+  combine(content, template) {
+    const values = template.values.map(val => {
+      if (typeof val.type === 'region') {
+        val.value = content.regions.find(region => val.name === region.meta.name).regions;
+      } else {
+        val.value = content.values[val.name];
+      }
+      return val;
+    });
+
+    return {
+      meta: {...template.meta, ...content.meta},
+      values
+    };
   }
 
   populatePage() {
@@ -50,6 +65,12 @@ export default class Components extends BaseTemplate {
   }
 
   loadContentDetails() {
+    const getMeta = meta => `name="${meta.name}"
+      path="${meta.path}"
+      menu="${meta.menu}"
+      tags="${meta.tags}"
+      publishDate="${meta.publishDate}"`;
+
     const labels = `
       name-label="${this.getLang(d.name)}"
       path-label="${this.getLang(d.path)}"
@@ -57,13 +78,15 @@ export default class Components extends BaseTemplate {
       tags-label="${this.getLang(d.tags)}"
       publish-date-label="${this.getLang(d.publish_date)}"
       `;
-    if (this.template) {
+    if (this.content) {
+      const inner = this.content.values.map(val => mapToString(val)).join('');
       return `
         <content-editor 
           ${labels}
-          type="${this.template.meta.type}"
+          type="${this.content.meta.type}"
+          ${getMeta(this.content.meta)}
           >
-          ${this.template.values.map(val => mapToString(val)).join('')}
+          ${inner}
         </content-editor>
       `;
     }

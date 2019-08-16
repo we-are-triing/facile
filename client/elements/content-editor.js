@@ -33,11 +33,11 @@ class ContentEditor extends HTMLElement {
   }
 
   handleChange(e) {
-    this.name = e.target.name;
-    this.path = e.target.path;
-    this.menu = e.target.menu;
-    this.tags = e.target.tags;
-    this.publishDate = e.target.publishDate;
+    this.name = this.elems.header.name;
+    this.path = this.elems.header.path;
+    this.menu = this.elems.header.menu;
+    this.tags = this.elems.header.tags;
+    this.publishDate = this.elems.header.publishDate;
 
     const data = this.buildData(this);
     if (this.name) {
@@ -90,6 +90,7 @@ class ContentEditor extends HTMLElement {
   }
 
   send(data) {
+    console.log(data);
     sendContent(data);
   }
 

@@ -1,6 +1,7 @@
 import buildShadowRoot from './buildShadowRoot.js';
 import {downline, down} from '../utils/formattedText.js';
 import debounce from '../utils/debounce.js';
+import {sendComponent} from '../utils/services.js';
 
 class AnEditor extends HTMLElement {
   constructor() {
@@ -36,23 +37,52 @@ class AnEditor extends HTMLElement {
       input: this.shadowRoot.querySelector('textarea'),
       output: this.shadowRoot.querySelector('div')
     };
-    this.debouncedHandleText = debounce(this.handleText).bind(this);
-    this.elems.input.addEventListener('keyup', this.debouncedHandleText);
+    this.debouncedSend = debounce(this.send).bind(this);
+    this.elems.input.addEventListener('keyup', this.debouncedSend);
   }
 
-  async handleText(e) {
+  async handleText() {
     // TODO: figure out why this is behaving poorly through the debounce.
     let func = this.type === 'inline' ? downline : down;
     this.output = await func(this.elems.input.value);
     this.elems.output.innerHTML = this.output.html;
     this.elems.input.value = this.output.markdown;
+  }
 
+  async send() {
+    this.handleText();
     this.dispatchEvent(
       new CustomEvent('change', {
         bubbles: true,
         detail: this.output
       })
     );
+  }
+
+  static get observedAttributes() {
+    return ['value'];
+  }
+
+  attributeChangedCallback(attrName, oldVal, newVal) {
+    switch (attrName) {
+      case 'value':
+        this.elems.input.value = newVal;
+        this.handleText();
+        break;
+      default:
+        break;
+    }
+  }
+
+  get value() {
+    return this.getAttribute('value');
+  }
+  set value(val) {
+    if (val) {
+      this.setAttribute('value', val);
+    } else {
+      this.removeAttribute('value');
+    }
   }
 
   get type() {
