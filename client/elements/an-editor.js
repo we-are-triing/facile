@@ -1,5 +1,5 @@
 import buildShadowRoot from './buildShadowRoot.js';
-import {downline, down} from '../utils/formattedText.js';
+import {downline, down, upline, up} from '../utils/formattedText.js';
 import debounce from '../utils/debounce.js';
 import {sendComponent} from '../utils/services.js';
 
@@ -37,24 +37,37 @@ class AnEditor extends HTMLElement {
       input: this.shadowRoot.querySelector('textarea'),
       output: this.shadowRoot.querySelector('div')
     };
-    this.debouncedSend = debounce(this.send).bind(this);
+    this.output = {};
+    this.debouncedSend = debounce(this.send, 500).bind(this);
     this.elems.input.addEventListener('keyup', this.debouncedSend);
+    this.elems.input.addEventListener('change', this.send.bind(this));
+    this.pause = false;
   }
 
   async handleText() {
     // TODO: figure out why this is behaving poorly through the debounce.
-    let func = this.type === 'inline' ? downline : down;
-    this.output = await func(this.elems.input.value);
-    this.elems.output.innerHTML = this.output.html;
-    this.elems.input.value = this.output.markdown;
+    let u, d;
+    if (this.type === 'inline') {
+      u = upline;
+      d = downline;
+    } else {
+      u = up;
+      d = down;
+    }
+    const markdown = await u(this.elems.input.value);
+    this.output.markdown = markdown;
+    this.elems.input.value = markdown;
+    const html = await d(markdown);
+    this.output.html = html;
+    this.elems.output.innerHTML = html;
   }
 
   async send() {
-    this.handleText();
+    await this.handleText();
+    this.pause = true;
     this.dispatchEvent(
-      new CustomEvent('change', {
-        bubbles: true,
-        detail: this.output
+      new Event('change', {
+        bubbles: true
       })
     );
   }
@@ -66,8 +79,11 @@ class AnEditor extends HTMLElement {
   attributeChangedCallback(attrName, oldVal, newVal) {
     switch (attrName) {
       case 'value':
-        this.elems.input.value = newVal;
-        this.handleText();
+        if (!this.pause) {
+          this.elems.input.value = newVal;
+          this.handleText();
+        }
+        this.pause = false;
         break;
       default:
         break;

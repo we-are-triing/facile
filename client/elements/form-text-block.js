@@ -22,11 +22,10 @@ class FormTextBlock extends HTMLElement {
   }
 
   handleChange(e) {
-    this.value = e.detail.markdown;
+    this.value = this.elems.editor.output.markdown;
     this.dispatchEvent(
-      new CustomEvent('change', {
-        bubbles: true,
-        detail: e.detail
+      new Event('change', {
+        bubbles: true
       })
     );
   }
