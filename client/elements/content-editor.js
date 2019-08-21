@@ -85,10 +85,7 @@ class ContentEditor extends HTMLElement {
         if (n.localName === 'region-item') {
           a.meta.icon = n.icon;
         }
-        a.values[name] = {
-          value: n.value ? n.value.toString() : '',
-          type: n.localName
-        };
+        a.values[name] = n.value ? n.value.toString() : '';
         return a;
       },
       {meta: {type: elem.type}, regions: [], values: {}}

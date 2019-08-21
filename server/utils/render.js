@@ -33,7 +33,7 @@ export const mapToString = async v => {
     return mapSetToString({tag, name, set, value});
   }
 
-  const escv = strEsc(value.value);
+  const escv = strEsc(value);
   return `<${tag}${escv !== '' ? ` value="${escv}"` : ''}>${name}</${tag}>`;
 };
 const mapRegionToString = async ({tag, name, components, region, value}) => {
@@ -47,7 +47,7 @@ const mapRegionToString = async ({tag, name, components, region, value}) => {
   </${tag}>`;
 };
 const mapSetToString = ({tag, name, set, value}) => {
-  return `<${tag} label="${name}" value="${value.value}">
+  return `<${tag} label="${name}" value="${value}">
     ${set.map(item => `<option value="${item}">${item}</option>`).join('')}
   </${tag}>`;
 };
