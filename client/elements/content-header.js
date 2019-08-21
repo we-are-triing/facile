@@ -125,6 +125,7 @@ class ContentHeader extends HTMLElement {
         } else {
           const today = new Date();
           const pub = new Date(newVal);
+          this.elems.date.value = pub;
           if (pub.getTime() > today.getTime() && pub.getTime() > 0) {
             this.elems.status.status = 'scheduled';
           } else {

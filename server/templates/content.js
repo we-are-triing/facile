@@ -52,7 +52,7 @@ export default class Content extends BaseTemplate {
       path="${meta.path}"
       menu="${meta.menu}"
       tags="${meta.tags}"
-      publishDate="${meta.publishDate}"`;
+      publish-date="${meta.publish_date}"`;
 
     const labels = `
       name-label="${this.getLang(d.name)}"

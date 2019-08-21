@@ -72,7 +72,7 @@ class LabeledInput extends HTMLElement {
         this.elems.input.setAttribute('placeholder', newVal);
         break;
       case 'value':
-        this.elems.input.value = newVal;
+        this.elems.input.value = this.type !== 'date' ? newVal : newVal.split('T')[0];
         break;
       default:
         break;
