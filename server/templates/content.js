@@ -1,11 +1,11 @@
 import BaseTemplate from './base.js';
 import d from '../data/facile-dictionary.js';
-import {primitives, regions, mapToString} from '../../isomorphic/types.js';
+import {combine, mapToString} from '../utils/render.js';
 
 export default class Content extends BaseTemplate {
   constructor({navigation, lang = `eng`, template, contentList, content, templateList}) {
     super(lang);
-    this.content = content ? this.combine(content, template) : template;
+    this.content = content ? combine(content, template) : template;
     this.list = contentList;
     this.templateList = templateList;
     this.createParts(navigation);
@@ -14,7 +14,6 @@ export default class Content extends BaseTemplate {
     this.bodyClass = 'fixed';
     this.head.title = this.getLang(d.content);
     this.header = this.populateHeader({navigation});
-    this.page = this.populatePage();
     if (this.templateList) {
       this.stiva = {
         templates: this.templateList.map(({meta}) => ({type: meta.type}))
@@ -22,23 +21,7 @@ export default class Content extends BaseTemplate {
     }
   }
 
-  combine(content, template) {
-    const values = template.values.map(val => {
-      if (typeof val.type === 'region') {
-        val.value = content.regions.find(region => val.name === region.meta.name).regions;
-      } else {
-        val.value = content.values[val.name];
-      }
-      return val;
-    });
-
-    return {
-      meta: {...template.meta, ...content.meta},
-      values
-    };
-  }
-
-  populatePage() {
+  async populatePage() {
     const html = /*html*/ `
       <split-layout fixed>
         <section>
@@ -50,7 +33,7 @@ export default class Content extends BaseTemplate {
           </filter-list>
         </section>
         <section>
-          ${this.loadContentDetails()}
+          ${await this.loadContentDetails()}
         </section>
       </split-layout>
       `;
@@ -64,7 +47,7 @@ export default class Content extends BaseTemplate {
     return this.templateList.map(({meta}) => `<nav-item vertical href="/content/new/${meta.type}">${meta.type}</nav-item>`).join('');
   }
 
-  loadContentDetails() {
+  async loadContentDetails() {
     const getMeta = meta => `name="${meta.name}"
       path="${meta.path}"
       menu="${meta.menu}"
@@ -79,14 +62,15 @@ export default class Content extends BaseTemplate {
       publish-date-label="${this.getLang(d.publish_date)}"
       `;
     if (this.content) {
-      const inner = this.content.values.map(val => mapToString(val)).join('');
+      const inner = await Promise.all(this.content.values.map(async val => mapToString(val)));
+      const inn = inner.join('');
       return `
         <content-editor 
           ${labels}
           type="${this.content.meta.type}"
           ${getMeta(this.content.meta)}
           >
-          ${inner}
+          ${inn}
         </content-editor>
       `;
     }

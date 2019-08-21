@@ -13,11 +13,10 @@ export default class Components extends BaseTemplate {
     this.bodyClass = 'fixed';
     this.head.title = this.component.meta ? this.component.meta.type : this.getLang(d.components);
     this.header = this.populateHeader({navigation});
-    this.page = this.populatePage();
     this.stiva = {primitives, regions, components: this.components};
   }
 
-  populatePage() {
+  async populatePage() {
     return `
       <split-layout fixed>
         <section>

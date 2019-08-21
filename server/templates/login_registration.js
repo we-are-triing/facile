@@ -10,9 +10,8 @@ export default class LoginRegistration extends BaseTemplate {
     const title = `${this.getLang(d.facile_studio)} Login / Registration`;
     this.head.title = title;
     this.head.content = `<meta property="og:title" content="${title}">`;
-    this.page = this.populatePage();
   }
-  populatePage() {
+  async populatePage() {
     return `
       <site-language language="${this.lang}"></site-language>
       <h1>${this.getLang(d.welcome_to)} ${this.getLang(d.facile_studio)}!</h1>

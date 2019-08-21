@@ -8,11 +8,11 @@ export default class BaseTemplate {
     this.lang = lang;
     this.bodyClass = '';
   }
-  render() {
+  async render() {
     const body = `
       ${this.header}
       <main>
-        ${this.page}
+        ${await this.populatePage()}
       </main>
       ${this.footer}
     `;

@@ -82,7 +82,13 @@ class ContentEditor extends HTMLElement {
         if (n.localName === `form-set`) {
           name = n.label;
         }
-        a.values[name] = n.value ? n.value.toString() : '';
+        if (n.localName === 'region-item') {
+          a.meta.icon = n.icon;
+        }
+        a.values[name] = {
+          value: n.value ? n.value.toString() : '',
+          type: n.localName
+        };
         return a;
       },
       {meta: {type: elem.type}, regions: [], values: {}}
@@ -90,7 +96,6 @@ class ContentEditor extends HTMLElement {
   }
 
   send(data) {
-    console.log(data);
     sendContent(data);
   }
 

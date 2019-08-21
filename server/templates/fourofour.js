@@ -8,9 +8,8 @@ export class FourOFour extends BaseTemplate {
   createParts({navigation}) {
     this.head.title = 'Imaginary Friends';
     this.header = this.populateHeader({navigation});
-    this.page = this.populatePage();
   }
-  populatePage() {
+  async populatePage() {
     return `
       <h1>Sorry this isn't a real page. Just a pretend one.</h1>
     `;
@@ -19,10 +18,10 @@ export class FourOFour extends BaseTemplate {
 
 let rendered;
 
-export const fof = () => {
+export const fof = async () => {
   if (typeof rendered !== 'undefined') {
     const fof = new FourOFour({navigation: header.navigation});
-    rendered = fof.render();
+    rendered = await fof.render();
   }
   return rendered;
 };

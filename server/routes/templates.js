@@ -1,8 +1,7 @@
 import Templates from '../templates/templates.js';
 import {fof} from '../templates/fourofour.js';
-import fetch from 'node-fetch';
 import header from '../data/header.js';
-import {getTemplateList, getSimpleComponentList, dataDomain} from './shared.js';
+import {getTemplateList, getSimpleComponentList} from './shared.js';
 
 export default server => {
   server.route([
@@ -52,8 +51,7 @@ export default server => {
 
           const components = await getSimpleComponentList();
 
-          const raw = await fetch(`${dataDomain}/template/${type}`);
-          const [template] = await raw.json();
+          const template = await getTemplateByType(type);
 
           const t = new Templates({navigation: header.navigation, templates, components, template, lang});
           return t.render();

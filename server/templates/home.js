@@ -8,10 +8,10 @@ export default class Home extends BaseTemplate {
   createParts({navigation, content, title}) {
     this.head.title = title;
     this.header = this.populateHeader({navigation});
-    this.page = this.populatePage(content);
+    this.content = content;
   }
-  populatePage(content) {
-    return content
+  async populatePage() {
+    return this.content
       .map(({meta, properties, content}) => {
         switch (meta.type) {
           case `title`:

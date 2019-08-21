@@ -67,7 +67,7 @@ class FormRegion extends HTMLElement {
     this.elems.showList.classList.toggle('active');
   }
 
-  addForm(e) {
+  async addForm(e) {
     e.stopPropagation();
     e.preventDefault();
     if (e.target.localName === 'item-tile') {
@@ -77,7 +77,7 @@ class FormRegion extends HTMLElement {
         this.innerHTML = ``;
       }
 
-      this.appendChild(this.createComponentFormElement(component));
+      this.appendChild(await this.createComponentFormElement(component));
 
       this.toggleList();
     }
