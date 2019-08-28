@@ -24,8 +24,22 @@ export default class Media extends BaseTemplate {
         </filter-list>
         </section>
         <section>
+          ${this.media !== 'none' ? this.renderMedia() : ''}
         </section>
       </split-layout>
       `;
+  }
+
+  renderMedia() {
+    if (this.media === 'new') {
+      return `<media-upload></media-upload>`;
+    }
+    const {filename, meta, tags, name, master, derivatives} = this.media;
+    return `<media-editor filename="${filename}" name="${name}" tags="${tags.slice(',')}" master="${master}">
+      ${Object.keys(meta)
+        .map(key => `<media-meta key="${key}">${meta[key]}</media-meta>`)
+        .join('')}
+      ${derivatives.map(item => `<media-derivative filename="${item.filename}">${item.name}</media-derivative>`).join('')}
+    </media-editor>`;
   }
 }

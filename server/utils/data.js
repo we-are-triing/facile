@@ -41,12 +41,16 @@ export const getContentByName = async name => {
   return content[0];
 };
 
-export const getMediaList = async () => {
+const getFilteredList = async id => {
   const raw = await fetch(`${dataDomain}/media`);
   const content = await raw.json();
-  const filtered = content.filter(item => item.master === 'self');
+  // TODO: this would be faster through mongo.
+  const filtered = content.filter(item => item.master === id);
   return filtered.map(({filename, tags, name}) => ({filename, tags, name}));
 };
+
+export const getMediaList = async () => getFilteredList('self');
+export const getDerivativeMedia = async filename => getFilteredList(filename);
 
 export const getMediaByFilename = async filename => {
   const raw = await fetch(`${dataDomain}/media/${filename}`);

@@ -1,7 +1,7 @@
 import {fof} from '../templates/fourofour.js';
 import header from '../data/header.js';
 import Media from '../templates/media.js';
-import {getMediaByFilename, getMediaList} from '../utils/data.js';
+import {getMediaByFilename, getMediaList, getDerivativeMedia} from '../utils/data.js';
 // TODO: have a better URL strategy.
 const mediaDomain = `http://localhost:8002`;
 
@@ -45,6 +45,7 @@ export default server => {
           const {lang, filename} = req.params;
           const list = await getMediaList();
           const media = await getMediaByFilename(filename);
+          media.derivatives = await getDerivativeMedia(media.filename);
           const c = new Media({navigation: header.navigation, lang, list: list, media, baseUrl: mediaDomain});
           return c.render();
         } catch (err) {
