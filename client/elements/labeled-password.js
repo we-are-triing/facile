@@ -5,7 +5,7 @@ import './an-icon.js';
 class LabeledPassword extends HTMLElement {
   constructor() {
     super();
-    const html = `
+    const html = /* html */ `
       <style>
         :host {
           display: block;

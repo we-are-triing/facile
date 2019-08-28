@@ -14,6 +14,10 @@ class AnEditor extends HTMLElement {
         * {
           box-sizing: border-box;
         }
+        :host([color="dark"]) textarea{
+          background: var(--nero-50);
+          border: var(--border);
+        }
         section {
           display: flex;
           justify-content: space-between;
@@ -25,6 +29,9 @@ class AnEditor extends HTMLElement {
         section > div > *:first-child {
           margin-top: 0;
           padding-top: 0;
+        }
+        textarea {
+          font: inherit;
         }
       </style>
       <section>

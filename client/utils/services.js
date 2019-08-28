@@ -41,7 +41,7 @@ const del = async (type, route) => {
 export const sendComponent = async component => send(component, 'component', component.meta.type);
 export const deleteComponent = async type => del({type}, 'component');
 
-export const sendTemplate = async template => send(template, 'template', component.meta.type);
+export const sendTemplate = async template => send(template, 'template', template.meta.type);
 export const deleteTemplate = async type => del({type}, 'template');
 
 export const sendContent = async content => send(content, 'content', content.meta.name);

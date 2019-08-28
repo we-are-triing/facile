@@ -9,13 +9,19 @@ class ContentHeader extends HTMLElement {
     const html = /* html */ `
       <style>
         :host {
+          background: var(--nero-100);
+          display: block;
         }
         header {
           display: flex;
           border-bottom: var(--border);
         }
-        header div {
+        div {
           flex-basis: 50%;
+          padding: var(--spacing-200);
+        }
+        div > *:first-child {
+          margin-top: 0;
         }
       </style>
       <header>
@@ -26,8 +32,8 @@ class ContentHeader extends HTMLElement {
         </div>
         <div>
           <tag-list></tag-list>
-          <content-status></content-status>
           <labeled-input type="date" class="date"></labeled-input>
+          <content-status align="right"></content-status>
         </div>
         <slot></slot>
       </header>

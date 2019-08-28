@@ -10,7 +10,7 @@ class FormNumber extends HTMLElement {
           display: block;
         }
       </style>
-      <labeled-input type="number"><slot></slot></labeled-input>
+      <labeled-input color="dark" type="number"><slot></slot></labeled-input>
       
     `;
     buildShadowRoot(html, this);

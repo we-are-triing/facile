@@ -6,16 +6,37 @@ class RegionItem extends HTMLElement {
     const html = /* html */ `
       <style>
         :host {
+          display: block; 
+          margin: var(--spacing-400);
+         --main-color: var(--main, #ccc);
+        }
+        header {
+          display: flex;
+          align-items: center;
+          background: var(--main-color);
+          padding: var(--spacing-200);
+          color: var(--bianco);
+          border-top-right-radius: var(--br-400);
+          border-top-left-radius: var(--br-400);
         }
         section {
-          margin: var(--spacing-500);
+          border: 1px solid var(--main-color);
+          border-top: none;
+          padding: var(--spacing-300);
         }
         img {
           width: 2em;
         }
+        span {
+          font-weight: 600;
+          font-size: var(--font-size-300);
+          margin-left: var(--spacing-200);
+        }
       </style>
-      <img />
-      <span></span>
+      <header>
+        <img />
+        <span></span>
+      </header>
       <section>
         <slot></slot>
       </section>

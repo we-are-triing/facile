@@ -9,9 +9,14 @@ class FormTextBlock extends HTMLElement {
         :host {
           display: block;
         }
+        span {
+          font-weight: 600;
+          font-size: var(--font-size-300);
+          margin-top: var(--spacing-400);
+        }
       </style>
       <span><slot></slot></span>
-      <an-editor type="block"></an-editor>
+      <an-editor color="dark" type="block"></an-editor>
     `;
     buildShadowRoot(html, this);
     this.elems = {

@@ -20,7 +20,8 @@ class FormBoolean extends HTMLElement {
   }
 
   handleChange(e) {
-    this.value = e.target.checked;
+    this.doChange = false;
+    this.value = this.elems.checked;
     this.dispatchEvent(new Event('change', {bubbles: true}));
   }
 
@@ -31,7 +32,10 @@ class FormBoolean extends HTMLElement {
   attributeChangedCallback(attrName, oldVal, newVal) {
     switch (attrName) {
       case 'value':
-        this.elems.checkbox.checked = newVal;
+        if (this.doChange) {
+          this.elems.checkbox.checked = newVal;
+        }
+        this.doChange = true;
         break;
       default:
         break;

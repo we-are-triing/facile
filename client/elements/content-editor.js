@@ -18,10 +18,16 @@ class ContentEditor extends HTMLElement {
     const html = /* html */ `
       <style>
         :host {
+          display: block;
+        }
+        section {
+          padding: var(--spacing-300);
         }
       </style>
-      <content-header></content-header>
-      <slot></slot>
+      <section>
+        <content-header></content-header>
+        <slot></slot>
+      </section>
     `;
     buildShadowRoot(html, this);
     this.elems = {

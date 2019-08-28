@@ -2,7 +2,7 @@ import buildShadowRoot from './buildShadowRoot.js';
 class LabeledBadge extends HTMLElement {
   constructor() {
     super();
-    const html = `
+    const html = /* html */ `
       <style>
         :host {
           --label: var(--font-size-300);

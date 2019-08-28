@@ -12,19 +12,25 @@ class ContentStatus extends HTMLElement {
           --status: var(--draft);
           display: flex;
           align-items: center;
+          font-size: var(--font-size-300);
+          margin: var(--spacing-100);
         }
         .dot {
           display: block;
-          height: 0.8em;
-          width: 0.8em;
+          height: 1em;
+          width: 1em;
           background: var(--status);
           border-radius: 50%;
+          margin-right: var(--spacing-100);
         }
         :host([status="scheduled"]){
           --status: var(--scheduled);
         }
         :host([status="published"]){
           --status: var(--published);
+        }
+        :host([align="right"]){
+          justify-content: flex-end;
         }
       </style>
       <span class="dot"></span>
@@ -60,6 +66,16 @@ class ContentStatus extends HTMLElement {
       this.setAttribute('status', val);
     } else {
       this.removeAttribute('status');
+    }
+  }
+  get align() {
+    return this.getAttribute('align');
+  }
+  set align(val) {
+    if (val) {
+      this.setAttribute('align', val);
+    } else {
+      this.removeAttribute('align');
     }
   }
 }

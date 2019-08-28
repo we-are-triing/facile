@@ -9,6 +9,14 @@ class ItemTile extends HTMLElement {
           display: block;
           position: relative;
         }
+
+        :host([type="small"]) a {
+          padding: var(--spacing-500);
+        }
+        :host([type="small"]) p {
+          margin: var(--spacing-100) 0;
+        }
+
         a {
           display: block;
           color: var(--nero);
@@ -25,6 +33,7 @@ class ItemTile extends HTMLElement {
         an-icon { 
           display: none;
           position: absolute;
+          cursor: pointer;
           right: 0;
           top: 0;
         }
@@ -94,6 +103,26 @@ class ItemTile extends HTMLElement {
       this.setAttribute('href', val);
     } else {
       this.removeAttribute('href');
+    }
+  }
+  get type() {
+    return this.getAttribute('type');
+  }
+  set type(val) {
+    if (val) {
+      this.setAttribute('type', val);
+    } else {
+      this.removeAttribute('type');
+    }
+  }
+  get closeable() {
+    return this.getAttribute('closeable');
+  }
+  set closeable(val) {
+    if (val) {
+      this.setAttribute('closeable', val);
+    } else {
+      this.removeAttribute('closeable');
     }
   }
 }

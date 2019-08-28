@@ -8,6 +8,7 @@ class CheckBox extends HTMLElement {
           :host {
             display: inline-block;
             --background: var(--white, #fff);
+            margin: var(--spacing-200) 0;
           }
           * {
             box-sizing: border-box;
@@ -33,6 +34,7 @@ class CheckBox extends HTMLElement {
             border: var(--border);
             border-radius: var(--br-400);
             cursor: pointer;
+            user-select: none;
           }
           :host([checked]) label {
             --background: var(--main);

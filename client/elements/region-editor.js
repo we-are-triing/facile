@@ -21,11 +21,12 @@ class RegionEditor extends HTMLElement {
           display: flex;
           justify-content: flex-start;
           flex-wrap: wrap;
-          border: var(--border);
         }
+        
         ::slotted(item-tile), 
         item-tile {
           width: 120px;
+          margin-right: var(--spacing-200);
         }
         .add-area {
           position: relative;
@@ -64,7 +65,7 @@ class RegionEditor extends HTMLElement {
         <section>
           <slot></slot>
           <div class="add-area">
-            <item-tile new src="/static/assets/add.svg"><!-- TODO -->The label</item-tile>
+            <item-tile new type="small" src="/static/assets/add.svg">a label</item-tile>
             <div class="components">
               <ul></ul>
             </div>

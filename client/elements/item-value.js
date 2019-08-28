@@ -15,9 +15,6 @@ class ItemValue extends HTMLElement {
           padding: var(--spacing-300);
           border-bottom: var(--border);
         }
-        :host(:last-of-type){
-          border-bottom: none;
-        }
         .labels {
           display: flex;
           align-items: center;
@@ -33,6 +30,17 @@ class ItemValue extends HTMLElement {
         section.edit.active {
           display: flex;
           align-items: center;
+        }
+        .labels {
+          display: flex;
+          align-items: center;
+          margin: var(--spacing-300) 0;
+        }
+        .labels > * {
+          margin-right: var(--spacing-200);
+        }
+        .labels labeled-input {
+          margin-top: 0;
         }
         section.view, 
         section.edit {

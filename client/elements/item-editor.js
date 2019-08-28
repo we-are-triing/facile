@@ -28,6 +28,13 @@ class ItemEditor extends HTMLElement {
         .new {
           display: flex;
           align-items: center;
+          margin: var(--spacing-300) 0;
+        }
+        .new > * {
+          margin-right: var(--spacing-200);
+        }
+        .new labeled-input {
+          margin-top: 0;
         }
         .create {
           display: none;
@@ -116,8 +123,8 @@ class ItemEditor extends HTMLElement {
     this.titleValue = e.detail.title;
     this.send();
   }
-  handleCreate(e) {
-    this.send(true);
+  async handleCreate(e) {
+    await this.send(true);
     window.location = `/${this.type}/${this.titleValue}`;
   }
   async handleUpload(e) {

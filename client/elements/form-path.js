@@ -10,7 +10,7 @@ class FormPath extends HTMLElement {
           display: block;
         }
       </style>
-      <labeled-input><slot></slot></labeled-input>
+      <labeled-input color="dark"><slot></slot></labeled-input>
       
     `;
     buildShadowRoot(html, this);

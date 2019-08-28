@@ -8,6 +8,7 @@ class TagList extends HTMLElement {
       <style>
         :host {
           display: block;
+          margin-top: var(--spacing-300);
         }
         .container {
           display: flex;
@@ -27,6 +28,10 @@ class TagList extends HTMLElement {
           display: flex;
           flex-wrap: wrap;
           align-items: center;
+        }
+        span {
+          font-weight: 600;
+          font-size: var(--font-size-300);
         }
       </style>
       <div class="container">

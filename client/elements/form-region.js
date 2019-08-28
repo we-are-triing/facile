@@ -11,6 +11,7 @@ class FormRegion extends HTMLElement {
       <style>
         :host {
           display: block;
+          margin-top: var(--spacing-300);
         }
         section {
           border: var(--border);
@@ -18,6 +19,11 @@ class FormRegion extends HTMLElement {
         :host([type="fixed"]) .add,
         :host([type="static"]) .add {
           display: none;
+        }
+        .name {
+          font-weight: 600;
+          font-size: var(--font-size-300);
+          margin-top: var(--spacing-400);
         }
         .showList {
           display: none;

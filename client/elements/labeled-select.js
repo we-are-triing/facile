@@ -20,6 +20,11 @@ class LabeledSelect extends HTMLElement {
           font-size: 2em;
           border-radius: 0;
         }
+        label {
+          font-weight: 600;
+          font-size: var(--font-size-300);
+          margin-top: var(--spacing-400);
+        }
         select {
           font-size: inherit;
           padding: var(--spacing-100) var(--spacing-200);
@@ -29,6 +34,7 @@ class LabeledSelect extends HTMLElement {
           font-weight: 100;
           color: inherit;
           width: 100%;
+          background: var(--nero-50);
         }
         select::placeholder {
           color: var(--nero-300);

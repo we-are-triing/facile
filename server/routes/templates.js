@@ -1,7 +1,7 @@
 import Templates from '../templates/templates.js';
 import {fof} from '../templates/fourofour.js';
 import header from '../data/header.js';
-import {getTemplateList, getSimpleComponentList} from './shared.js';
+import {getTemplateList, getSimpleComponentList, getTemplateByType} from './shared.js';
 
 export default server => {
   server.route([

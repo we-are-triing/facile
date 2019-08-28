@@ -8,9 +8,14 @@ class LabeledInput extends HTMLElement {
       <style>
         :host {
           display: block;
+          margin-top: var(--spacing-300);
         }
         :host([no-label]) label{
           display: none;
+        }
+        :host([color="dark"]) input{
+          background: var(--nero-50);
+          border: var(--border);
         }
         * {
           box-sizing: border-box;
@@ -22,6 +27,11 @@ class LabeledInput extends HTMLElement {
         }
         :host([large]) input{
           font-size: 2em;
+        }
+        label {
+          font-weight: 600;
+          font-size: var(--font-size-300);
+          margin-top: var(--spacing-400);
         }
         input {
           font-size: inherit;
