@@ -4,19 +4,24 @@ import './labeled-input.js';
 class FormObject extends HTMLElement {
   constructor() {
     super();
-    const html = `
+    const html = /* html */ `
       <style>
         :host {
           display: block;
         }
         span {
           display: block;
+          font-weight: 600;
+          font-size: var(--font-size-300);
+          margin-top: var(--spacing-400);
         }
         textarea {
           width: 80%;
           font-family: var(--mono);
           min-height: 10em;
           font-size: var(--font-size-500);
+          background: var(--nero-50);
+          border: var(--border);
         }
       </style>
       <span><slot></slot></span>

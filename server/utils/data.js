@@ -1,6 +1,7 @@
 import fetch from 'node-fetch';
 
 export const dataDomain = `http://api:8001`;
+export const mediaDomain = `http://media:8002`;
 
 export const getSimpleComponentList = async () => {
   const temp = await getComponentList();
@@ -36,6 +37,19 @@ export const getContentList = async () => {
 };
 export const getContentByName = async name => {
   const raw = await fetch(`${dataDomain}/content/${name}`);
+  const content = await raw.json();
+  return content[0];
+};
+
+export const getMediaList = async () => {
+  const raw = await fetch(`${dataDomain}/media`);
+  const content = await raw.json();
+  const filtered = content.filter(item => item.master === 'self');
+  return filtered.map(({filename, tags, name}) => ({filename, tags, name}));
+};
+
+export const getMediaByFilename = async filename => {
+  const raw = await fetch(`${dataDomain}/media/${filename}`);
   const content = await raw.json();
   return content[0];
 };

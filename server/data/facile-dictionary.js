@@ -160,6 +160,13 @@ export default {
     ita: ``,
     spa: ``
   },
+  new_media_item: {
+    deu: ``,
+    eng: `New Media Item`,
+    fra: ``,
+    ita: ``,
+    spa: ``
+  },
   dictionary: {
     deu: ``,
     eng: `Dictionary`,

@@ -6,6 +6,7 @@ import LoginRegistration from '../templates/login_registration.js';
 import content from './content.js';
 import templates from './templates.js';
 import components from './components.js';
+import media from './media.js';
 
 const port = process.env.PORT || 8000;
 
@@ -98,4 +99,5 @@ export default server => {
   components(server);
   templates(server);
   content(server);
+  media(server);
 };

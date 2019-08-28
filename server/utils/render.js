@@ -1,4 +1,4 @@
-import {getComponentByType} from '../routes/shared.js';
+import {getComponentByType} from './data.js';
 import {mapValues} from '../../isomorphic/types.js';
 
 const strEsc = str => (str ? str.replace(/"/gi, '&quot;') : '');

@@ -1,7 +1,7 @@
 import Components from '../templates/components.js';
 import {fof} from '../templates/fourofour.js';
 import fetch from 'node-fetch';
-import {getSimpleComponentList, dataDomain} from './shared.js';
+import {getSimpleComponentList, dataDomain} from '../utils/data.js';
 import header from '../data/header.js';
 
 export default server => {
