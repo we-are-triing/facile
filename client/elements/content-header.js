@@ -2,6 +2,7 @@ import buildShadowRoot from './buildShadowRoot.js';
 import './labeled-input.js';
 import './tag-list.js';
 import './content-status.js';
+import './styled-button.js';
 
 class ContentHeader extends HTMLElement {
   constructor() {
@@ -23,10 +24,17 @@ class ContentHeader extends HTMLElement {
         div > *:first-child {
           margin-top: 0;
         }
+        styled-button {
+          display: none;
+        }
+        styled-button.active {
+          display: block;
+        }
       </style>
       <header>
         <div>
-          <labeled-input class="name"></labeled-input>
+          <labeled-input disabled class="name"></labeled-input>
+          <styled-button>save</styled-button>
           <labeled-input class="path"></labeled-input>
           <labeled-input class="menu"></labeled-input>
         </div>
@@ -46,10 +54,20 @@ class ContentHeader extends HTMLElement {
       tags: this.shadowRoot.querySelector('tag-list'),
       header: this.shadowRoot.querySelector('header'),
       date: this.shadowRoot.querySelector('.date'),
-      status: this.shadowRoot.querySelector('content-status')
+      status: this.shadowRoot.querySelector('content-status'),
+      save: this.shadowRoot.querySelector('styled-button')
     };
     this.elems.tags.addEventListener('tag-update', this.handleTags.bind(this));
     this.elems.header.addEventListener('change', this.handleChange.bind(this));
+    this.elems.save.addEventListener('click', this.handleSave.bind(this));
+  }
+
+  handleSave(e) {
+    this.dispatchEvent(
+      new Event('save', {
+        bubbles: true
+      })
+    );
   }
 
   handleChange(e) {
@@ -86,11 +104,15 @@ class ContentHeader extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['name-label', 'path-label', 'menu-label', 'tags-label', 'publish-date-label', 'name', 'path', 'menu', 'tags', 'publish-date'];
+    return ['name-label', 'new', 'path-label', 'menu-label', 'tags-label', 'publish-date-label', 'name', 'path', 'menu', 'tags', 'publish-date'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
     switch (attrName) {
+      case 'new':
+        this.elems.name.removeAttribute('disabled');
+        this.elems.save.classList.add('active');
+        break;
       case 'name-label':
         this.elems.name.textContent = newVal;
         this.elems.name.setAttribute('placeholder', newVal);
@@ -111,13 +133,13 @@ class ContentHeader extends HTMLElement {
         this.elems.date.setAttribute('placeholder', newVal);
         break;
       case 'name':
-        this.elems.name.setAttribute('value', newVal);
+        this.elems.name.value = newVal;
         break;
       case 'path':
-        this.elems.path.setAttribute('value', newVal);
+        this.elems.path.value = newVal;
         break;
       case 'menu':
-        this.elems.menu.setAttribute('value', newVal);
+        this.elems.menu.value = newVal;
         break;
       case 'tags':
         this.elems.tags.innerHTML = newVal
@@ -139,7 +161,7 @@ class ContentHeader extends HTMLElement {
           }
         }
 
-        this.elems.date.setAttribute('value', newVal);
+        this.elems.date.value = newVal;
         break;
       default:
         break;
@@ -196,7 +218,16 @@ class ContentHeader extends HTMLElement {
       this.removeAttribute('publish-date-label');
     }
   }
-
+  get new() {
+    return this.hasAttribute('new');
+  }
+  set new(val) {
+    if (val) {
+      this.setAttribute('new', '');
+    } else {
+      this.removeAttribute('new');
+    }
+  }
   get name() {
     return this.getAttribute('name');
   }

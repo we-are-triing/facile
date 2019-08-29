@@ -3,7 +3,7 @@ import buildShadowRoot from './buildShadowRoot.js';
 class AChoice extends HTMLElement {
   constructor() {
     super();
-    const html = /*html*/ `
+    const html = `
       <style>
         :host {
           display: block;

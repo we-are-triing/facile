@@ -28,14 +28,18 @@ class ContentEditor extends HTMLElement {
         <content-header></content-header>
         <slot></slot>
       </section>
+      <styled-button class="delete" destructive></styled-button>
     `;
     buildShadowRoot(html, this);
     this.elems = {
-      header: this.shadowRoot.querySelector('content-header')
+      header: this.shadowRoot.querySelector('content-header'),
+      delete: this.shadowRoot.querySelector('styled-button')
     };
     this.addEventListener('region-change', this.handleChange.bind(this));
     this.addEventListener('change', this.handleChange.bind(this));
+    this.elems.header.addEventListener('save', this.handleSave.bind(this));
     this.elems.header.addEventListener('header-change', this.handleChange.bind(this));
+    this.elems.delete.addEventListener('click', this.handleDelete.bind(this));
   }
 
   handleChange(e) {
@@ -44,11 +48,17 @@ class ContentEditor extends HTMLElement {
     this.menu = this.elems.header.menu;
     this.tags = this.elems.header.tags;
     this.publishDate = this.elems.header.publishDate;
+    this.send();
+  }
 
-    const data = this.buildData(this);
-    if (this.name) {
-      this.send(data);
-    }
+  async handleSave() {
+    await this.send(true);
+    window.location = `/content/${this.name}`;
+  }
+
+  async handleDelete() {
+    await deleteContent(this.name);
+    window.location = `/content`;
   }
 
   buildData(elem) {
@@ -98,12 +108,14 @@ class ContentEditor extends HTMLElement {
     );
   }
 
-  send(data) {
-    sendContent(data);
+  async send(force = false) {
+    if (this.name && (!this.new || force)) {
+      await sendContent(this.buildData(this));
+    }
   }
 
   static get observedAttributes() {
-    return ['name-label', 'path-label', 'menu-label', 'tags-label', 'publish-date-label', 'name', 'path', 'menu', 'tags', 'publish-date'];
+    return ['name-label', 'path-label', 'delete-label', 'menu-label', 'tags-label', 'publish-date-label', 'new', 'name', 'path', 'menu', 'tags', 'publish-date'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
@@ -123,20 +135,26 @@ class ContentEditor extends HTMLElement {
       case 'publish-date-label':
         this.elems.header.setAttribute('publish-date-label', newVal);
         break;
+      case 'delete-label':
+        this.elems.delete.textContent = newVal;
+        break;
       case 'name':
-        this.elems.header.setAttribute('name', newVal);
+        this.elems.header.name = newVal;
         break;
       case 'path':
-        this.elems.header.setAttribute('path', newVal);
+        this.elems.header.path = newVal;
         break;
       case 'menu':
-        this.elems.header.setAttribute('menu', newVal);
+        this.elems.header.menu = newVal;
         break;
       case 'tags':
-        this.elems.header.setAttribute('tags', newVal);
+        this.elems.header.tags = newVal;
         break;
       case 'publish-date':
-        this.elems.header.setAttribute('publish-date', newVal);
+        this.elems.header.publishDate = newVal;
+        break;
+      case 'new':
+        this.elems.header.setAttribute('new', newVal);
         break;
       default:
         break;
@@ -183,6 +201,16 @@ class ContentEditor extends HTMLElement {
       this.removeAttribute('tags-label');
     }
   }
+  get deleteLabel() {
+    return this.getAttribute('delete-label');
+  }
+  set deleteLabel(val) {
+    if (val) {
+      this.setAttribute('delete-label', val);
+    } else {
+      this.removeAttribute('delete-label');
+    }
+  }
   get publishDateLabel() {
     return this.getAttribute('publish-date-label');
   }
@@ -194,6 +222,16 @@ class ContentEditor extends HTMLElement {
     }
   }
 
+  get new() {
+    return this.hasAttribute('new');
+  }
+  set new(val) {
+    if (val) {
+      this.setAttribute('new', '');
+    } else {
+      this.removeAttribute('new');
+    }
+  }
   get type() {
     return this.getAttribute('type');
   }

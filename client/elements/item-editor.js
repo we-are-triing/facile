@@ -166,18 +166,21 @@ class ItemEditor extends HTMLElement {
         return item;
       })
     };
-    if (!this.new || force) {
+    if (this.titleValue && (!this.new || force)) {
       const func = this.type === 'component' ? sendComponent : sendTemplate;
       await func(obj);
     }
   }
 
   static get observedAttributes() {
-    return ['icon', 'title-label', 'property-label', 'type-label', 'tags-label', `add-tag-label`, 'tags', 'title-value', 'create-label', 'delete-label'];
+    return ['icon', 'new', 'title-label', 'property-label', 'type-label', 'tags-label', `add-tag-label`, 'tags', 'title-value', 'create-label', 'delete-label'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
     switch (attrName) {
+      case 'new':
+        this.elems.header.setAttribute('new', newVal);
+        break;
       case 'icon':
         this.elems.header.setAttribute('icon', newVal);
         break;

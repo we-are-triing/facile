@@ -10,6 +10,9 @@ class LabeledInput extends HTMLElement {
           display: block;
           margin-top: var(--spacing-300);
         }
+        :host([no-label]) {
+          margin-top: 0;
+        }
         :host([no-label]) label{
           display: none;
         }
@@ -28,10 +31,16 @@ class LabeledInput extends HTMLElement {
         :host([large]) input{
           font-size: 2em;
         }
+        :host([disabled]) input {
+          background: var(--nero-300);
+        }
+        :host([disabled][large]) input {
+          background: var(--bianco);
+          border-bottom: none;
+        }
         label {
           font-weight: 600;
           font-size: var(--font-size-300);
-          margin-top: var(--spacing-400);
         }
         input {
           font-size: inherit;
@@ -70,11 +79,18 @@ class LabeledInput extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['type', 'placeholder', 'value'];
+    return ['type', 'placeholder', 'value', 'disabled'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
     switch (attrName) {
+      case 'disabled':
+        if (newVal === '' || newVal) {
+          this.elems.input.setAttribute('disabled', '');
+        } else {
+          this.elems.input.removeAttribute('disabled');
+        }
+        break;
       case 'type':
         this.elems.input.setAttribute('type', newVal);
         break;
@@ -86,6 +102,17 @@ class LabeledInput extends HTMLElement {
         break;
       default:
         break;
+    }
+  }
+
+  get disabled() {
+    return this.hasAttribute('disabled');
+  }
+  set disabled(val) {
+    if (val) {
+      this.setAttribute('disabled', '');
+    } else {
+      this.removeAttribute('disabled');
     }
   }
 

@@ -45,7 +45,7 @@ export const sendTemplate = async template => send(template, 'template', templat
 export const deleteTemplate = async type => del({type}, 'template');
 
 export const sendContent = async content => send(content, 'content', content.meta.name);
-export const deleteContent = async content => del({name}, 'content');
+export const deleteContent = async name => del({name}, 'content');
 
 export const sendMedia = async (file, meta) => {
   const res = await fetch(`${mediaRoot}/media`, {

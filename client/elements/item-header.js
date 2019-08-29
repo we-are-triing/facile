@@ -29,7 +29,7 @@ class ItemHeader extends HTMLElement {
       <header>
         <div>
           <image-upload src="/static/assets/add.svg" ></image-upload>
-          <labeled-input class="title" large no-label></labeled-input>
+          <labeled-input disabled class="title" large no-label></labeled-input>
         </div>
         <tag-list>
         </tag-list>
@@ -76,11 +76,14 @@ class ItemHeader extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['title-label', 'tags-label', 'tags', `value`, `icon`, `add-tag-label`];
+    return ['title-label', 'tags-label', 'tags', `value`, `icon`, `add-tag-label`, `new`];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
     switch (attrName) {
+      case `new`:
+        this.elems.title.removeAttribute('disabled');
+        break;
       case 'title-label':
         this.elems.title.textContent = newVal;
         this.elems.title.setAttribute('placeholder', newVal);

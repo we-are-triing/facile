@@ -5,6 +5,7 @@ import {combine, mapToString} from '../utils/render.js';
 export default class Content extends BaseTemplate {
   constructor({navigation, lang = `eng`, template, contentList, content, templateList}) {
     super(lang);
+    this.new = !content;
     this.content = content ? combine(content, template) : template;
     this.list = contentList;
     this.templateList = templateList;
@@ -48,17 +49,18 @@ export default class Content extends BaseTemplate {
   }
 
   async loadContentDetails() {
-    const getMeta = meta => `name="${meta.name}"
-      path="${meta.path}"
-      menu="${meta.menu}"
-      tags="${meta.tags}"
-      publish-date="${meta.publish_date}"`;
+    const getMeta = meta => `name="${meta.name || ''}"
+      path="${meta.path || ''}"
+      menu="${meta.menu || ''}"
+      tags="${meta.tags || ''}"
+      publish-date="${meta.publish_date || ''}"`;
 
     const labels = `
       name-label="${this.getLang(d.name)}"
       path-label="${this.getLang(d.path)}"
       menu-label="${this.getLang(d.menu)}"
       tags-label="${this.getLang(d.tags)}"
+      delete-label="${this.getLang(d.delete)}"
       publish-date-label="${this.getLang(d.publish_date)}"
       `;
     if (this.content) {
@@ -66,6 +68,7 @@ export default class Content extends BaseTemplate {
       const inn = inner.join('');
       return `
         <content-editor 
+          ${this.new ? 'new' : ''}
           ${labels}
           type="${this.content.meta.type}"
           ${getMeta(this.content.meta)}
