@@ -70,6 +70,12 @@ export const deleteMedia = async filename => {
   return await res.json();
 };
 
+export const queryMedia = async query => {
+  const raw = await fetch(`${storeRoot}/media/q/${query}`);
+  const list = await raw.json();
+  return list.map(item => ({...item, path: `${mediaRoot}/${item.filename}`}));
+};
+
 export const getComponentData = async components => {
   const comps = components.split(',');
   const proms = comps.map(comp => get(comp, `component`));

@@ -44,10 +44,10 @@ export const primitives = {
     definition: 'an array of a type',
     handler: 'form-list'
   },
-  path: {
-    label: 'path',
-    definition: 'a path to a resource, a url or uri.',
-    handler: 'form-path'
+  media: {
+    label: 'media',
+    definition: 'a selected or added media item.',
+    handler: 'form-media'
   }
 };
 

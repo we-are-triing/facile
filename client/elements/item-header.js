@@ -28,7 +28,7 @@ class ItemHeader extends HTMLElement {
       </style>
       <header>
         <div>
-          <media-picker src="/static/assets/add.svg" ></media-picker>
+          <media-picker></media-picker>
           <labeled-input disabled class="title" large no-label></labeled-input>
         </div>
         <tag-list>
@@ -40,22 +40,17 @@ class ItemHeader extends HTMLElement {
     this.elems = {
       title: this.shadowRoot.querySelector('labeled-input'),
       tagList: this.shadowRoot.querySelector('tag-list'),
-      img: this.shadowRoot.querySelector('media-picker')
+      picker: this.shadowRoot.querySelector('media-picker')
     };
     this.elems.tagList.addEventListener('tag-update', this.handleTags.bind(this));
     this.elems.title.addEventListener('change', this.handleTitle.bind(this));
-    this.elems.img.addEventListener('upload', this.handleUpload.bind(this));
+    this.elems.picker.addEventListener('image-change', this.handleImageChange.bind(this));
   }
-  handleUpload(e) {
-    const {file, fileData, name} = e.detail;
+  handleImageChange(e) {
+    this.path = e.detail.path;
     this.dispatchEvent(
-      new CustomEvent('upload', {
-        bubbles: true,
-        detail: {
-          file,
-          fileData,
-          name
-        }
+      new Event('upload', {
+        bubbles: true
       })
     );
   }
@@ -96,7 +91,7 @@ class ItemHeader extends HTMLElement {
         this.elems.tagList.setAttribute('add-label', newVal);
         break;
       case 'icon':
-        this.elems.img.setAttribute('src', newVal);
+        this.elems.picker.setAttribute('src', newVal);
         break;
       case 'tags':
         this.elems.tagList.innerHTML = newVal
@@ -170,6 +165,16 @@ class ItemHeader extends HTMLElement {
       this.setAttribute('icon', val);
     } else {
       this.removeAttribute('icon');
+    }
+  }
+  get path() {
+    return this.getAttribute('path');
+  }
+  set path(val) {
+    if (val) {
+      this.setAttribute('path', val);
+    } else {
+      this.removeAttribute('path');
     }
   }
 }

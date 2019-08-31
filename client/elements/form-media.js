@@ -1,27 +1,28 @@
 import buildShadowRoot from './buildShadowRoot.js';
 import './labeled-input.js';
+import './media-picker.js';
 
-class FormPath extends HTMLElement {
+class FormMedia extends HTMLElement {
   constructor() {
     super();
-    const html = `
+    const html = /* html */ `
       <style>
         :host {
           display: block;
         }
       </style>
-      <labeled-input color="dark"><slot></slot></labeled-input>
+      <media-picker></media-picker>
       
     `;
     buildShadowRoot(html, this);
     this.elems = {
-      input: this.shadowRoot.querySelector('labeled-input')
+      picker: this.shadowRoot.querySelector('media-picker')
     };
-    this.elems.input.addEventListener('change', this.handleChange.bind(this));
+    this.elems.picker.addEventListener('image-change', this.handleChange.bind(this));
   }
 
   handleChange(e) {
-    this.value = e.target.value;
+    this.value = this.elems.picker.path;
     this.dispatchEvent(new Event('change', {bubbles: true}));
   }
 
@@ -32,7 +33,7 @@ class FormPath extends HTMLElement {
   attributeChangedCallback(attrName, oldVal, newVal) {
     switch (attrName) {
       case 'value':
-        this.elems.input.setAttribute('value', newVal);
+        this.elems.picker.setAttribute('src', newVal);
         break;
       default:
         break;
@@ -51,5 +52,5 @@ class FormPath extends HTMLElement {
   }
 }
 
-customElements.define('form-path', FormPath);
-export default FormPath;
+customElements.define('form-media', FormMedia);
+export default FormMedia;

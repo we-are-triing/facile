@@ -21,8 +21,7 @@ class NewMedia extends HTMLElement {
   }
 
   async handleUpload(e) {
-    const {file, fileData, name} = e.detail;
-    const {filename} = await sendMedia(file, fileData, name);
+    const {filename} = e.detail;
     window.location = `/media/${filename}`;
   }
 }

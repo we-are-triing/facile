@@ -10,7 +10,7 @@ import './form-set.js';
 import './form-string.js';
 import './form-text.js';
 import './form-text-block.js';
-import './form-path.js';
+import './form-media.js';
 
 class ContentEditor extends HTMLElement {
   constructor() {

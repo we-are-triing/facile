@@ -49,6 +49,11 @@ const getFilteredList = async id => {
   return filtered.map(({filename, tags, name}) => ({filename, tags, name}));
 };
 
+export const queryMedia = async query => {
+  const raw = await fetch(`${dataDomain}/media/q/${query}`);
+  return await raw.json();
+};
+
 export const getMediaList = async () => getFilteredList('self');
 export const getDerivativeMedia = async filename => getFilteredList(filename);
 

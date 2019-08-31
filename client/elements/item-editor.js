@@ -128,12 +128,7 @@ class ItemEditor extends HTMLElement {
     window.location = `/${this.type}/${this.titleValue}`;
   }
   async handleUpload(e) {
-    const {file, fileData, name} = e.detail;
-    this.file = file;
-    this.meta = fileData;
-    this.name = name;
-    const {path} = await sendMedia(file, this.meta, name);
-    this.icon = path;
+    this.icon = this.elems.header.path;
     this.send();
   }
   async handleDelete(e) {

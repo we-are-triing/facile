@@ -1,4 +1,5 @@
 import buildShadowRoot from './buildShadowRoot.js';
+import {sendMedia} from '../utils/services.js';
 import './labeled-input.js';
 import './styled-button.js';
 
@@ -11,6 +12,7 @@ class MediaUpload extends HTMLElement {
         }
       </style>
       <input class="upload" type="file"/>
+      <!-- TODO: add internationalization here -->
       <labeled-input class="name">name</labeled-input>
       <styled-button class="button">upload</styled-button>
       <slot></slot>
@@ -41,14 +43,19 @@ class MediaUpload extends HTMLElement {
   }
 
   handleImageRead(fileData, name) {
-    return e => {
+    return async e => {
+      const file = e.target.result;
+      const {path, filename} = await sendMedia(file, fileData, name);
+
       this.dispatchEvent(
         new CustomEvent('upload', {
           bubbles: true,
           detail: {
             fileData,
-            file: e.target.result,
-            name
+            file,
+            name,
+            path,
+            filename
           }
         })
       );
