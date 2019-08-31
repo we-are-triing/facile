@@ -8,8 +8,8 @@ class TabbedContent extends HTMLElement {
     <style>
       :host {
         display: block;
-        --border: #eee;
-        --main: #eee;
+        --border-color: #eee;
+        --main-color: #eee;
         --lh: var(--lh-300, 1.6em);
       }
       section {
@@ -24,21 +24,21 @@ class TabbedContent extends HTMLElement {
         display: block;
       }
       .tabs {
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid var(--border-color);
       }
       .tab {
         display: inline-block;
         padding: 0.3em 0.6em;
         cursor: pointer;
-        background: var(--main);
-        border: 1px solid var(--border);
+        background: var(--main-color);
+        border: 1px solid var(--border-color);
         position:relative;
         top: 1px;
         font-size: 0.8em;
       }
       .tab.active {
-        background: white;
-        border-bottom-color: white;
+        background: var(--bianco);
+        border-bottom-color: var(--bianco);
       }
     </style>
     <section class="tabs"></section>

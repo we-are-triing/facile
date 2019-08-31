@@ -1,7 +1,9 @@
 import buildShadowRoot from './buildShadowRoot.js';
+import {deleteMedia} from '../utils/services.js';
 import './media-meta.js';
 import './tabular-data-item.js';
 import './tabular-data.js';
+import './styled-button.js';
 
 class MediaEditor extends HTMLElement {
   constructor() {
@@ -37,6 +39,7 @@ class MediaEditor extends HTMLElement {
       <section class="derivatives">
         <slot></slot>
       </section>
+      <styled-button class="delete" destructive></styled-button>
     `;
     buildShadowRoot(html, this);
     this.elems = {
@@ -44,12 +47,19 @@ class MediaEditor extends HTMLElement {
       name: this.shadowRoot.querySelector('.name'),
       filename: this.shadowRoot.querySelector('.filename'),
       img: this.shadowRoot.querySelector('img.main'),
-      dimensions: this.shadowRoot.querySelector('.dimensions')
+      dimensions: this.shadowRoot.querySelector('.dimensions'),
+      delete: this.shadowRoot.querySelector('.delete')
     };
 
     this.observer = this.watchChildren();
     this.updateChildren();
     this.elems.img.onload = this.imageSize.bind(this);
+    this.elems.delete.addEventListener('click', this.handleDelete.bind(this));
+  }
+
+  async handleDelete() {
+    await deleteMedia(this.filename);
+    document.location = `/media`;
   }
 
   watchChildren() {
@@ -79,7 +89,7 @@ class MediaEditor extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['filename', 'name'];
+    return ['filename', 'name', 'delete-label'];
   }
 
   imageSize() {
@@ -97,11 +107,24 @@ class MediaEditor extends HTMLElement {
       case 'name':
         this.elems.name.textContent = newVal;
         break;
+      case 'delete-label':
+        this.elems.delete.textContent = newVal;
+        break;
       default:
         break;
     }
   }
 
+  get deleteLabel() {
+    return this.getAttribute('delete-label');
+  }
+  set deleteLabel(val) {
+    if (val) {
+      this.setAttribute('delete-label', val);
+    } else {
+      this.removeAttribute('delete-label');
+    }
+  }
   get filename() {
     return this.getAttribute('filename');
   }

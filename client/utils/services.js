@@ -47,16 +47,25 @@ export const deleteTemplate = async type => del({type}, 'template');
 export const sendContent = async content => send(content, 'content', content.meta.name);
 export const deleteContent = async name => del({name}, 'content');
 
-export const sendMedia = async (file, meta) => {
+export const sendMedia = async (file, meta, name) => {
   const res = await fetch(`${mediaRoot}/media`, {
     mode: 'cors',
     method: `POST`,
     body: JSON.stringify({
       tags: [],
-      name: 'temp',
+      name,
       media: file,
       meta
     })
+  });
+  return await res.json();
+};
+
+export const deleteMedia = async filename => {
+  const res = await fetch(`${mediaRoot}/media`, {
+    headers: {'Content-Type': 'application/json'},
+    method: 'DELETE',
+    body: JSON.stringify({filename})
   });
   return await res.json();
 };

@@ -32,10 +32,10 @@ export default class Media extends BaseTemplate {
 
   renderMedia() {
     if (this.media === 'new') {
-      return `<media-upload></media-upload>`;
+      return `<new-media></new-media>`;
     }
     const {filename, meta, tags, name, master, derivatives} = this.media;
-    return `<media-editor filename="${filename}" name="${name}" tags="${tags.slice(',')}" master="${master}">
+    return `<media-editor delete-label="${this.getLang(d.delete)}" filename="${filename}" name="${name}" tags="${tags.slice(',')}" master="${master}">
       ${Object.keys(meta)
         .map(key => `<media-meta key="${key}">${meta[key]}</media-meta>`)
         .join('')}

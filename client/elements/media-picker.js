@@ -1,8 +1,10 @@
 import buildShadowRoot from './buildShadowRoot.js';
 import './tabbed-content.js';
 import './tab-panel.js';
+import './media-upload.js';
+import './media-select.js';
 
-class ImageUpload extends HTMLElement {
+class MediaPicker extends HTMLElement {
   constructor() {
     super();
     //TODO: add translation
@@ -35,9 +37,10 @@ class ImageUpload extends HTMLElement {
       <div class="menu">
         <tabbed-content>
           <tab-panel tabtitle="choose">
+            <media-select></media-select>
           </tab-panel>
           <tab-panel tabtitle="add">
-            <input class="upload" type="file" />
+            <media-upload></media-upload>
           </tab-panel>
         </tabbed-content>
         
@@ -47,44 +50,30 @@ class ImageUpload extends HTMLElement {
     buildShadowRoot(html, this);
     this.elems = {
       img: this.shadowRoot.querySelector('img'),
-      upload: this.shadowRoot.querySelector('.upload'),
+      upload: this.shadowRoot.querySelector('media-upload'),
       menu: this.shadowRoot.querySelector('.menu')
     };
-    this.elems.upload.addEventListener('change', this.handleUpload.bind(this));
+    this.elems.upload.addEventListener('upload', this.handleUpload.bind(this));
     this.elems.img.addEventListener('click', this.toggleMenu.bind(this));
   }
 
   toggleMenu() {
     this.elems.menu.classList.toggle('active');
   }
-
   handleUpload(e) {
-    const file = e.target.files[0];
-    const fileData = {
-      name: file.name,
-      lastModified: file.lastModified,
-      size: file.size,
-      type: file.type
-    };
-    const fr = new FileReader();
-    fr.onload = this.handleImageRead(fileData).bind(this);
-    fr.readAsDataURL(file);
-  }
-
-  handleImageRead(fileData) {
-    return e => {
-      this.elems.img.src = e.target.result;
-      this.toggleMenu();
-      this.dispatchEvent(
-        new CustomEvent('upload', {
-          bubbles: true,
-          detail: {
-            fileData,
-            file: e.target.result
-          }
-        })
-      );
-    };
+    const {file, fileData, name} = e.detail;
+    this.elems.img.src = file;
+    this.toggleMenu();
+    this.dispatchEvent(
+      new CustomEvent('upload', {
+        bubbles: true,
+        detail: {
+          file,
+          fileData,
+          name
+        }
+      })
+    );
   }
 
   static get observedAttributes() {
@@ -113,5 +102,5 @@ class ImageUpload extends HTMLElement {
   }
 }
 
-customElements.define('image-upload', ImageUpload);
-export default ImageUpload;
+customElements.define('media-picker', MediaPicker);
+export default MediaPicker;

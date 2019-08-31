@@ -2,7 +2,7 @@ import buildShadowRoot from './buildShadowRoot.js';
 import './a-tag.js';
 import './tag-list.js';
 import './labeled-input.js';
-import './image-upload.js';
+import './media-picker.js';
 
 class ItemHeader extends HTMLElement {
   constructor() {
@@ -28,7 +28,7 @@ class ItemHeader extends HTMLElement {
       </style>
       <header>
         <div>
-          <image-upload src="/static/assets/add.svg" ></image-upload>
+          <media-picker src="/static/assets/add.svg" ></media-picker>
           <labeled-input disabled class="title" large no-label></labeled-input>
         </div>
         <tag-list>
@@ -40,20 +40,21 @@ class ItemHeader extends HTMLElement {
     this.elems = {
       title: this.shadowRoot.querySelector('labeled-input'),
       tagList: this.shadowRoot.querySelector('tag-list'),
-      img: this.shadowRoot.querySelector('image-upload')
+      img: this.shadowRoot.querySelector('media-picker')
     };
     this.elems.tagList.addEventListener('tag-update', this.handleTags.bind(this));
     this.elems.title.addEventListener('change', this.handleTitle.bind(this));
     this.elems.img.addEventListener('upload', this.handleUpload.bind(this));
   }
   handleUpload(e) {
-    const {file, fileData} = e.detail;
+    const {file, fileData, name} = e.detail;
     this.dispatchEvent(
       new CustomEvent('upload', {
         bubbles: true,
         detail: {
           file,
-          fileData
+          fileData,
+          name
         }
       })
     );
