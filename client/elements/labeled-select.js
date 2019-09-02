@@ -77,14 +77,14 @@ class LabeledSelect extends HTMLElement {
     [...this.elems.select.children].forEach(child => child.remove());
 
     [...this.children].forEach((child, i) => {
-      if (i === 0) {
+      if (!this.value && i === 0) {
         this.value = child.value || child.textContent;
       }
       if (child.localName === 'option') {
         this.elems.select.appendChild(child.cloneNode(true));
       }
     });
-
+    this.value = this.value;
     this.observer.observe(this, {childList: true});
   }
 
