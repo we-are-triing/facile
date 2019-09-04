@@ -62,3 +62,11 @@ export const getMediaByFilename = async filename => {
   const content = await raw.json();
   return content[0];
 };
+export const getSiteData = async () => {
+  const raw = await fetch(`${dataDomain}/admin/site`);
+  return await raw.json();
+};
+
+// export const registerUser = async info => {
+//   const
+// }

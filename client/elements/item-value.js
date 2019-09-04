@@ -254,6 +254,9 @@ class ItemValue extends HTMLElement {
       this.removeAttribute('set');
     }
   }
+  get components() {
+    return this.elems.region.components;
+  }
 }
 
 customElements.define('item-value', ItemValue);

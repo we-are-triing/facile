@@ -1,7 +1,7 @@
 import {langList, defaultLang} from '../../isomorphic/lang.js';
+import {isStaticPath} from './shared.js';
 import {cookie} from '../utils/cookie.js';
 
-const isStaticPath = (paths, pathname) => paths.reduce((a, n) => a || pathname.startsWith(`/${n}/`), false);
 const inURL = pathname => langList.reduce((a, n) => a || pathname.startsWith(`/${n.iso}/`), false);
 
 export default {
@@ -10,7 +10,7 @@ export default {
       let lang = defaultLang;
       const {pathname} = req.url;
       //if it is a static resource, we don't need locale.
-      if (isStaticPath([`static`, `api`], pathname) || inURL(pathname)) {
+      if (isStaticPath(pathname) || inURL(pathname)) {
         return h.continue;
       }
 

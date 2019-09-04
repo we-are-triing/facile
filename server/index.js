@@ -4,7 +4,8 @@ import Hapi from '@hapi/hapi';
 import Inert from '@hapi/inert';
 import routes from './routes/routes.js';
 import socketio from 'socket.io';
-import locale from './routes/locale.js';
+import locale from './middleware/locale.js';
+import auth from './middleware/auth.js';
 
 //Keeping these in as a reference to support http2
 // import http2 from 'http2';
@@ -22,6 +23,7 @@ const server = Hapi.server({
 
 const init = async () => {
   await server.register(Inert);
+  await server.register(auth);
   await server.register(locale);
   api(server);
   routes(server);

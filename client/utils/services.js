@@ -83,3 +83,12 @@ export const getComponentData = async components => {
   const val = data.map(item => item[0]);
   return val;
 };
+
+export const initSite = async ({org, id, secret}) => {
+  const res = await fetch(`${storeRoot}/admin/init`, {
+    mode: 'cors',
+    method: `POST`,
+    body: JSON.stringify({org, id, secret})
+  });
+  return await res.json();
+};

@@ -7,6 +7,7 @@ import content from './content.js';
 import templates from './templates.js';
 import components from './components.js';
 import media from './media.js';
+import login from './login.js';
 
 const port = process.env.PORT || 8000;
 
@@ -68,8 +69,6 @@ export default server => {
       path: `/{lang}/`,
       handler: async (req, h) => {
         try {
-          // Simulating a fetch to some service to get content.
-          // TODO: this is going away, it is just a placeholder for now.
           const {lang} = req.params;
           const raw = await fetch(`http://localhost:${port}/api/home`);
           const json = await raw.json();
@@ -80,22 +79,9 @@ export default server => {
           return fourOFour();
         }
       }
-    },
-    {
-      method: `GET`,
-      path: `/{lang}/login`,
-      handler: async (req, h) => {
-        try {
-          const {lang} = req.params;
-          const login = new LoginRegistration({lang});
-          return login.render();
-        } catch (err) {
-          console.error(`login / registration page failure`, err);
-          return fourOFour();
-        }
-      }
     }
   ]);
+  login(server);
   components(server);
   templates(server);
   content(server);

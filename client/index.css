@@ -130,6 +130,7 @@ body {
   margin: 0;
   padding: 0;
   color: var(--nero);
+  height: 100%;
 }
 
 * {
@@ -155,6 +156,9 @@ body {
   display: grid;
   grid-template-rows: var(--header-height) 1fr;
   min-height: 100vh;
+}
+body.login {
+  display: block;
 }
 
 body.fixed {
