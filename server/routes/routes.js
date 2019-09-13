@@ -1,13 +1,14 @@
 import Home from '../templates/home.js';
-import fetch from 'node-fetch';
 import {join} from 'path';
 import require from './require.cjs';
-import LoginRegistration from '../templates/login_registration.js';
 import content from './content.js';
 import templates from './templates.js';
 import components from './components.js';
 import media from './media.js';
 import login from './login.js';
+import proxy from './proxy.js';
+import {fof} from '../templates/fourofour.js';
+import header from '../data/header.js';
 
 const port = process.env.PORT || 8000;
 
@@ -20,6 +21,9 @@ export default server => {
     {
       method: `GET`,
       path: `/static/{param*}`,
+      options: {
+        auth: false
+      },
       handler: {
         directory: {
           path: 'client'
@@ -29,6 +33,9 @@ export default server => {
     {
       method: `GET`,
       path: `/static/isomorphic/{param*}`,
+      options: {
+        auth: false
+      },
       handler: {
         directory: {
           path: 'isomorphic'
@@ -38,6 +45,9 @@ export default server => {
     {
       method: `GET`,
       path: `/static/workers/{param*}`,
+      options: {
+        auth: false
+      },
       handler: {
         directory: {
           path: 'client/workers'
@@ -47,6 +57,9 @@ export default server => {
     {
       method: `GET`,
       path: `/static/polyfills/{param*}`,
+      options: {
+        auth: false
+      },
       handler: {
         directory: {
           path: join(polyfillsURL, '../')
@@ -56,6 +69,9 @@ export default server => {
     {
       method: `GET`,
       path: `/static/stiva.js`,
+      options: {
+        auth: false
+      },
       handler: {
         file: stivaURL
       }
@@ -70,13 +86,11 @@ export default server => {
       handler: async (req, h) => {
         try {
           const {lang} = req.params;
-          const raw = await fetch(`http://localhost:${port}/api/home`);
-          const json = await raw.json();
-          const home = new Home({...json, lang});
+          const home = new Home({lang, title: 'home', navigation: header.navigation});
           return home.render();
         } catch (err) {
           console.error(`home page failure`, err);
-          return fourOFour();
+          return fof();
         }
       }
     }
@@ -86,4 +100,5 @@ export default server => {
   templates(server);
   content(server);
   media(server);
+  proxy(server);
 };

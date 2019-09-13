@@ -1,11 +1,13 @@
-import api from './api/api.js';
 import chokidar from 'chokidar';
 import Hapi from '@hapi/hapi';
 import Inert from '@hapi/inert';
 import routes from './routes/routes.js';
 import socketio from 'socket.io';
 import locale from './middleware/locale.js';
-import auth from './middleware/auth.js';
+import random from '../isomorphic/random.js';
+import {promises} from 'fs';
+import cookie from '@hapi/cookie';
+import {setupAuth} from './utils/auth.js';
 
 //Keeping these in as a reference to support http2
 // import http2 from 'http2';
@@ -18,14 +20,29 @@ import auth from './middleware/auth.js';
 
 const server = Hapi.server({
   // listener: http2.createServer(options),
-  port: process.env.PORT || 8000
+  port: process.env.PORT || 8000,
+  routes: {
+    validate: {
+      failAction: async (request, h, err) => {
+        if (process.env.NODE_ENV === 'production') {
+          console.error('ValidationError:', err.message);
+          throw Boom.badRequest(`Invalid request payload input`);
+        } else {
+          console.error(err);
+          throw err;
+        }
+      }
+    }
+  }
 });
 
 const init = async () => {
+  server.app.secret = await initSecurity();
   await server.register(Inert);
-  await server.register(auth);
+  // await server.register(auth);
+  await server.register(cookie);
   await server.register(locale);
-  api(server);
+  setupAuth(server);
   routes(server);
   await server.start();
   console.log(`Server running at: ${server.info.uri}`);
@@ -64,5 +81,21 @@ if (process.env.NODE_ENV === 'dev') {
     process.kill(process.pid, 'SIGUSR2');
   });
 }
+
+const initSecurity = async () => {
+  const filename = './session.hash';
+  try {
+    const hash = await promises.readFile(filename);
+    return hash;
+  } catch (err) {
+    const hash = random(32, true);
+    const test = await promises.writeFile(filename, hash);
+    console.log(test);
+    return hash;
+  }
+  // creating a hash file for a password for JWT.
+  // see if the file already exists, if it does, return the contents.
+  // if it doesn't then generate it, and return the contents.
+};
 
 init();

@@ -1,23 +1,20 @@
-const storeRoot = `http://localhost:8001`;
-const mediaRoot = `http://localhost:8002`;
 const fetchOptions = {
-  mode: 'cors',
   headers: {'Content-Type': 'application/json'}
 };
 
 const get = async (type, route) => {
-  const temp = await fetch(`${storeRoot}/${route}/${type}`);
+  const temp = await fetch(`/proxy/${route}/${type}`);
   return temp.json();
 };
 
 const send = async (item, route, id) => {
-  const temp = await fetch(`${storeRoot}/${route}/${id}`, fetchOptions);
+  const temp = await fetch(`/proxy/${route}/${id}`, fetchOptions);
   const result = await temp.json();
   const isUpdate = result.length > 0;
 
-  let path = `${storeRoot}/${route}/create`;
+  let path = `/proxy/${route}/create`;
   if (isUpdate) {
-    path = `${storeRoot}/${route}/update`;
+    path = `/proxy/${route}/update`;
   }
   const body = JSON.stringify(item);
   const res = await fetch(path, {
@@ -30,7 +27,7 @@ const send = async (item, route, id) => {
 };
 
 const del = async (type, route) => {
-  const del = await fetch(`${storeRoot}/${route}/delete`, {
+  const del = await fetch(`/proxy/${route}/delete`, {
     ...fetchOptions,
     method: 'DELETE',
     body: JSON.stringify(type)
@@ -48,7 +45,7 @@ export const sendContent = async content => send(content, 'content', content.met
 export const deleteContent = async name => del({name}, 'content');
 
 export const sendMedia = async (file, meta, name) => {
-  const res = await fetch(`${mediaRoot}/media`, {
+  const res = await fetch(`/proxy/media`, {
     mode: 'cors',
     method: `POST`,
     body: JSON.stringify({
@@ -62,7 +59,7 @@ export const sendMedia = async (file, meta, name) => {
 };
 
 export const deleteMedia = async filename => {
-  const res = await fetch(`${mediaRoot}/media`, {
+  const res = await fetch(`/proxy/media`, {
     headers: {'Content-Type': 'application/json'},
     method: 'DELETE',
     body: JSON.stringify({filename})
@@ -71,9 +68,9 @@ export const deleteMedia = async filename => {
 };
 
 export const queryMedia = async query => {
-  const raw = await fetch(`${storeRoot}/media/q/${query}`);
+  const raw = await fetch(`/proxy/media/q/${query}`);
   const list = await raw.json();
-  return list.map(item => ({...item, path: `${mediaRoot}/${item.filename}`}));
+  return list.map(item => ({...item, path: `/${item.filename}`}));
 };
 
 export const getComponentData = async components => {
@@ -85,10 +82,27 @@ export const getComponentData = async components => {
 };
 
 export const initSite = async ({org, id, secret}) => {
-  const res = await fetch(`${storeRoot}/admin/init`, {
-    mode: 'cors',
+  const res = await fetch(`/admin/init`, {
     method: `POST`,
     body: JSON.stringify({org, id, secret})
   });
   return await res.json();
+};
+
+export const loginUser = async token => {
+  const res = await fetch(`/api/login`, {
+    method: `POST`,
+    body: JSON.stringify({token})
+  });
+  const temp = await res.json();
+  return temp;
+};
+
+export const registerUser = async ({token, name, email, img, roles, admin, translator}) => {
+  const res = await fetch(`/api/register`, {
+    method: `POST`,
+    body: JSON.stringify({token, profile: {name, email, img}, roles, admin, translator})
+  });
+  const temp = await res.json();
+  return temp;
 };

@@ -66,7 +66,20 @@ export const getSiteData = async () => {
   const raw = await fetch(`${dataDomain}/admin/site`);
   return await raw.json();
 };
+export const checkForAdmin = async () => {
+  const raw = await fetch(`${dataDomain}/admin/checkAdmin`);
+  return await raw.json();
+};
+export const getUser = async id => {
+  const raw = await fetch(`${dataDomain}/admin/user/${id}`);
+  return await raw.json();
+};
 
-// export const registerUser = async info => {
-//   const
-// }
+export const registerUser = async ({id, profile, roles, admin, translator}) => {
+  const res = await fetch(`${dataDomain}/admin/register`, {
+    mode: 'cors',
+    method: `POST`,
+    body: JSON.stringify({id, profile, roles, admin, translator})
+  });
+  return await res.json();
+};
