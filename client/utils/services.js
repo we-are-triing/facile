@@ -68,9 +68,9 @@ export const deleteMedia = async filename => {
 };
 
 export const queryMedia = async query => {
-  const raw = await fetch(`/proxy/media/q/${query}`);
+  const raw = await fetch(`/proxy/media/${query}`);
   const list = await raw.json();
-  return list.map(item => ({...item, path: `/${item.filename}`}));
+  return list.map(item => ({...item, path: `/proxy/static/media/${item.filename}`}));
 };
 
 export const getComponentData = async components => {

@@ -10,7 +10,7 @@ const proxy = async (res, type = false) => {
     path = `${mediaDomain}/media`;
   }
   if (type === 'media query') {
-    path = `${dataDomain}/q/${params.query}`;
+    path = `${dataDomain}/media/q/${params.query}`;
   }
   if (type === 'init') {
     path = `${dataDomain}/admin/init`;
@@ -23,7 +23,7 @@ const proxy = async (res, type = false) => {
   };
 
   if (m === 'POST' || m === 'DELETE') {
-    obj.body = {...payload};
+    obj.body = JSON.stringify({...payload});
   }
 
   const raw = await fetch(path, obj);
@@ -66,17 +66,36 @@ export default server => {
         notes: `proxy for…`,
         tags: [`api`]
       },
-      handler: res => proxy(res, 'media')
+      handler: res => proxy(res, 'media query')
     },
     {
-      method: [`POST`, `DELETE`],
-      path: `/proxy/media/`,
+      method: `GET`,
+      path: `/proxy/static/media/{path}`,
       options: {
         description: `proxy for…`,
         notes: `proxy for…`,
         tags: [`api`]
       },
-      handler: res => proxy(res, 'media query')
+      handler: async (res, h) => {
+        const raw = await fetch(`${mediaDomain}/${res.params.path}`);
+        const blob = await raw.blob();
+        const buff = await blob.arrayBuffer();
+        const media = Buffer(new Uint8Array(buff));
+        return h
+          .response(media)
+          .type(blob.type)
+          .bytes(buff.length);
+      }
+    },
+    {
+      method: [`POST`, `DELETE`],
+      path: `/proxy/media`,
+      options: {
+        description: `proxy for…`,
+        notes: `proxy for…`,
+        tags: [`api`]
+      },
+      handler: res => proxy(res, 'media')
     },
     {
       method: [`POST`],
