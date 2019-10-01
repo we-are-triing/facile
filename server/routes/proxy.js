@@ -14,7 +14,6 @@ const proxy = async (res, type = false) => {
   }
   if (type === 'init') {
     path = `${dataDomain}/admin/init`;
-    //Setup the cookie token!
   }
   const m = method.toUpperCase();
   const obj = {
@@ -23,34 +22,23 @@ const proxy = async (res, type = false) => {
   };
 
   if (m === 'POST' || m === 'DELETE') {
-    obj.body = JSON.stringify({...payload});
+    let body = payload;
+    if (typeof payload !== 'string') {
+      body = JSON.stringify({...payload});
+    }
+    obj.body = body;
   }
 
   const raw = await fetch(path, obj);
   const temp = await raw.json();
   return temp;
-
-  /*
-${dataDomain}/${route}/${type} // GET
-${storeRoot}/${route}/create // POST
-${storeRoot}/${route}/update // POST
-${storeRoot}/${route}/delete // DELETE
-path = `${dataDomain}/q/${params.query}`;
-${storeRoot}/admin/init` // POST
-*/
-
-  /*
-${storeRoot}/media/q/${query} // GET
-${mediaRoot}/media` // POST
-${mediaRoot}/media` // DELETE
-  */
 };
 
 export default server => {
   server.route([
     {
       method: [`GET`, `POST`, `DELETE`],
-      path: `/proxy/{route}/{type}`,
+      path: `/proxy/{route}/{type*}`,
       options: {
         description: `proxy for…`,
         notes: `proxy for…`,
@@ -58,6 +46,16 @@ export default server => {
       },
       handler: proxy
     },
+    // {
+    //   method: `GET`,
+    //   path: `/proxy/{route}/{path*}`,
+    //   options: {
+    //     description: `proxy for…`,
+    //     notes: `proxy for…`,
+    //     tags: [`api`]
+    //   },
+    //   handler: res => proxy(res, 'path')
+    // },
     {
       method: `GET`,
       path: `/proxy/media/{query}`,
@@ -84,7 +82,7 @@ export default server => {
         return h
           .response(media)
           .type(blob.type)
-          .bytes(buff.length);
+          .bytes(blob.length);
       }
     },
     {

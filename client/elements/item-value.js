@@ -163,7 +163,7 @@ class ItemValue extends HTMLElement {
     this.set = this.elems.set.value;
 
     this.region = this.elems.region.type;
-    this.components = this.elems.region.components;
+    // this.components = this.elems.region.components;
 
     this.dispatchEvent(
       new Event('update', {
