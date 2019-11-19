@@ -51,14 +51,12 @@ export default class Content extends BaseTemplate {
   async loadContentDetails() {
     const getMeta = meta => `name="${meta.name || ''}"
       path="${meta.path || ''}"
-      menu="${meta.menu || ''}"
       tags="${meta.tags || ''}"
       publish-date="${meta.publish_date || ''}"`;
 
     const labels = `
       name-label="${this.getLang(d.name)}"
       path-label="${this.getLang(d.path)}"
-      menu-label="${this.getLang(d.menu)}"
       tags-label="${this.getLang(d.tags)}"
       delete-label="${this.getLang(d.delete)}"
       publish-date-label="${this.getLang(d.publish_date)}"

@@ -45,7 +45,6 @@ class ContentEditor extends HTMLElement {
   handleChange(e) {
     this.name = this.elems.header.name;
     this.path = this.elems.header.path;
-    this.menu = this.elems.header.menu;
     this.tags = this.elems.header.tags;
     this.publishDate = this.elems.header.publishDate;
     this.send();
@@ -67,7 +66,6 @@ class ContentEditor extends HTMLElement {
       name: this.name,
       type: this.type,
       path: this.path ? this.path.split('/') : [],
-      menu: this.menu ? this.menu.split('/') : [],
       tags: this.tags ? this.tags.split(',') : [],
       publish_date: this.publishDate || 0,
       approvals: {}
@@ -115,7 +113,7 @@ class ContentEditor extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['name-label', 'path-label', 'delete-label', 'menu-label', 'tags-label', 'publish-date-label', 'new', 'name', 'path', 'menu', 'tags', 'publish-date'];
+    return ['name-label', 'path-label', 'delete-label', 'tags-label', 'publish-date-label', 'new', 'name', 'path', 'tags', 'publish-date'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
@@ -125,9 +123,6 @@ class ContentEditor extends HTMLElement {
         break;
       case 'path-label':
         this.elems.header.setAttribute('path-label', newVal);
-        break;
-      case 'menu-label':
-        this.elems.header.setAttribute('menu-label', newVal);
         break;
       case 'tags-label':
         this.elems.header.setAttribute('tags-label', newVal);
@@ -143,9 +138,6 @@ class ContentEditor extends HTMLElement {
         break;
       case 'path':
         this.elems.header.path = newVal;
-        break;
-      case 'menu':
-        this.elems.header.menu = newVal;
         break;
       case 'tags':
         this.elems.header.tags = newVal;
@@ -179,16 +171,6 @@ class ContentEditor extends HTMLElement {
       this.setAttribute('path-label', val);
     } else {
       this.removeAttribute('path-label');
-    }
-  }
-  get menuLabel() {
-    return this.getAttribute('menu-label');
-  }
-  set menuLabel(val) {
-    if (val) {
-      this.setAttribute('menu-label', val);
-    } else {
-      this.removeAttribute('menu-label');
     }
   }
   get tagsLabel() {
@@ -260,16 +242,6 @@ class ContentEditor extends HTMLElement {
       this.setAttribute('path', val);
     } else {
       this.removeAttribute('path');
-    }
-  }
-  get menu() {
-    return this.getAttribute('menu');
-  }
-  set menu(val) {
-    if (val) {
-      this.setAttribute('menu', val);
-    } else {
-      this.removeAttribute('menu');
     }
   }
   get tags() {

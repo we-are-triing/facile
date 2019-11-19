@@ -36,7 +36,6 @@ class ContentHeader extends HTMLElement {
           <labeled-input disabled class="name"></labeled-input>
           <styled-button>save</styled-button>
           <labeled-input class="path"></labeled-input>
-          <labeled-input class="menu"></labeled-input>
         </div>
         <div>
           <tag-list></tag-list>
@@ -50,7 +49,6 @@ class ContentHeader extends HTMLElement {
     this.elems = {
       name: this.shadowRoot.querySelector('.name'),
       path: this.shadowRoot.querySelector('.path'),
-      menu: this.shadowRoot.querySelector('.menu'),
       tags: this.shadowRoot.querySelector('tag-list'),
       header: this.shadowRoot.querySelector('header'),
       date: this.shadowRoot.querySelector('.date'),
@@ -78,9 +76,6 @@ class ContentHeader extends HTMLElement {
       case this.elems.path:
         this.path = e.target.value;
         break;
-      case this.elems.menu:
-        this.menu = e.target.value;
-        break;
       case this.elems.date:
         this.publishDate = e.target.value;
         break;
@@ -104,7 +99,7 @@ class ContentHeader extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['name-label', 'new', 'path-label', 'menu-label', 'tags-label', 'publish-date-label', 'name', 'path', 'menu', 'tags', 'publish-date'];
+    return ['name-label', 'new', 'path-label', 'tags-label', 'publish-date-label', 'name', 'path', 'tags', 'publish-date'];
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
@@ -121,10 +116,6 @@ class ContentHeader extends HTMLElement {
         this.elems.path.textContent = newVal;
         this.elems.path.setAttribute('placeholder', newVal);
         break;
-      case 'menu-label':
-        this.elems.menu.textContent = newVal;
-        this.elems.menu.setAttribute('placeholder', newVal);
-        break;
       case 'tags-label':
         this.elems.tags.label = newVal;
         break;
@@ -137,9 +128,6 @@ class ContentHeader extends HTMLElement {
         break;
       case 'path':
         this.elems.path.value = newVal;
-        break;
-      case 'menu':
-        this.elems.menu.value = newVal;
         break;
       case 'tags':
         this.elems.tags.innerHTML = newVal
@@ -186,16 +174,6 @@ class ContentHeader extends HTMLElement {
       this.setAttribute('path-label', val);
     } else {
       this.removeAttribute('path-label');
-    }
-  }
-  get menuLabel() {
-    return this.getAttribute('menu-label');
-  }
-  set menuLabel(val) {
-    if (val) {
-      this.setAttribute('menu-label', val);
-    } else {
-      this.removeAttribute('menu-label');
     }
   }
   get tagsLabel() {
@@ -246,16 +224,6 @@ class ContentHeader extends HTMLElement {
       this.setAttribute('path', val);
     } else {
       this.removeAttribute('path');
-    }
-  }
-  get menu() {
-    return this.getAttribute('menu');
-  }
-  set menu(val) {
-    if (val) {
-      this.setAttribute('menu', val);
-    } else {
-      this.removeAttribute('menu');
     }
   }
   get tags() {
