@@ -14,3 +14,6 @@ build:
 
 push:
 	docker push lucestudio/facile:v$(v)
+
+docker:
+	make build v=$(v) && make push v=$(v)
