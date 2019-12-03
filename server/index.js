@@ -20,7 +20,7 @@ import {setupAuth} from './utils/auth.js';
 
 const server = Hapi.server({
   // listener: http2.createServer(options),
-  port: process.env.PORT || 8000,
+  port: process.env.PORT || 24040,
   routes: {
     validate: {
       failAction: async (request, h, err) => {

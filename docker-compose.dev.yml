@@ -5,8 +5,8 @@ services:
       - facile
     build: .
     ports:
-      - '8000:8000'
-      - '9000:9000'
+      - '24040:24040'
+      - '24050:24050'
     volumes:
       - .:/home/node/app
     entrypoint: 'npm run dev'

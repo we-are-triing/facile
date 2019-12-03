@@ -6,7 +6,7 @@ services:
     build: .
     restart: always
     ports:
-      - '8000:8000'
+      - '24040:24040'
     volumes:
       - .:/home/node/app
 networks:

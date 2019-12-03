@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 
-export const dataDomain = `http://api:8001`;
-export const mediaDomain = `http://media:8002`;
+export const dataDomain = `http://api:24041`;
+export const mediaDomain = `http://media:24042`;
 
 export const getSimpleComponentList = async () => {
   const temp = await getComponentList();

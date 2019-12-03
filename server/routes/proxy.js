@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
-export const dataDomain = `http://api:8001`;
-export const mediaDomain = `http://media:8002`;
+export const dataDomain = `http://api:24041`;
+export const mediaDomain = `http://media:24042`;
 
 const proxy = async (res, type = false) => {
   const {method, params, payload} = res;

@@ -10,7 +10,7 @@ import proxy from './proxy.js';
 import {fof} from '../templates/fourofour.js';
 import header from '../data/header.js';
 
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 24040;
 
 export default server => {
   const polyfillsURL = require.resolve('@webcomponents/webcomponentsjs');
