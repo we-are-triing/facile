@@ -3,11 +3,25 @@ network:
 
 prod:
 	make network
-	docker-compose up
+	docker build -t facile .
+	docker run \
+		--restart=unless-stopped \
+		--name=cms \
+		--network=facile \
+		-p 24040:24040 \
+		facile
 
 dev:
 	make network
-	docker-compose -f docker-compose.dev.yml up
+	docker build -t facile .
+	docker run \
+		--restart=unless-stopped \
+		--name=cms \
+		--network=facile \
+		-p 24040:24040 \
+		-p 24050:24050 \
+		--entrypoint=npm \
+		facile run dev
 
 build:
 	docker build -t lucestudio/facile:v$(v) -t lucestudio/facile:latest .

@@ -7,6 +7,8 @@ USER node
 RUN npm install
 COPY --chown=node:node . .
 
-EXPOSE 24042
+VOLUME .:/home/node/cms
+
+EXPOSE 24040
 
 CMD [ "npm", "start" ]
