@@ -9,19 +9,12 @@ import {promises} from 'fs';
 import cookie from '@hapi/cookie';
 import {setupAuth} from './utils/auth.js';
 
-//Keeping these in as a reference to support http2
-// import http2 from 'http2';
-// import {readFileSync} from 'fs';
-
-// const options = {
-//     key: readFileSync('server.key'),
-//     cert: readFileSync('server.crt')
-// }
-
 const server = Hapi.server({
-  // listener: http2.createServer(options),
   port: process.env.PORT || 24040,
   routes: {
+    cors: {
+      origin: ['http://localhost:24040']
+    },
     validate: {
       failAction: async (request, h, err) => {
         if (process.env.NODE_ENV === 'production') {
