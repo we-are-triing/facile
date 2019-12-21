@@ -83,7 +83,6 @@ const initSecurity = async () => {
   } catch (err) {
     const hash = random(32, true);
     const test = await promises.writeFile(filename, hash);
-    console.log(test);
     return hash;
   }
   // creating a hash file for a password for JWT.

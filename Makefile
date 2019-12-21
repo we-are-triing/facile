@@ -5,7 +5,7 @@ clear:
 	make stop
 	docker system prune --volumes --force
 
-clear-all:	
+clear-all:
 	make stop
 	docker system prune --volumes --force --all
 
@@ -19,7 +19,7 @@ network:
 prod:
 	make network
 	docker build -t facile .
-	docker run \
+	docker run -d \
 		--restart=unless-stopped \
 		--name=cms \
 		--network=facile \
@@ -37,7 +37,7 @@ dev:
 		-p 24040:24040 \
 		-p 24050:24050 \
 		--entrypoint=npm \
-		--mount type=volume,target=/,source=cms,destination=/home/node/cms \
+		--mount type=bind,source="$(CURDIR)"/,target=/home/node/cms \
 		facile run dev
 
 build:

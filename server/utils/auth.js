@@ -13,7 +13,7 @@ export const verify = async token => {
 // TODO: setup authorization as well as authentication
 const auth = async (request, session) => {
   const user = await getUser(session.id);
-
+  // TODO: need to secure this call, somehow.
   if (!user) {
     return {valid: false};
   }
@@ -26,7 +26,7 @@ export const setupAuth = server => {
     cookie: {
       name: 'facile',
       password: server.app.secret,
-      // For working via HTTP in localhost
+      // TODO: For working via HTTP in localhost
       isSecure: false,
       path: '/'
     },
