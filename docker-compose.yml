@@ -1,0 +1,17 @@
+version: '3'
+services:
+  cms:
+    networks:
+      - facile
+    build: .
+    restart: unless-stopped
+    ports:
+      - '24040:24040'
+      - '24050:24050'
+    entrypoint: 'npm run dev'
+    volumes:
+      - .:/home/node/cms
+networks:
+  facile:
+    external:
+      name: facile

@@ -16,6 +16,10 @@ fresh:
 network:
 	docker network inspect facile >/dev/null || docker network create --driver bridge facile
 
+compose:
+	make network
+	docker-compose up
+
 prod:
 	make network
 	docker build -t facile .
