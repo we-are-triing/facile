@@ -20,29 +20,29 @@ compose:
 	make network
 	docker-compose up
 
-prod:
-	make network
-	docker build -t facile .
-	docker run -d \
-		--restart=unless-stopped \
-		--name=cms \
-		--network=facile \
-		-p 24040:24040 \
-		--mount type=volume,target=/,source=cms,destination=/home/node/cms \
-		facile
+# prod:
+# 	make network
+# 	docker build -t facile .
+# 	docker run -d \
+# 		--restart=unless-stopped \
+# 		--name=cms \
+# 		--network=facile \
+# 		-p 24040:24040 \
+# 		--mount type=volume,target=/,source=cms,destination=/home/node/cms \
+# 		facile
 
-dev:
-	make network
-	docker build -t facile .
-	docker run -d \
-		--restart=unless-stopped \
-		--name=cms \
-		--network=facile \
-		-p 24040:24040 \
-		-p 24050:24050 \
-		--entrypoint=npm \
-		--mount type=bind,source="$(CURDIR)"/,target=/home/node/cms \
-		facile run dev
+# dev:
+# 	make network
+# 	docker build -t facile .
+# 	docker run -d \
+# 		--restart=unless-stopped \
+# 		--name=cms \
+# 		--network=facile \
+# 		-p 24040:24040 \
+# 		-p 24050:24050 \
+# 		--entrypoint=npm \
+# 		--mount type=bind,source="$(CURDIR)"/,target=/home/node/cms \
+# 		facile run dev
 
 build:
 	docker build -t lucestudio/facile:v$(v) -t lucestudio/facile:latest .
