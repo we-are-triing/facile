@@ -100,8 +100,7 @@ class MediaEditor extends HTMLElement {
     switch (attrName) {
       case 'filename':
         this.elems.filename.textContent = newVal;
-        // TODO: this needs to be updated with URL strategy
-        this.elems.img.src = `http://localhost:24042/${newVal}`;
+        this.elems.img.src = `/proxy/static/${newVal}`;
 
         break;
       case 'name':

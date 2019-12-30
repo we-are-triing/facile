@@ -1,6 +1,6 @@
 {
   "name": "facile",
-  "version": "1.0.0-alpha.10",
+  "version": "1.0.0-alpha.11",
   "description": "Facile, simple and easy CMS.",
   "main": "server/index.js",
   "repository": "https://github.com/LuceStudio/facile.git",
@@ -12,7 +12,8 @@
   },
   "scripts": {
     "start": "node --experimental-modules server/index.js",
-    "dev": "NODE_ENV=dev nodemon --inspect=0.0.0.0:24050 --experimental-modules server/index.js"
+    "dev": "CMS_URL=http://localhost:24040 MEDIA_URL=http://localhost:24042 NODE_ENV=dev nodemon --experimental-modules server/index.js",
+    "local": "CMS_URL=http://localhost:24040 MEDIA_URL=http://localhost:24042 NODE_ENV=dev nodemon --inspect=0.0.0.0:24050 --experimental-modules server/index.js"
   },
   "dependencies": {
     "@hapi/cookie": "^10.1.1",

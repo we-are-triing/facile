@@ -68,6 +68,8 @@ class SiteRegister extends HTMLElement {
       admin: this.admin || this.elems.admin.value,
       translator: this.elems.langs.value ? this.elems.langs.value.split(',') : []
     });
+
+    window.location.reload();
   }
 
   static get observedAttributes() {
