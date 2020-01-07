@@ -4,9 +4,11 @@ services:
     networks:
       - facile
     build: .
-    restart: always
+    restart: unless-stopped
     ports:
       - '24040:24040'
+      - '24050:24050'
+    entrypoint: 'npm run local'
     volumes:
       - .:/home/node/cms
 networks:

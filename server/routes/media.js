@@ -2,8 +2,7 @@ import {fof} from '../templates/fourofour.js';
 import header from '../data/header.js';
 import Media from '../templates/media.js';
 import {getMediaByFilename, getMediaList, getDerivativeMedia} from '../utils/data.js';
-// TODO: have a better URL strategy.
-const mediaDomain = `http://localhost:24042`;
+const mediaDomain = `/proxy/static/media`;
 
 export default server => {
   server.route([

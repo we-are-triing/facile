@@ -22,8 +22,8 @@ class RegionEditor extends HTMLElement {
           justify-content: flex-start;
           flex-wrap: wrap;
         }
-        
-        ::slotted(item-tile), 
+
+        ::slotted(item-tile),
         item-tile {
           width: 120px;
           margin-right: var(--spacing-200);
@@ -56,7 +56,7 @@ class RegionEditor extends HTMLElement {
         .components li {
           cursor: pointer;
         }
-        
+
       </style>
       <div class="container">
         <labeled-select no-label>
@@ -71,7 +71,7 @@ class RegionEditor extends HTMLElement {
             </div>
           </div>
         </section>
-        
+
       <div>
     `;
     buildShadowRoot(html, this);

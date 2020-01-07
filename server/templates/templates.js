@@ -34,8 +34,8 @@ export default class Templates extends BaseTemplate {
   }
   loadTemplateDetails() {
     const labels = `
-      title-label="${this.getLang(d.type)}" 
-      property-label="${this.getLang(d.name)}" 
+      title-label="${this.getLang(d.type)}"
+      property-label="${this.getLang(d.name)}"
       type-label="${this.getLang(d.type)}"
       tags-label="${this.getLang(d.tags)}"
       create-label="${this.getLang(d.create)}"
@@ -56,7 +56,7 @@ export default class Templates extends BaseTemplate {
         <item-editor  type="template"
           ${labels}
           icon="${this.template.meta.icon}"
-          title-value="${this.template.meta.type}" 
+          title-value="${this.template.meta.type}"
           ${this.template.meta.tags.length > 0 ? `tags="${this.template.meta.tags.join(',')}"` : ''}
           >
           ${this.mapVals(this.template.values)}

@@ -82,11 +82,13 @@ export const getComponentData = async components => {
 };
 
 export const initSite = async ({org, id, secret}) => {
-  const res = await fetch(`/admin/init`, {
+  const res = await fetch(`/proxy/admin/init`, {
     method: `POST`,
     body: JSON.stringify({org, id, secret})
   });
-  return await res.json();
+  const temp = await res.json();
+  return temp;
+  // return await res.json();
 };
 
 export const loginUser = async token => {

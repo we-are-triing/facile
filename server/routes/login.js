@@ -43,6 +43,7 @@ export default server => {
       options: {
         description: `endpoint to register user.`,
         notes: `this allows me to register user.`,
+        auth: false,
         tags: [`api`],
         validate: {
           payload: {

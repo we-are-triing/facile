@@ -9,19 +9,12 @@ import {promises} from 'fs';
 import cookie from '@hapi/cookie';
 import {setupAuth} from './utils/auth.js';
 
-//Keeping these in as a reference to support http2
-// import http2 from 'http2';
-// import {readFileSync} from 'fs';
-
-// const options = {
-//     key: readFileSync('server.key'),
-//     cert: readFileSync('server.crt')
-// }
-
 const server = Hapi.server({
-  // listener: http2.createServer(options),
   port: process.env.PORT || 24040,
   routes: {
+    cors: {
+      origin: [process.env.CMS_URL]
+    },
     validate: {
       failAction: async (request, h, err) => {
         if (process.env.NODE_ENV === 'production') {
@@ -90,7 +83,6 @@ const initSecurity = async () => {
   } catch (err) {
     const hash = random(32, true);
     const test = await promises.writeFile(filename, hash);
-    console.log(test);
     return hash;
   }
   // creating a hash file for a password for JWT.

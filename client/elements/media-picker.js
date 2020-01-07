@@ -45,7 +45,6 @@ class MediaPicker extends HTMLElement {
             <media-upload></media-upload>
           </tab-panel>
         </tabbed-content>
-        
       </div>
       <slot></slot>
     `;

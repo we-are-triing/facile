@@ -97,8 +97,10 @@ export default server => {
     },
     {
       method: [`POST`],
+      // TODO: this needs to be secured somehow.
       path: `/proxy/admin/init`,
       options: {
+        auth: false,
         description: `proxy for…`,
         notes: `proxy for…`,
         tags: [`api`]

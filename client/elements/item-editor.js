@@ -15,7 +15,7 @@ class ItemEditor extends HTMLElement {
           display: block;
           box-sizing: border-box;
           max-width: var(--mw-500);
-        } 
+        }
         item-header,
         main {
           margin: var(--spacing-400);

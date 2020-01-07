@@ -10,7 +10,7 @@ class MediaSelect extends HTMLElement {
         :host {
           display: block;
         }
-        section { 
+        section {
           display: flex;
           flex-wrap: wrap;
         }
@@ -23,6 +23,7 @@ class MediaSelect extends HTMLElement {
 
     `;
     buildShadowRoot(html, this);
+    this.query = '';
     this.elems = {
       input: this.shadowRoot.querySelector('labeled-input'),
       list: this.shadowRoot.querySelector('.list')
@@ -44,16 +45,21 @@ class MediaSelect extends HTMLElement {
   }
 
   async handleQuery(e) {
-    const results = await queryMedia(this.elems.input.value);
-    this.query = this.elems.input.value;
-    this.elems.list.innerHTML = '';
-    results.forEach(item => {
-      const elem = document.createElement('media-select-item');
-      elem.filename = item.filename;
-      elem.src = item.path;
-      elem.textContent = item.name;
-      this.elems.list.appendChild(elem);
-    });
+    if (this.query !== this.elems.input.value) {
+      this.query = this.elems.input.value;
+      const results = await queryMedia(this.query);
+      this.query = this.elems.input.value;
+      this.elems.list.innerHTML = '';
+      const fragment = new DocumentFragment();
+      results.forEach(item => {
+        const elem = document.createElement('media-select-item');
+        elem.filename = item.filename;
+        elem.src = item.path;
+        elem.textContent = item.name;
+        fragment.appendChild(elem);
+      });
+      this.elems.list.appendChild(fragment);
+    }
   }
 
   static get observedAttributes() {
