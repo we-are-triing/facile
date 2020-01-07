@@ -2,7 +2,7 @@ import {fof} from '../templates/fourofour.js';
 import header from '../data/header.js';
 import Media from '../templates/media.js';
 import {getMediaByFilename, getMediaList, getDerivativeMedia} from '../utils/data.js';
-const mediaDomain = process.env.MEDIA_URL;
+const mediaDomain = `/proxy/static/media`;
 
 export default server => {
   server.route([
