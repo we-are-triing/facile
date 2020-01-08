@@ -65,6 +65,7 @@
   --rosso: var(--rosso-600);
 
   --main: var(--azzurro-500);
+  --error: var(--rosso);
   --link-color: var(--main);
   --link-color-hover: var(--main);
 

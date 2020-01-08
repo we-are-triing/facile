@@ -10,8 +10,16 @@ class MediaUpload extends HTMLElement {
       <style>
         :host {
         }
+        .error {
+          display: none;
+          color: var(--error);
+        }
+        .active {
+          display: inline;
+        }
       </style>
       <input class="upload" type="file"/>
+      <span class="error"></span>
       <!-- TODO: add internationalization here -->
       <labeled-input class="name">name</labeled-input>
       <styled-button class="button">upload</styled-button>
@@ -21,7 +29,8 @@ class MediaUpload extends HTMLElement {
     this.elems = {
       upload: this.shadowRoot.querySelector('.upload'),
       button: this.shadowRoot.querySelector('.button'),
-      name: this.shadowRoot.querySelector('.name')
+      name: this.shadowRoot.querySelector('.name'),
+      error: this.shadowRoot.querySelector('.error')
     };
     this.elems.button.addEventListener('click', this.handleUpload.bind(this));
   }
@@ -36,10 +45,20 @@ class MediaUpload extends HTMLElement {
         size: file.size,
         type: file.type
       };
-      const fr = new FileReader();
-      fr.onload = this.handleImageRead(fileData, name).bind(this);
-      fr.readAsDataURL(file);
+      if (file.size < 1000 * 1000 * 10) {
+        this.handleError({message: '', show: false});
+        const fr = new FileReader();
+        fr.onload = this.handleImageRead(fileData, name).bind(this);
+        fr.readAsDataURL(file);
+      } else {
+        this.handleError({message: 'File is Too large'});
+      }
     }
+  }
+
+  handleError({message, show = true}) {
+    this.elems.error.classList.toggle('active', show);
+    this.elems.error.textContent = message;
   }
 
   handleImageRead(fileData, name) {
