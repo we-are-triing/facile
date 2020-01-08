@@ -51,7 +51,7 @@ class ATag extends HTMLElement {
       <section>
         <slot></slot>
         <input type="text" />
-        
+
         <an-icon type="close"></an-icon>
       </section>
     `;
@@ -61,6 +61,7 @@ class ATag extends HTMLElement {
       input: this.shadowRoot.querySelector('input')
     };
     this.elems.change.addEventListener('click', this.handleChange.bind(this));
+    this.elems.input.addEventListener('keydown', this.handleEnter.bind(this));
   }
 
   static get observedAttributes() {
@@ -99,6 +100,12 @@ class ATag extends HTMLElement {
       this.setAttribute('add-label', '');
     } else {
       this.removeAttribute('add-label');
+    }
+  }
+
+  handleEnter(e) {
+    if (e.which === 13) {
+      this.handleChange(e);
     }
   }
 
