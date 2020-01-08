@@ -52,7 +52,6 @@ class AnEditor extends HTMLElement {
   }
 
   async handleText() {
-    // TODO: figure out why this is behaving poorly through the debounce.
     let u, d;
     if (this.type === 'inline') {
       u = upline;
