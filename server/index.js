@@ -32,7 +32,6 @@ const server = Hapi.server({
 const init = async () => {
   server.app.secret = await initSecurity();
   await server.register(Inert);
-  // await server.register(auth);
   await server.register(cookie);
   await server.register(locale);
   setupAuth(server);
@@ -82,12 +81,9 @@ const initSecurity = async () => {
     return hash;
   } catch (err) {
     const hash = random(32, true);
-    const test = await promises.writeFile(filename, hash);
+    await promises.writeFile(filename, hash);
     return hash;
   }
-  // creating a hash file for a password for JWT.
-  // see if the file already exists, if it does, return the contents.
-  // if it doesn't then generate it, and return the contents.
 };
 
 init();
