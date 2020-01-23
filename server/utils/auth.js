@@ -1,10 +1,11 @@
 import lib from 'google-auth-library';
-import {getSiteData, getUser} from './data.js';
+import {getUser} from './data.js';
 
 const OAuth2Client = lib.OAuth2Client;
 
 export const verify = async token => {
-  const {id} = await getSiteData();
+  // const {id} = await getSiteData();
+  const id = process.env.GOOGLE_ID;
   const client = new OAuth2Client(id);
   const ticket = await client.verifyIdToken({idToken: token, audience: id});
   return ticket.getPayload();

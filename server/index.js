@@ -8,6 +8,8 @@ import random from '../isomorphic/random.js';
 import {promises} from 'fs';
 import cookie from '@hapi/cookie';
 import {setupAuth} from './utils/auth.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const server = Hapi.server({
   port: process.env.PORT || 24040,

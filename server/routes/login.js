@@ -1,6 +1,6 @@
 import LoginRegistration from '../templates/login_registration.js';
 import {fof} from '../templates/fourofour.js';
-import {getSiteData, checkForAdmin, registerUser, getUser} from '../utils/data.js';
+import {checkForAdmin, registerUser, getUser} from '../utils/data.js';
 import {verify} from '../utils/auth.js';
 import joi from '@hapi/joi';
 import boom from '@hapi/boom';
@@ -26,9 +26,8 @@ export default server => {
             return h.redirect('/');
           }
           const {lang} = req.params;
-          const {id} = await getSiteData();
           const hasAdmin = await checkForAdmin();
-          const login = new LoginRegistration({lang, clientID: id, hasAdmin});
+          const login = new LoginRegistration({lang, clientID: process.env.GOOGLE_ID, hasAdmin});
           return login.render();
         } catch (err) {
           console.error(`login / registration page failure`, err);
