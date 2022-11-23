@@ -29,6 +29,6 @@
     "chokidar": "^3.0.2",
     "eslint": "^5.16.0",
     "nodemon": "^1.19.1",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.5.0"
   }
 }
